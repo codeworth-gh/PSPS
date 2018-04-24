@@ -1,0 +1,33 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# https://www.playframework.com/documentation/latest/ScalaRouting
+# ~~~~
+
+GET     /                           controllers.UserCtrl.index
+POST    /login/                     controllers.UserCtrl.doLogin
+#POST    /logout/                    controllers.UserCtrl.logout
+GET     /bo/home/                   controllers.UserCtrl.userHome
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
+
+# Users
+GET     /admin/login                 controllers.UserCtrl.showLogin
+POST    /admin/login                 controllers.UserCtrl.doLogin
+POST    /admin/logout                controllers.UserCtrl.doLogout
+GET     /admin/users/                controllers.UserCtrl.showUserList
+GET     /admin/users/new             controllers.UserCtrl.showNewUserPage
+POST    /admin/users/                controllers.UserCtrl.doSaveNewUser
+GET     /admin/users/:id/edit        controllers.UserCtrl.showEditUserPage(id)
+POST    /admin/users/:id/edit        controllers.UserCtrl.doSaveUser(id)
+POST    /admin/api/users/            controllers.UserCtrl.apiAddUser
+GET     /admin/forgotPassword        controllers.UserCtrl.showForgotPassword
+POST    /admin/forgotPassword        controllers.UserCtrl.doForgotPassword
+GET     /admin/resetPassword/:id     controllers.UserCtrl.showResetPassword(id)
+POST    /admin/resetPassword/        controllers.UserCtrl.doResetPassword
+GET     /admin/inviteUser/           controllers.UserCtrl.showInviteUser
+POST    /admin/inviteUser/           controllers.UserCtrl.doInviteUser
+GET     /admin/newUserInvitation/:id controllers.UserCtrl.showNewUserInvitation(id)
+POST    /admin/newUserInvitation/    controllers.UserCtrl.doNewUserInvitation
+POST    /admin/changePassword        controllers.UserCtrl.doChangePassword
