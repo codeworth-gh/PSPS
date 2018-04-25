@@ -20,12 +20,12 @@ class UserTable(tag:Tag) extends Table[User](tag,"users") {
 }
 
 class InvitationTable(tag:Tag) extends Table[Invitation](tag, "invitations") {
-  def email = column[String]("email")
+  def email = column[String]("email", O.PrimaryKey)
   def date  = column[Timestamp]("date")
   def uuid  = column[String]("uuid")
-  def sender  = column[String]("sender")
+  def sender  = column[String]("sender",O.PrimaryKey)
 
-  def pk = primaryKey("invitation_pkey", (email, sender))
+//  def pk = primaryKey("invitation_pkey", (email, sender))
 
   def * = (email, date, uuid, sender) <> (Invitation.tupled, Invitation.unapply)
 }

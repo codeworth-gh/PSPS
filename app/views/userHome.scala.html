@@ -10,8 +10,9 @@
         <a href="@routes.UserCtrl.showInviteUser()" class="btn btn-default btn-block">
             Invite User
         </a>
-        <a href="@routes.UserCtrl.doLogout" class="btn btn-default btn-block">
-            Logout
-        </a>
+        <form class="form-horizontal" action="@routes.UserCtrl.doLogout()" method="POST">
+            <button type="submit"> Logout</button>
+        </form>
+
     </div>
 }
