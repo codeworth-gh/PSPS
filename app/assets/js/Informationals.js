@@ -226,7 +226,6 @@ var Informationals = (function(){
             }
             $(bkgArea).append(ldrMsg);
             return ldrMsg;
-        },
-        __loaderEmt:function(){return $loaderElement;}
+        }
     };
 })();

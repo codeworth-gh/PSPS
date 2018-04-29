@@ -37,6 +37,17 @@ case class ForgotPassFormData ( email:String , protocol_and_host:String)
 case class ResetPassFormData ( password1:String, password2:String, uuid:String)
 case class ChangePassFormData ( previousPassword:String, password1:String, password2:String)
 
+/**
+  * Contoller for user-related actions (login, account mgmt...)
+  * @param deadbolt
+  * @param conf
+  * @param cached
+  * @param cc
+  * @param users
+  * @param uuidForInvitation
+  * @param uuidForForgotPassword
+  * @param mailerClient
+  */
 class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
                          cached: Cached, cc:ControllerComponents,
                          users: UsersDAO, uuidForInvitation:InvitationDAO,
@@ -60,33 +71,29 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
   val loginForm = Form(mapping(
     "username" -> text,
     "password" -> text
-  )(LoginFormData.apply)(LoginFormData.unapply)
+    )(LoginFormData.apply)(LoginFormData.unapply)
   )
 
   val emailForm = Form(mapping(
     "email" -> text,
     "protocol_and_host" -> text
-  )(ForgotPassFormData.apply)(ForgotPassFormData.unapply)
+    )(ForgotPassFormData.apply)(ForgotPassFormData.unapply)
   )
 
   val resetPassForm = Form(mapping(
     "password1" -> text,
     "password2" -> text,
     "uuid" -> text
-  )(ResetPassFormData.apply)(ResetPassFormData.unapply)
+    )(ResetPassFormData.apply)(ResetPassFormData.unapply)
   )
 
   val changePassForm = Form(mapping(
     "previousPassword" -> text,
     "password1" -> text,
     "password2" -> text
-  )(ChangePassFormData.apply)(ChangePassFormData.unapply)
+    )(ChangePassFormData.apply)(ChangePassFormData.unapply)
   )
-
-  def index = Action {
-    Ok(views.html.index(None,None))
-  }
-
+  
   def doLogin = Action.async { implicit request =>
     loginForm.bindFromRequest().fold(
       badForm   => Future(BadRequest(views.html.index(None, Some("Error processing login form")))),
@@ -96,7 +103,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
             .getOrElse( {
               val form = loginForm.fill(loginData).withGlobalError("Bad username or password")
               BadRequest(views.html.users.login(Some(loginData.username),
-                Some("Username/Password does not match")))})
+                Some("Bad username or password")))})
           )
       }
     )
@@ -216,7 +223,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
             val user = User(0, fData.username, fData.name, fData.email.getOrElse(""),
               users.hashPassword(fData.pass1.get))
             uuidForInvitation.deleteUuid(fData.uuid.get)
-            users.addUser(user).map(_ => Redirect(routes.UserCtrl.index()))
+            users.addUser(user).map(_ => Redirect(routes.UserCtrl.userHome()))
           }
           else{
             var form = userForm.fill(fData)
@@ -244,44 +251,8 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     Ok( views.html.users.login(None,None) )
   }
 
-//  def doLogin = Action.async{ implicit req =>
-//
-////    loginForm.bindFromRequest().fold(
-////      badForm   => Future(BadRequest(views.html.index(badForm.withGlobalError("Bad Request")))),
-////      loginData => {
-////        users.authenticate(loginData.username.trim, loginData.password.trim)
-////          .map( _.map(u => Redirect(routes.HomeController.userHome).withNewSession.withSession(("userId",u.id.toString)))
-////            .getOrElse( {
-////              val form = loginForm.fill(loginData).withGlobalError("Bad username or password")
-////              BadRequest(views.html.index(form))})
-////          )
-////      }
-////    )
-//    loginForm.bindFromRequest().fold(
-//      fwi => Future(BadRequest(views.html.users.login(None,Some("Error processing login form")))),
-//      fd => {
-//        for {
-//          userOpt <- users.get(fd.username)
-//          passwordOK = userOpt.exists(users.verifyPassword(_, fd.password))
-//
-//        } yield {
-//          if ( passwordOK ){
-//            val userSessionId = UUID.randomUUID.toString
-//            userOpt.map(u => {
-//              Redirect(routes.UserCtrl.userHome).withNewSession.withSession( ("userId",u.id.toString))
-//            }).getOrElse(BadRequest(views.html.users.login(Some(fd.username),
-//              Some("Username/Password does not match"))))
-//          } else {
-//            BadRequest(views.html.users.login(Some(fd.username),
-//              Some("Username/Password does not match")))
-//          }
-//        }
-//      }
-//    )
-//  }
-
   def doLogout = Action { req =>
-    Redirect(routes.UserCtrl.index()).withNewSession.flashing(("message","You have been logged out."))
+    Redirect(routes.UserCtrl.userHome()).withNewSession.flashing(("message","You have been logged out."))
   }
 
   private def notFound(userId:String) = NotFound("User with username '%s' does not exist.".format(userId))
@@ -302,7 +273,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
             val bodyText = "To reset your password, please click the link below: \n " + fd.protocol_and_host + "/admin/resetPassword/" + userSessionId
             val email = Email("Forgot my password", conf.get[String]("play.mailer.user"), Seq(fd.email), bodyText = Some(bodyText))
             mailerClient.send(email)
-            Redirect( routes.UserCtrl.index() )
+            Redirect( routes.UserCtrl.showLogin() )
           }
           else {
             BadRequest(views.html.users.forgotPassword(Some(fd.email), Some("email does not exist")))
@@ -338,7 +309,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
             userOpt.map(u => {
               uuidForForgotPassword.deleteUuid(u.username)
               users.updatePassword(u, fd.password1)
-              Redirect(routes.UserCtrl.index())}
+              Redirect(routes.UserCtrl.userHome())}
             ).getOrElse(BadRequest(views.html.users.reset(Some("uuid does not exist"))))
           } else {
             if ( !timeOK ){

@@ -41,7 +41,7 @@ class DeadboltHandler(users:UsersDAO) extends be.objectify.deadbolt.scala.Deadbo
     */
   override def onAuthFailure[A](request: AuthenticatedRequest[A]): Future[Result] = {
     Future {
-      Results.Redirect(routes.UserCtrl.index()).withSession(
+      Results.Redirect(routes.UserCtrl.showLogin()).withSession(
         request.session + ("targetUrl" -> request.path)).flashing(("message","Please login before accessing this page"))
     }
   }

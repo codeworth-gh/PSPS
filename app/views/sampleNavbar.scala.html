@@ -1,0 +1,9 @@
+@(message:String)
+@templates.bsNavbar("Sample", Helpers.publicItems, Helpers.SEC_2){
+  <h1>Many messages:</h1>
+  <ul>
+    @for( i<-1 to 10 ) {
+    <li>@message</li>
+  }
+  </ul>
+}

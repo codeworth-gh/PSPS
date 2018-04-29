@@ -13,7 +13,7 @@
 }
 
 @templates.bsBase("Log in", scripts, extraHead ){
-
+  <div class="container">
     <div class="row">
         <div class="col-md-12">
             <h1>Log In</h1>
@@ -43,7 +43,7 @@
 
                 <div class="form-group">
                     <div class="col-md-4">
-                        <a href="/admin/forgotPassword">forgot password?</a>
+                        <a href="@routes.UserCtrl.showForgotPassword()">forgot password?</a>
                     </div>
                     <div class="col-md-8">
                         <div class="text-right">
@@ -57,4 +57,5 @@
 
         </div>
     </div>
+  </div>
 }
