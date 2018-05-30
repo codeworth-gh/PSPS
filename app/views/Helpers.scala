@@ -15,7 +15,7 @@ abstract sealed class TopSiteSection {
   def id:String
 }
 case class PageSection(title:String, id:String, call:Call) extends TopSiteSection
-case class MultiPageSection(title:String, id:String, childern:Seq[SectionItem]) extends TopSiteSection
+case class MultiPageSection(title:String, id:String, children:Seq[SectionItem]) extends TopSiteSection
 
 object Helpers {
   val msg2eng = Map(
@@ -39,7 +39,7 @@ object Helpers {
         PageSectionItem("Login", routes.HomeCtrl.index),
         SeparatorSectionItem,
         PageSectionItem("Public Home", routes.HomeCtrl.index)
-      )
+//      )
     )
   )
 }
