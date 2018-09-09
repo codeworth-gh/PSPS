@@ -29,13 +29,13 @@ class UsersDAO @Inject() (protected val dbConfigProvider:DatabaseConfigProvider,
 
   def usernameExists( u:String):Future[Boolean] = {
     db.run{
-      Users.map( _.username ).filter( _ === u ).exists.result
+      Users.map( _.username ).filter( _.toLowerCase === u.toLowerCase() ).exists.result
     }
   }
 
   def emailExists ( e:String): Future[Boolean] = {
     db.run{
-      Users.map(_.email ).filter( _ === e).exists.result
+      Users.map(_.email ).filter( _.toLowerCase  === e.toLowerCase ).exists.result
     }
   }
 

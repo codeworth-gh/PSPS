@@ -7,25 +7,25 @@ GET     /                         controllers.HomeCtrl.index
 GET     /navbar                   controllers.HomeCtrl.sampleNavbar
 
 # Users
-GET     /bo/                      controllers.UserCtrl.userHome
-GET     /bo/login                 controllers.UserCtrl.showLogin
-POST    /bo/login                 controllers.UserCtrl.doLogin
-POST    /bo/logout                controllers.UserCtrl.doLogout
-GET     /bo/users/                controllers.UserCtrl.showUserList
-GET     /bo/users/new             controllers.UserCtrl.showNewUserPage
-POST    /bo/users/                controllers.UserCtrl.doSaveNewUser
-GET     /bo/users/:id/edit        controllers.UserCtrl.showEditUserPage(id)
-POST    /bo/users/:id/edit        controllers.UserCtrl.doSaveUser(id)
-POST    /bo/api/users/            controllers.UserCtrl.apiAddUser
-GET     /bo/forgotPassword        controllers.UserCtrl.showForgotPassword
-POST    /bo/forgotPassword        controllers.UserCtrl.doForgotPassword
-GET     /bo/resetPassword/:id     controllers.UserCtrl.showResetPassword(id)
-POST    /bo/resetPassword/        controllers.UserCtrl.doResetPassword
-GET     /bo/inviteUser/           controllers.UserCtrl.showInviteUser
-POST    /bo/inviteUser/           controllers.UserCtrl.doInviteUser
-GET     /bo/newUserInvitation/:id controllers.UserCtrl.showNewUserInvitation(id)
-POST    /bo/newUserInvitation/    controllers.UserCtrl.doNewUserInvitation
-POST    /bo/changePassword        controllers.UserCtrl.doChangePassword
+GET     /bkofc/                      controllers.UserCtrl.userHome
+GET     /bkofc/login                 controllers.UserCtrl.showLogin
+POST    /bkofc/login                 controllers.UserCtrl.doLogin
+POST    /bkofc/logout                controllers.UserCtrl.doLogout
+GET     /bkofc/users/                controllers.UserCtrl.showUserList
+GET     /bkofc/users/new             controllers.UserCtrl.showNewUserPage
+POST    /bkofc/users/                controllers.UserCtrl.doSaveNewUser
+GET     /bkofc/users/:id/edit        controllers.UserCtrl.showEditUserPage(id)
+POST    /bkofc/users/:id/edit        controllers.UserCtrl.doSaveUser(id)
+POST    /bkofc/api/users/            controllers.UserCtrl.apiAddUser
+GET     /bkofc/forgotPassword        controllers.UserCtrl.showForgotPassword
+POST    /bkofc/forgotPassword        controllers.UserCtrl.doForgotPassword
+GET     /bkofc/resetPassword/:id     controllers.UserCtrl.showResetPassword(id)
+POST    /bkofc/resetPassword/        controllers.UserCtrl.doResetPassword
+GET     /bkofc/inviteUser/           controllers.UserCtrl.showInviteUser
+POST    /bkofc/inviteUser/           controllers.UserCtrl.doInviteUser
+GET     /bkofc/newUserInvitation/:id controllers.UserCtrl.showNewUserInvitation(id)
+POST    /bkofc/newUserInvitation/    controllers.UserCtrl.doNewUserInvitation
+POST    /bkofc/changePassword        controllers.UserCtrl.doChangePassword
 
 # API
 GET     /api/sayHi controllers.HomeCtrl.apiSayHi
