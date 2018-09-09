@@ -1,0 +1,13 @@
+@import views._
+@(title:String, sections:Seq[TopSiteSection], currentSection:String, extraHead: Html=Html(""), extraBottom: Html=Html(""))(content:Html)
+
+@internalExtraHead = {
+<meta name="robots" content="noindex, nofollow">
+  @extraHead
+}
+
+@internalExtraBottom={
+  <script src="@routes.HomeCtrl.backEndRoutes()?113"></script>
+  @extraBottom
+}
+@templates.bsNavbar(title, sections, currentSection, internalExtraHead, internalExtraBottom)(content)

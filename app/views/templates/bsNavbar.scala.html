@@ -1,5 +1,5 @@
 @import views._
-@(title:String, sections:Seq[TopSiteSection], currentSection:String, extraBottom: Html=Html(""), extraHead: Html=Html(""))(content:Html)
+@(title:String, sections:Seq[TopSiteSection], currentSection:String, extraHead: Html=Html(""), extraBottom: Html=Html(""))(content:Html)
 
 @showSection(mi:TopSiteSection, isSelected:Boolean) = {
   @mi match {
@@ -26,7 +26,7 @@
   }
 }
 
-@bsBase(title, extraBottom, extraHead){
+@bsBase(title, extraHead, extraBottom){
   <div class="container">
 
 
