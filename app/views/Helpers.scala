@@ -22,7 +22,8 @@ object Helpers {
     "error.email" -> "Invalid email address",
     "error.minLength" -> "Field cannot be empty"
   )
-
+  
+  // TODO this is a quick way of doing this. The proper way would be to use i18n.
   def messageToEng( fe:FormError ):String = msg2eng.getOrElse(fe.message,fe.message)
   
   def fieldStatus(f:Field):String = if(f.hasErrors) "has-error" else ""
@@ -39,7 +40,7 @@ object Helpers {
         PageSectionItem("Login", routes.HomeCtrl.index),
         SeparatorSectionItem,
         PageSectionItem("Public Home", routes.HomeCtrl.index)
-//      )
+      )
     )
   )
 }

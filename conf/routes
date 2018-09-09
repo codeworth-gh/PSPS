@@ -27,7 +27,11 @@ GET     /bo/newUserInvitation/:id controllers.UserCtrl.showNewUserInvitation(id)
 POST    /bo/newUserInvitation/    controllers.UserCtrl.doNewUserInvitation
 POST    /bo/changePassword        controllers.UserCtrl.doChangePassword
 
+# API
+GET     /api/sayHi controllers.HomeCtrl.apiSayHi
 
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET     /routes/fe                  controllers.HomeCtrl.frontEndRoutes
+GET     /routes/be                  controllers.HomeCtrl.backEndRoutes
