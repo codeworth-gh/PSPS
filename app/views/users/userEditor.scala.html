@@ -2,194 +2,176 @@
 @(form:Form[UserFormData], destination:Call, isNew:Boolean, isInvite:Boolean, activeFirst:Boolean=true)(implicit flash:Flash)
 
 @content = {
-<div class="container">
+  <div class="container">
     <div class="row">
-        <div class="col-md-12">
-            <h1>User Profile Editor</h1>
-        </div>
+      <div class="col-md-12">
+        <h1>User Profile Editor</h1>
+      </div>
     </div>
 
     <div class="row">
-        <div class="col-md-12">
-            <ul class="nav nav-tabs">
-            @if(activeFirst) {
-                <li class="tab-pane active"><a data-toggle="tab" href="#userEditor">Edit User</a></li>
-                @if(isNew) {
-                    <li class="tab-pane disabled"><a data-toggle="tab" href="#changePassword">Change Password</a></li>
-                } else {
-                    <li class="tab-pane"><a data-toggle="tab" href="#changePassword">Change Password</a></li>
+      <div class="col-md-12">
+        <ul class="nav nav-tabs justify-content-center">
+          <li class="nav-item">
+            <a data-toggle="tab" class="nav-link @if(activeFirst){active}" href="#userEditor">Edit User</a>
+          </li>
+          <li class="nav-item">
+            <a data-toggle="tab" class="nav-link @if(isNew){disabled} @if(!activeFirst){active}" href="#changePassword">Change Password</a>
+          </li>
+        </ul>
+
+        <div class="tab-content my-2">
+          <div class="tab-pane @if(activeFirst){active}" id="userEditor">
+
+            <form class="form-horizontal" action="@destination.url" method="POST">
+              @if( form.hasGlobalErrors ){
+                <ul>
+                @for( ge <- form.globalErrors ){
+                  <li class="text-danger">@Helpers.messageToEng(ge)</li>
                 }
-            }else{
-                <li class="tab-pane"><a data-toggle="tab" href="#userEditor">Edit User</a></li>
-                @if(isNew) {
-                    <li class="tab-pane disabled active"><a data-toggle="tab" href="#changePassword">Change Password</a></li>
-                } else {
-                    <li class="tab-pane active"><a data-toggle="tab" href="#changePassword">Change Password</a></li>
-                }
-            }
-
-            </ul>
-
-            <div class="tab-content">
-                @if(activeFirst){
-                    <div class="tab-pane active" id="userEditor">
-                    }else{
-                    <div class="tab-pane" id="userEditor">
-                    }
-                <form class="form-horizontal mt-1" action="@destination.url" method="POST">
-                    @if( form.hasGlobalErrors ){
-                        <ul>
-                        @for( ge <- form.globalErrors ){
-                            <li class="text-danger">@Helpers.messageToEng(ge)</li>
-                        }
-                        </ul>
-                    }
-                    @if(form("uuid").hasErrors){
-                        <div class="errors">
-                        @form("uuid").errors.map(Helpers.messageToEng).mkString("<br>")
-                        </div>
-                    }
-                    <div class="form-group@Helpers.fieldStatus(form("username"))">
-                        <label for="idInput" class="col-sm-2 control-label">Username</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="usernameInput" name="username" value="@form("username").value.getOrElse("")"
-                            placeholder="username" @if(!isNew){readonly}>
-                            @if(form("username").hasErrors){
-                                <div class="errors">
-                                @form("username").errors.map(Helpers.messageToEng).mkString("<br>")
-                                </div>
-                            }
-                        </div>
-                    </div>
-
-                    @if(isNew){
-                        <div class="form-group@Helpers.fieldStatus(form("password1"))">
-                            <label for="password1Input" class="col-sm-2 control-label">Password</label>
-                            <div class="col-sm-10">
-                                <input type="password" class="form-control" id="password1Input" name="password1" value="@form("password1").value.getOrElse("")"
-                                placeholder="Password">
-                                @if(form("password1").hasErrors){
-                                    <div class="errors">
-                                    @form("password1").errors.map(Helpers.messageToEng).mkString("<br>")
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                        <div class="form-group@Helpers.fieldStatus(form("password2"))">
-                            <label for="password2Input" class="col-sm-2 control-label">Password (again)</label>
-                            <div class="col-sm-10">
-                                <input type="password" class="form-control" id="password2Input" name="password2" value="@form("password2").value.getOrElse("")"
-                                placeholder="Password">
-                                @if(form("password2").hasErrors){
-                                    <div class="errors">
-                                    @form("password2").errors.map(Helpers.messageToEng).mkString("<br>")
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    }
-
-                    <div class="form-group@Helpers.fieldStatus(form("name"))">
-                        <label for="nameInput" class="col-sm-2 control-label">Name</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="nameInput" name="name" value="@form("name").value.getOrElse("")" placeholder="Human name">
-                            @if(form("name").hasErrors){
-                                <div class="errors">
-                                @form("name").errors.map(Helpers.messageToEng).mkString("<br>")
-                                </div>
-                            }
-                        </div>
-                    </div>
-
-                    <div class="form-group@Helpers.fieldStatus(form("email"))">
-                        <label for="emailInput" class="col-sm-2 control-label">Email Address</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="emailInput" name="email" value="@form("email").value.getOrElse("")"
-                            placeholder="Email address">
-                            @if(form("email").hasErrors){
-                                <div class="errors">
-                                @form("email").errors.map(Helpers.messageToEng).mkString("<br>")
-                                </div>
-                            }
-                            <span class="helper-block">
-                                The email address is used for creating new passwords, and sending notifications.
-                            </span>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <div class="col-md-12 text-right">
-                            <hr>
-                            <a href="/" class="btn btn-default">Cancel</a>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                        </div>
-                    </div>
-                    <input type="hidden" value="@form("uuid").value.getOrElse("")" name="uuid" id="uuid">
-                </form>
-            </div>
-
-                @if(activeFirst){
-                    <div class="tab-pane" id="changePassword">
-                    }else{
-                    <div class="tab-pane active" id="changePassword">
-                    }
-                <div class="col-md-12 mt-1">
-                    <form class="form-horizontal" action="@routes.UserCtrl.doChangePassword()" method="POST">
-                        <div class="form-group">
-                            <label for="password1Input" class="col-sm-2 control-label">Previous Password</label>
-                            <div class="col-sm-10">
-                                <input type="password" class="form-control" id="previousPassword" name="previousPassword" value=""
-                                placeholder="Password">
-                                @if(form("previousPassword").hasErrors){
-                                    <div class="errors">
-                                    @form("previousPassword").errors.map(Helpers.messageToEng).mkString("<br>")
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="password1Input" class="col-sm-2 control-label">New Password</label>
-                            <div class="col-sm-10">
-                                <input type="password" class="form-control" id="password1Input" name="password1" value=""
-                                placeholder="Password">
-                                @if(form("password1").hasErrors){
-                                    <div class="errors">
-                                    @form("password1").errors.map(Helpers.messageToEng).mkString("<br>")
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="password2Input" class="col-sm-2 control-label">New Password (again)</label>
-                            <div class="col-sm-10">
-                                <input type="password" class="form-control" id="password2Input" name="password2" value=""
-                                placeholder="Password">
-                                @if(form("password2").hasErrors){
-                                    <div class="errors">
-                                    @form("password2").errors.map(Helpers.messageToEng).mkString("<br>")
-                                    </div>
-                                }
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-8">
-                                <div class="text-right">
-                                    <a class="btn btn-default" href="/">Cancel</a>
-                                    <button type="submit" class="btn btn-primary"><i class="fa fa-send"></i> change</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
+                </ul>
+              }
+              @if(form("uuid").hasErrors){
+                <div class="errors">
+                @form("uuid").errors.map(Helpers.messageToEng).mkString("<br>")
                 </div>
+              }
+              <div class="form-group row @Helpers.fieldStatus(form("username"))">
+                <label for="idInput" class="col-sm-2 control-label">Username</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="usernameInput" name="username" value="@form("username").value.getOrElse("")"
+                  placeholder="username" @if(!isNew){readonly}>
+                  @if(form("username").hasErrors){
+                    <div class="errors">
+                    @form("username").errors.map(Helpers.messageToEng).mkString("<br>")
+                    </div>
+                  }
+                </div>
+              </div>
+
+              @if(isNew){
+                <div class="form-group row @Helpers.fieldStatus(form("password1"))">
+                  <label for="password1Input" class="col-sm-2 control-label">Password</label>
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password1Input" name="password1" value="@form("password1").value.getOrElse("")"
+                    placeholder="Password">
+                    @if(form("password1").hasErrors){
+                      <div class="errors">
+                      @form("password1").errors.map(Helpers.messageToEng).mkString("<br>")
+                      </div>
+                    }
+                  </div>
+                </div>
+                <div class="form-group row @Helpers.fieldStatus(form("password2"))">
+                  <label for="password2Input" class="col-sm-2 control-label">Password (again)</label>
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password2Input" name="password2" value="@form("password2").value.getOrElse("")"
+                    placeholder="Password">
+                    @if(form("password2").hasErrors){
+                      <div class="errors">
+                      @form("password2").errors.map(Helpers.messageToEng).mkString("<br>")
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+
+              <div class="form-group row @Helpers.fieldStatus(form("name"))">
+                <label for="nameInput" class="col-sm-2 control-label">Name</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="nameInput" name="name" value="@form("name").value.getOrElse("")" placeholder="Human name">
+                  @if(form("name").hasErrors){
+                    <div class="errors">
+                    @form("name").errors.map(Helpers.messageToEng).mkString("<br>")
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <div class="form-group row @Helpers.fieldStatus(form("email"))">
+                <label for="emailInput" class="col-sm-2 control-label">Email Address</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="emailInput" name="email" value="@form("email").value.getOrElse("")"
+                  placeholder="Email address">
+                  @if(form("email").hasErrors){
+                    <div class="errors">
+                    @form("email").errors.map(Helpers.messageToEng).mkString("<br>")
+                    </div>
+                  }
+                  <span class="helper-block">
+                    The email address is used for creating new passwords, and sending notifications.
+                  </span>
+                </div>
+              </div>
+
+
+              <div class="form-group">
+                <div class="col-md-12 text-right">
+                  <hr>
+                  <a href="/" class="btn btn-default">Cancel</a>
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+              <input type="hidden" value="@form("uuid").value.getOrElse("")" name="uuid" id="uuid">
+            </form>
+          </div>
+          <div class="tab-pane @if(!activeFirst){active} mt-2" id="changePassword">
+            <div class="col-md-12 mt-1">
+              <form class="form-horizontal" action="@routes.UserCtrl.doChangePassword()" method="POST">
+                <div class="form-group row">
+                  <label for="password1Input" class="col-sm-2 control-label">Previous Password</label>
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" id="previousPassword" name="previousPassword" value=""
+                    placeholder="Password">
+                    @if(form("previousPassword").hasErrors){
+                      <div class="errors">
+                      @form("previousPassword").errors.map(Helpers.messageToEng).mkString("<br>")
+                      </div>
+                    }
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="password1Input" class="col-sm-2 control-label">New Password</label>
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password1Input" name="password1" value=""
+                    placeholder="Password">
+                    @if(form("password1").hasErrors){
+                      <div class="errors">
+                      @form("password1").errors.map(Helpers.messageToEng).mkString("<br>")
+                      </div>
+                    }
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="password2Input" class="col-sm-2 control-label">New Password (again)</label>
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password2Input" name="password2" value=""
+                    placeholder="Password">
+                    @if(form("password2").hasErrors){
+                      <div class="errors">
+                      @form("password2").errors.map(Helpers.messageToEng).mkString("<br>")
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-12">
+                    <div class="text-right">
+                      <a class="btn btn-default" href="@routes.UserCtrl.userHome()">Cancel</a>
+                      <button type="submit" class="btn btn-primary">Change</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
             </div>
-            </div>
-            </div>
-            </div>
+          </div>
         </div>
-        }
+      </div>
+    </div>
+  </div>
+}
 
 @if(!isInvite){
     @templates.backEndBase("Profile Editor", BackOfficeSections.Users )(content)
