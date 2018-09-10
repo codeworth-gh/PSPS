@@ -1,4 +1,4 @@
-@(username:Option[String], message:Option[String])(implicit flash:Flash)
+@(form:Form[LoginFormData])(implicit flash:Flash)
 
 @scripts = {
   <script lang="Javascript">
@@ -22,19 +22,19 @@
     <div class="row mt-3">
       <div class="col col-md-6 offset-md-3">
         <form action="@routes.UserCtrl.doLogin" method="POST">
-          @for( m <- message ){
+          @for( m <- form.globalErrors ){
             <div class="form-group has-error">
-              <div class="alert alert-danger">@m</div>
+              <div class="alert alert-danger">@m.message</div>
             </div>
           }
           <div class="form-group">
-            <label for="idInput" class="control-label">Username</label>
-            <input type="text" class="form-control" id="usernameInput" name="username" value="@username.getOrElse("")" placeholder="username">
+            <label for="usernameInput" class="control-label">Username</label>
+            <input type="text" class="form-control" id="usernameInput" name="username" value="@form("username").value" placeholder="username">
           </div>
 
           <div class="form-group">
             <label for="passwordInput" class="control-label">Password</label>
-            <input type="password" class="form-control" id="passwordInput" name="password" value="" placeholder="password">
+            <input type="password" class="form-control" id="passwordInput" name="password" placeholder="password">
           </div>
 
           <div class="form-group mt-3">

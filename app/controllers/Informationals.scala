@@ -26,7 +26,7 @@ case class Informational(
 
 object Informational {
   def decode(enc:String) = {
-    val comps = enc.split("\\|")
+    val comps = enc.split("\\|",-1)
     comps.size match {
       case 1 => Informational( InformationalLevel.Info, comps(0), "")
       case 3 => Informational( InformationalLevel.withName(comps(0)), comps(1),comps(2) )

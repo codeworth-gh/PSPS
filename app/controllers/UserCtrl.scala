@@ -94,19 +94,28 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     )(ChangePassFormData.apply)(ChangePassFormData.unapply)
   )
   
+  
+  def showLogin = Action { implicit req =>
+    Ok( views.html.users.login(loginForm) )
+  }
+  
+  
   def doLogin = Action.async { implicit request =>
     loginForm.bindFromRequest().fold(
-      badForm   => Future(BadRequest(views.html.users.login(None, Some("Error processing login form")))),
+      badForm   => Future(BadRequest(views.html.users.login(badForm))),
       loginData => {
         users.authenticate(loginData.username.trim, loginData.password.trim)
           .map( _.map(u => Redirect(routes.UserCtrl.userHome).withNewSession.withSession(("userId",u.id.toString)))
             .getOrElse( {
-              val form = loginForm.fill(loginData).withGlobalError("Bad username or password")
-              BadRequest(views.html.users.login(Some(loginData.username),
-                Some("Bad username or password")))})
+              BadRequest(views.html.users.login(loginForm.fill(loginData).withGlobalError("Bad username or password")))})
           )
       }
     )
+  }
+
+  def doLogout = Action { implicit req =>
+    Redirect(routes.HomeCtrl.index()).withNewSession
+      .flashing(FlashKeys.MESSAGE->Informational(InformationalLevel.Success, "You have been logged out.", "").encoded)
   }
 
   def userHome = deadbolt.SubjectPresent()(){ implicit req =>
@@ -247,15 +256,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     val user = req.subject.get.asInstanceOf[UserSubject].user
     users.allUsers.map( users => Ok(views.html.users.userList(users, user)) )
   }
-
-  def showLogin = Action { implicit req =>
-    Ok( views.html.users.login(None,None) )
-  }
-
-  def doLogout = Action { implicit req =>
-    Redirect(routes.UserCtrl.userHome()).withNewSession.flashing(("message","You have been logged out."))
-  }
-
+  
   private def notFound(userId:String) = NotFound("User with username '%s' does not exist.".format(userId))
 
   def doForgotPassword = Action.async{ implicit req =>
