@@ -5,6 +5,8 @@ import play.api.data.{Field, FormError}
 import play.api.mvc.Request
 import play.api.mvc.Call
 import controllers.routes
+import play.twirl.api.Html
+import play.utils.UriEncoding
 
 abstract sealed class SectionItem
 case class PageSectionItem(title:String, call:Call) extends SectionItem
@@ -31,14 +33,20 @@ object BackOfficeSections extends Enumeration {
 
 object Helpers {
   
-  val msg2eng = Map(
-    "error.email" -> "Invalid email address",
-    "error.minLength" -> "Field cannot be empty"
-  )
+  def encodeUriComponent( s:String ) = UriEncoding.encodePathSegment(s, java.nio.charset.StandardCharsets.UTF_8)
+  def stripHtmlTags(s:String):String = s.replaceAll("<.*?>","")
   
-  // TODO this is a quick way of doing this. The proper way would be to use i18n.
-  def messageToEng( fe:FormError ):String = msg2eng.getOrElse(fe.message,fe.message)
+  def ifNotEmpty(s:String)(block:String=>Html):Html = {
+    if ( s!=null && s.trim.nonEmpty ) block(s) else Html("")
+  }
+  def ifNotEmpty(so:Option[String])(block:String=>Html):Html = so.map(s=>ifNotEmpty(s)(block)).getOrElse(Html(""))
+  def ifNotEmpty[T]( col:TraversableOnce[T])(block:TraversableOnce[T]=>Html):Html = if(col!=null && col.nonEmpty) block(col) else Html("")
   
+  /**
+    * Gives a proper css class name based on the field's status. Assumes Bootstrap4.
+    * @param f the form field examined.
+    * @return css class for the form field (BS4).
+    */
   def fieldStatus(f:Field):String = if(f.hasErrors) "has-error" else ""
   
   val publicItems:Seq[TopSiteSection[PublicSections.Value]] = Seq(

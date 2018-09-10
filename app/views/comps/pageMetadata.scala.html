@@ -1,0 +1,16 @@
+@(pmd:PageMetadata)
+<meta property="og:type" content="article" />
+@Helpers.ifNotEmpty(pmd.canonicalUrl){s=><meta property="og:url" content="@s" />}
+@Helpers.ifNotEmpty(pmd.title){ ttl =>
+  <meta name="twitter:title" content="@pmd.title" />
+  <meta property="og:title"  content="@pmd.title" />}
+@Helpers.ifNotEmpty(pmd.description){ dsc =>
+  <meta property="og:description"  content="@dsc" />
+  <meta name="twitter:description" content="@dsc" />
+  <meta name="description" content="@dsc">}
+@Helpers.ifNotEmpty(pmd.imageUrl){s =>
+  <meta property="og:image"  content="@pmd.imageUrl" />
+  <meta name="twitter:image" content="@pmd.imageUrl" />}
+@Helpers.ifNotEmpty(pmd.getSummary){s=><meta name="twitter:card" content="@s"/>}
+@Helpers.ifNotEmpty(pmd.twitterHandle){th=><meta name="twitter:site" content="@th" />}
+@Helpers.ifNotEmpty(pmd.keywords){kw=><meta name="keywords" content="@kw.mkString(", ")">}
