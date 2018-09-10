@@ -23,7 +23,7 @@ class HomeCtrl @Inject()(cc: ControllerComponents, cached: Cached) extends Abstr
     Ok(views.html.publicIndex())
   }
   
-  def sampleNavbar = Action { req =>
+  def sampleNavbar = Action { implicit req =>
     Ok(views.html.sampleNavbar("A message"))
   }
   

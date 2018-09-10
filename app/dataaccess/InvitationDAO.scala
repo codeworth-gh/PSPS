@@ -15,18 +15,6 @@ class InvitationDAO @Inject() (protected val dbConfigProvider:DatabaseConfigProv
   private val invitations = TableQuery[InvitationTable]
 
   def addUuid(i: Invitation): Future[Invitation] = {
-//    db.run{
-//      for {
-//        rows <- invitations.withFilter(res => res.email===i.email && res.sender===i.sender).result
-//      } yield {
-//        if (rows.nonEmpty){
-//          invitations.filter(res => res.email===i.email && res.sender===i.sender).update(i)
-//        }
-//        else {
-//          invitations += i
-//        }
-//      }
-//    } map { _ => i }
     db.run(
       (invitations returning invitations).insertOrUpdate(i)
     ).map( insertRes => insertRes.getOrElse(i) )
@@ -43,5 +31,7 @@ class InvitationDAO @Inject() (protected val dbConfigProvider:DatabaseConfigProv
       invitations.map(_.uuid).filter(_ === u).exists.result
     }
   }
+  
+  def all:Future[Seq[Invitation]] = db.run( invitations.result )
 }
 

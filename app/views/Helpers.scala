@@ -18,6 +18,7 @@ case class PageSection(title:String, id:String, call:Call) extends TopSiteSectio
 case class MultiPageSection(title:String, id:String, children:Seq[SectionItem]) extends TopSiteSection
 
 object Helpers {
+  
   val msg2eng = Map(
     "error.email" -> "Invalid email address",
     "error.minLength" -> "Field cannot be empty"
@@ -42,5 +43,13 @@ object Helpers {
         PageSectionItem("Public Home", routes.HomeCtrl.index)
       )
     )
+  )
+  
+  val backOfficeSections = Seq(
+    PageSection("BackEnd Home", "BEH", routes.UserCtrl.userHome() ),
+    MultiPageSection("Users", "BEH", Seq(
+      PageSectionItem("Invite Users", routes.UserCtrl.showInviteUser()),
+      PageSectionItem("Users", routes.UserCtrl.showUserList())
+    ))
   )
 }

@@ -1,0 +1,41 @@
+package controllers
+
+object InformationalLevel extends Enumeration {
+  val Success = Value("success")
+  val Info    = Value("info")
+  val Warning = Value("warning")
+  val Danger  = Value("danger")
+}
+
+/**
+  * A message to the user. Works with the `Informationals` js library. Values can be encoded
+  * as a string, for transporting them to the HTML/JS world.
+  *
+  * @param level
+  * @param title
+  * @param subtitle
+  */
+case class Informational(
+                           level:InformationalLevel.Value,
+                           title:String,
+                           subtitle:String
+                         ) {
+  
+  def encoded = Seq(level.toString(), title, subtitle).mkString("|")
+}
+
+object Informational {
+  def decode(enc:String) = {
+    val comps = enc.split("\\|")
+    comps.size match {
+      case 1 => Informational( InformationalLevel.Info, comps(0), "")
+      case 3 => Informational( InformationalLevel.withName(comps(0)), comps(1),comps(2) )
+      case _ => Informational( InformationalLevel.Danger, "CANNOT PARSE INFORMATIONAL", enc)
+    }
+  }
+   def defaultTimes = Map(InformationalLevel.Success -> 2000,
+     InformationalLevel.Info -> 1700,
+     InformationalLevel.Warning -> 3000,
+     InformationalLevel.Danger ->10000
+   )
+}

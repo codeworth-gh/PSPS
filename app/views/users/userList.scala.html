@@ -1,4 +1,4 @@
-@(users:Seq[User], curUser:User)
+@(users:Seq[User], curUser:User)(implicit flash:Flash)
 @templates.bsBase("Users" ) {
     <div class="row">
         <div class="col-md-12">

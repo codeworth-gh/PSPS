@@ -42,4 +42,12 @@ class HomeControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
       contentAsString(home) must include ("Welcome to Play")
     }
   }
+  
+  "Informational" should {
+    "properly encode itself" in {
+      val sut = Informational(InformationalLevel.Danger, "title", "subtitle")
+      val expected = "danger|title|subtitle"
+      sut.encoded mustBe expected
+    }
+  }
 }

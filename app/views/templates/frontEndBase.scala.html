@@ -1,0 +1,4 @@
+@import views._
+@(title:String, currentSection:String, extraHead: Html=Html(""), extraBottom: Html=Html(""))(content:Html)(implicit flash: Flash)
+
+@bsNavbar(title, views.Helpers.publicItems, currentSection, extraHead, extraBottom, None)(content)

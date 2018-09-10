@@ -1,5 +1,6 @@
 @import views._
-@(title:String, sections:Seq[TopSiteSection], currentSection:String, extraHead: Html=Html(""), extraBottom: Html=Html(""))(content:Html)
+@(title:String, sections:Seq[TopSiteSection], currentSection:String, extraHead: Html=Html(""), extraBottom: Html=Html(""),
+        navbarExtras:Option[Html]=None)(content:Html)(implicit flash: Flash)
 
 @showSection(mi:TopSiteSection, isSelected:Boolean) = {
   @mi match {
@@ -27,9 +28,7 @@
 }
 
 @bsBase(title, extraHead, extraBottom){
-  <div class="container">
-
-
+<div class="container">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="#">Navbar</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,10 +41,13 @@
         @showSection(sec, currentSection==sec.id)
       }
     </ul>
+    @for( navBarExt <-navbarExtras ) {
+      <div class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+        `@navBarExt
+      </div>
+    }
   </div>
 </nav>
-
-  @content
-
-  </div>
+@content
+</div>
 }

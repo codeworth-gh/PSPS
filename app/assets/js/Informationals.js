@@ -15,9 +15,9 @@ var Informationals = (function(){
         var $emt = $(emt);
         $emt.css({overflow:"hide"});
         $emt.animate({top: "-" + (0.3*emt.clientHeight) + "px",
-                      height:"0px", marginTop:"0px", marginBottom:"0px",
-                      opacity:"0"
-            },500, "swing", function() { $emt.remove();} );
+            height:"0px", marginTop:"0px", marginBottom:"0px",
+            opacity:"0"
+        },500, "swing", function() { $emt.remove();} );
     }
 
     function initLoaderDialog() {
@@ -49,10 +49,10 @@ var Informationals = (function(){
     var bkgArea = null;
 
     var makeYesNoMessage = function(type, title, message, callback, timeout ) {
-      var ynm = makeInformational(type, title, message, timeout);
-      ynm.callback = callback;
-      ynm.messageType = MESSAGE_TYPES.YES_NO;
-      return ynm;
+        var ynm = makeInformational(type, title, message, timeout);
+        ynm.callback = callback;
+        ynm.messageType = MESSAGE_TYPES.YES_NO;
+        return ynm;
     };
 
     var makeInformational =  function( type, title, message, timeout ) {
@@ -68,6 +68,10 @@ var Informationals = (function(){
                 informational.timeout = effTimeout;
             }
         }
+        informational.show = function(){
+            Informationals.show(informational);
+        };
+
         return informational;
     };
 
@@ -133,7 +137,7 @@ var Informationals = (function(){
             var timeoutCallback = function(){
                 if ( ! callbackInProgress ) {
                     ynMsg.callback(undefined, info);
-            }};
+                }};
             window.setTimeout( timeoutCallback, ynMsg.timeout );
         }
 
@@ -149,42 +153,55 @@ var Informationals = (function(){
         var info = UiUtils.makeElement("div", {classes:[MESSAGE_TYPES.BKG_PROCESS, "loading"]}, elements );
         info.dismiss = function(){ console.log("dismiss called"); dismiss(info); };
         info.success = function(){
-          info.dismiss = function(){}; // no-op, so client code can't double-dismiss this.
-          $(this).addClass("done");
-          $(this).find("i.fa-spin").remove();
-          $(this).find("i.text-hide").removeClass("text-hide");
-          window.setTimeout(function(){ dismiss(info);}, 1500);
+            info.dismiss = function(){}; // no-op, so client code can't double-dismiss this.
+            $(this).addClass("done");
+            $(this).find("i.fa-spin").remove();
+            $(this).find("i.text-hide").removeClass("text-hide");
+            window.setTimeout(function(){ dismiss(info);}, 1500);
         };
         return info;
     }
 
     var loaderModalTransitioning = false;
+    var loaderModalShowing = false;
     var loader = function( isShow, text ) {
         if ( ! $loaderElement ) {
             initLoaderDialog();
         }
+
         if ( loaderModalTransitioning ) {
             // loader is currently animating, wait 500 ms
             window.setTimeout(function(){loader(isShow, text);},500);
             return;
         }
-        loaderModalTransitioning = true;
 
         if ( typeof isShow === 'string' ) {
             text = isShow;
             isShow = true;
         }
+
         if ( isShow ) {
-            if ((typeof text !== 'undefined')) {
+            if ( loaderModalShowing ) {
+                // text update, really
                 $loaderElementText.text(text);
+                UiUtils.highlight($loaderElementText, UiUtils.highlight.properties.info);
+                return;
+
             } else {
-                $loaderElementText.text("processing...");
+                if ((typeof text !== 'undefined')) {
+                    $loaderElementText.text(text);
+                } else {
+                    $loaderElementText.text("processing...");
+                }
             }
+        } else {
+            if ( ! loaderModalShowing ) return; //hiding a hidden modal
         }
         var takeFlagDown = function(){loaderModalTransitioning=false;};
+        loaderModalTransitioning = true;
         $loaderElement.modal( isShow ? "show":"hide" )
-                      .on("hidden.bs.modal", takeFlagDown)
-                      .on("shown.bs.modal", takeFlagDown);
+            .on("hidden.bs.modal", function(){ loaderModalShowing=false; takeFlagDown(); } )
+            .on("shown.bs.modal", function(){ loaderModalShowing=true; takeFlagDown(); } );
     };
 
     return {
@@ -211,11 +228,11 @@ var Informationals = (function(){
                 initInformationalsArea();
             }
             if ( informational.messageType === MESSAGE_TYPES.INFORMATION ) {
-               showInformational(informational);
+                showInformational(informational);
             } else if ( informational.messageType === MESSAGE_TYPES.YES_NO ) {
-               showYesNo( informational );
+                showYesNo( informational );
             } else {
-               console.log("ERROR: Invalid informational message type: " + informational.messageType );
+                console.log("ERROR: Invalid informational message type: " + informational.messageType );
             }
         },
         showBackgroundProcess: function( title ) {

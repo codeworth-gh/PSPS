@@ -1,42 +1,53 @@
-@()
+@(invitations: Seq[Invitation])(implicit flash:Flash)
 @scripts = {
-    <script >
-            $(document).ready( function(){
-                $("#protocol_and_host").val(window.location.protocol + "//" + window.location.host);
-            } );
-    </script>
+  <script >
+          $(document).ready( function(){
+            $("#protocol_and_host").val(window.location.protocol + "//" + window.location.host);
+          } );
+  </script>
+  <script src="@routes.Assets.versioned("js/inviteUserPage.js")"></script>
 }
 
-@templates.bsBase("Invite User",scripts){
 
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Invite User</h1>
-        </div>
+@templates.backEndBase("Invite User", "BEH", Html(""), scripts){
+  <div class="container">
+    <div class="row my-2">
+      <div class="col">
+        <h1>Invite User</h1>
+      </div>
     </div>
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <form class="form-horizontal" action="@routes.UserCtrl.doInviteUser" method="POST">
-
-
-                <div class="form-group">
-                    <label for="emailInput" class="col-sm-2 control-label">Email</label>
-                    <div class="col-sm-10">
-                        <input type="email" class="form-control" id="emailInput" name="email" value="" placeholder="Email">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-md-8">
-                        <div class="text-right">
-                            <a class="btn btn-default" href="/admin/">Cancel</a>
-                            <button type="submit" class="btn btn-primary"><i class="fa fa-send"></i> Send</button>
-                        </div>
-                    </div>
-                </div>
-                <input type="hidden" value="" name="protocol_and_host" id="protocol_and_host">
-            </form>
-
-        </div>
+    <div class="row justify-content-md-center">
+      <div class="col col-md-8">
+        <form action="@routes.UserCtrl.doInviteUser" method="POST">
+          <div class="form-group row">
+            <label for="emailInput" class="col-sm-3 col-form-label">Invite a new user</label>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-9">
+              <input type="email" class="form-control" id="emailInput" name="email" value="" placeholder="email address">
+            </div>
+            <div class="col-sm-3">
+              <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane"></i> Invite User</button>
+            </div>
+          </div>
+          <input type="hidden" value="" name="protocol_and_host" id="protocol_and_host">
+        </form>
+      </div>
     </div>
+    @if(invitations.nonEmpty) {
+      <div class="row justify-content-md-center">
+        <div class="col col-md-8">
+          <h3>Pending Invitations</h3>
+          <ul>
+          @for(invitation<-invitations){
+            <li>@invitation.email
+            <button class="btn btn-info btn-sm" onclick="deleteUuid('@invitation.sender', '@invitation.email')"><i class="far fa-trash-alt"></i> </button>
+            <button class="btn btn-info btn-sm" onclick="ResendEmail('@invitation.email',$('#protocol_and_host'))"><i class="far fa-paper-plane"></i> </button>
+            </li>
+          }
+          </ul>
+        </div>
+      </div>
+    }
+  </div>
 }

@@ -1,4 +1,4 @@
-@( errorCode:Int, message:String, explanation:Option[String]=None, incidentCode:Option[String]=None)
+@( errorCode:Int, message:String, explanation:Option[String]=None, incidentCode:Option[String]=None, flash:Flash)
 
 @templates.bsBase("Error " + errorCode, null, null){
   <div class="row">
@@ -20,4 +20,4 @@
       }
     </div>
   </div>
-}
+}(flash)

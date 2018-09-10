@@ -96,7 +96,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
   
   def doLogin = Action.async { implicit request =>
     loginForm.bindFromRequest().fold(
-      badForm   => Future(BadRequest(views.html.index(None, Some("Error processing login form")))),
+      badForm   => Future(BadRequest(views.html.users.login(None, Some("Error processing login form")))),
       loginData => {
         users.authenticate(loginData.username.trim, loginData.password.trim)
           .map( _.map(u => Redirect(routes.UserCtrl.userHome).withNewSession.withSession(("userId",u.id.toString)))
@@ -111,7 +111,8 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
 
   def userHome = deadbolt.SubjectPresent()(){ implicit req =>
     val user = req.subject.get.asInstanceOf[UserSubject].user
-    Future(Ok( views.html.userHome(user) ))
+    
+    Future(Ok( views.html.users.userHome(user) ))
   }
 
   def apiAddUser = Action(parse.tolerantJson).async { req =>
@@ -201,7 +202,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     )
   }
 
-  def showNewUserInvitation(uuid:String) = Action { req =>
+  def showNewUserInvitation(uuid:String) = Action { implicit req =>
     Ok( views.html.users.userEditor( userForm.bind(Map("uuid"->uuid)).discardingErrors, routes.UserCtrl.doNewUserInvitation,
       isNew=true, isInvite=true ))
   }
@@ -247,11 +248,11 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     users.allUsers.map( users => Ok(views.html.users.userList(users, user)) )
   }
 
-  def showLogin = Action { req =>
+  def showLogin = Action { implicit req =>
     Ok( views.html.users.login(None,None) )
   }
 
-  def doLogout = Action { req =>
+  def doLogout = Action { implicit req =>
     Redirect(routes.UserCtrl.userHome()).withNewSession.flashing(("message","You have been logged out."))
   }
 
@@ -283,11 +284,11 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     )
   }
 
-  def showForgotPassword = Action { req =>
+  def showForgotPassword = Action { implicit req =>
     Ok( views.html.users.forgotPassword(None,None) )
   }
 
-  def showResetPassword(randomUuid:String) = Action { req =>
+  def showResetPassword(randomUuid:String) = Action { implicit req =>
     Ok( views.html.users.reset(None) )
   }
 
@@ -323,8 +324,11 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     )
   }
 
-  def showInviteUser = Action {req =>
-    Ok( views.html.users.inviteUser() )
+  def showInviteUser = deadbolt.SubjectPresent()(){ implicit req =>
+    val user = req.subject.get.asInstanceOf[UserSubject].user
+    for {
+      invitations <- uuidForInvitation.all
+    } yield Ok(views.html.users.inviteUser(invitations.filter(i => i.sender == user.email)))
   }
 
   def doInviteUser = deadbolt.SubjectPresent()(){ implicit req =>
@@ -332,7 +336,9 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     emailForm.bindFromRequest().fold(
       fwi => {
         Logger.info( fwi.errors.mkString("\n") )
-        Future(BadRequest(views.html.users.inviteUser()))
+        for {
+          invitations <- uuidForInvitation.all
+        } yield BadRequest(views.html.users.inviteUser(invitations))
       },
       fd => {
         val invitationId = UUID.randomUUID.toString
@@ -341,7 +347,8 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
         val bodyText = "You have been invited to join a policy models server, please click the link below \n" + link
         val email = Email("Invite user", conf.get[String]("play.mailer.user"), Seq(fd.email), Some(bodyText))
         mailerClient.send(email)
-        Future(Redirect(routes.UserCtrl.userHome()))
+        val message = Informational(InformationalLevel.Success, "User invitation Sent", "To email "+ fd.email)
+        Future(Redirect(routes.UserCtrl.userHome()).flashing(FlashKeys.MESSAGE->message.encoded))
       }
     )
   }

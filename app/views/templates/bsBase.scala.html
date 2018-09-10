@@ -1,4 +1,5 @@
-@(title:String, extraHead: Html=Html(""), extraBottom: Html=Html(""))(content:Html)
+@import controllers.Informational
+@(title:String, extraHead: Html=Html(""), extraBottom: Html=Html(""))(content:Html)(implicit flash: Flash)
 <!DOCTYPE html>
 <html>
     <head>
@@ -23,5 +24,12 @@
         <script src="@routes.Assets.versioned("js/UiUtils.js")"></script>
         <script src="@routes.Assets.versioned("js/Informationals.js")"></script>
         @extraBottom
+        @for( msg <- flash.get(controllers.FlashKeys.MESSAGE) ){
+          <script language="JavaScript">
+            @defining( Informational.decode(msg) ){ inf =>
+              Informationals.make("@inf.level", "@inf.title", "@inf.subtitle", @Informational.defaultTimes.getOrElse(inf.level, "undefined") ).show();
+            }
+          </script>
+        }
     </body>
 </html>

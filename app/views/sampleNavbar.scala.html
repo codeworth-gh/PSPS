@@ -1,5 +1,5 @@
-@(message:String)
-@templates.bsNavbar("Sample", Helpers.publicItems, Helpers.SEC_2){
+@(message:String)(implicit flash:Flash)
+@templates.frontEndBase("Sample", Helpers.SEC_2){
   <h1>Many messages:</h1>
   <ul>
     @for( i<-1 to 10 ) {
