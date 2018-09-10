@@ -10,12 +10,24 @@ abstract sealed class SectionItem
 case class PageSectionItem(title:String, call:Call) extends SectionItem
 case object SeparatorSectionItem extends SectionItem
 
-abstract sealed class TopSiteSection {
+abstract sealed class TopSiteSection[T]{
+  def id:T
   def title:String
-  def id:String
 }
-case class PageSection(title:String, id:String, call:Call) extends TopSiteSection
-case class MultiPageSection(title:String, id:String, children:Seq[SectionItem]) extends TopSiteSection
+
+case class PageSection[T](title:String, id:T, call:Call) extends TopSiteSection[T]
+case class MultiPageSection[T](title:String, id:T, children:Seq[SectionItem]) extends TopSiteSection[T]
+
+object PublicSections extends Enumeration {
+  val Home = Value("Home")
+  val Login = Value("Login")
+  val Others = Value("Others")
+}
+
+object BackOfficeSections extends Enumeration {
+  val Home = Value("Home")
+  val Users = Value("Users")
+}
 
 object Helpers {
   
@@ -29,14 +41,10 @@ object Helpers {
   
   def fieldStatus(f:Field):String = if(f.hasErrors) "has-error" else ""
   
-  val SEC_1 = "sec1"
-  val SEC_2 = "sec2"
-  val SEC_3 = "sec3"
-  
-  val publicItems = Seq(
-    PageSection("Public Home", SEC_1, routes.HomeCtrl.index),
-    PageSection("Login", SEC_2, routes.HomeCtrl.index),
-    MultiPageSection("Other", SEC_3,
+  val publicItems:Seq[TopSiteSection[PublicSections.Value]] = Seq(
+    PageSection("Public Home", PublicSections.Home, routes.HomeCtrl.index),
+    PageSection("Login", PublicSections.Login, routes.HomeCtrl.index),
+    MultiPageSection("Other", PublicSections.Others,
       Seq(
         PageSectionItem("Login", routes.HomeCtrl.index),
         SeparatorSectionItem,
@@ -45,9 +53,9 @@ object Helpers {
     )
   )
   
-  val backOfficeSections = Seq(
-    PageSection("BackEnd Home", "BEH", routes.UserCtrl.userHome() ),
-    MultiPageSection("Users", "BEH", Seq(
+  val backOfficeSections:Seq[TopSiteSection[BackOfficeSections.Value]] = Seq(
+    PageSection("BackEnd Home", BackOfficeSections.Home, routes.UserCtrl.userHome() ),
+    MultiPageSection("Users", BackOfficeSections.Users, Seq(
       PageSectionItem("Invite Users", routes.UserCtrl.showInviteUser()),
       PageSectionItem("Users", routes.UserCtrl.showUserList())
     ))

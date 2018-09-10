@@ -1,8 +1,8 @@
 @import views._
-@(title:String, sections:Seq[TopSiteSection], currentSection:String, extraHead: Html=Html(""), extraBottom: Html=Html(""),
+@(title:String, sections:Seq[TopSiteSection[_]], currentSection:Object, extraHead: Html=Html(""), extraBottom: Html=Html(""),
         navbarExtras:Option[Html]=None)(content:Html)(implicit flash: Flash)
 
-@showSection(mi:TopSiteSection, isSelected:Boolean) = {
+@showSection(mi:TopSiteSection[_], isSelected:Boolean) = {
   @mi match {
     case PageSection(title, id, call) => {
       <li class="nav-item @if(isSelected){active}">
@@ -42,8 +42,8 @@
       }
     </ul>
     @for( navBarExt <-navbarExtras ) {
-      <div class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
-        `@navBarExt
+      <div class="navbar-nav flex-row">
+        @navBarExt
       </div>
     }
   </div>

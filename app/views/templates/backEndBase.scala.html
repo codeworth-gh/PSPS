@@ -1,5 +1,5 @@
 @import views._
-@(title:String, currentSection:String, extraHead: Html=Html(""), extraBottom: Html=Html(""))(content:Html)(implicit flash: Flash)
+@(title:String, currentSection:BackOfficeSections.Value, extraHead: Html=Html(""), extraBottom: Html=Html(""))(content:Html)(implicit flash: Flash)
 
 @internalExtraHead = {
 <meta name="robots" content="noindex, nofollow">
@@ -15,4 +15,4 @@
     <button type="submit" class="btn btn-outline-danger"> Logout</button>
   </form>
 }
-@bsNavbar(title, views.Helpers.backOfficeSections, currentSection, internalExtraHead, internalExtraBottom)(content)
+@bsNavbar(title, views.Helpers.backOfficeSections, currentSection, internalExtraHead, internalExtraBottom, Some(logoutButton))(content)

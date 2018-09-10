@@ -1,3 +1,4 @@
+@import views.BackOfficeSections
 @(form:Form[UserFormData], destination:Call, isNew:Boolean, isInvite:Boolean, activeFirst:Boolean=true)(implicit flash:Flash)
 
 @content = {
@@ -191,7 +192,7 @@
         }
 
 @if(!isInvite){
-    @templates.bsBase("Profile Editor")(content)
+    @templates.backEndBase("Profile Editor", BackOfficeSections.Users )(content)
 } else {
     @templates.bsBase("New User")(content)
 }

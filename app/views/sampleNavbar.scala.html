@@ -1,5 +1,6 @@
+@import views.PublicSections
 @(message:String)(implicit flash:Flash)
-@templates.frontEndBase("Sample", Helpers.SEC_2){
+@templates.frontEndBase("Sample", PublicSections.Home){
   <h1>Many messages:</h1>
   <ul>
     @for( i<-1 to 10 ) {
