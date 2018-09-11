@@ -1,4 +1,4 @@
-@(invitations: Seq[Invitation])(implicit flash:Flash)
+@(invitations: Seq[Invitation])(implicit flash:Flash, msgs:MessagesProvider)
 @scripts = {
   <script >
           $(document).ready( function(){

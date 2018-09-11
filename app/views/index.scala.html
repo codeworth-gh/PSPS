@@ -1,4 +1,4 @@
-@(username:Option[String], message:Option[String])(implicit flash:Flash)
+@(username:Option[String], message:Option[String])(implicit flash:Flash, msgs:MessagesProvider)
 
 @templates.bsBase("BASE-APP") {
   <div class="container">

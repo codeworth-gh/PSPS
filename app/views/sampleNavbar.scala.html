@@ -1,10 +1,10 @@
 @import views.PublicSections
-@(message:String)(implicit flash:Flash)
+@(message:String)(implicit flash:Flash, msgs:MessagesProvider)
 @templates.frontEndBase("Sample", PublicSections.Home){
-  <h1>Many messages:</h1>
+  <h1>Testing messages</h1>
   <ul>
-    @for( i<-1 to 10 ) {
-    <li>@message</li>
-  }
+    <li><b>Parameter:</b> <pre>@message</pre></li>
+    <li>@Messages("navbar.title")</li>
+    <li>@Messages("navbar.logout")</li>
   </ul>
 }

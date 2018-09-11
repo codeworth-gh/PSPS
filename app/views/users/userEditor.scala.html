@@ -1,5 +1,6 @@
 @import views.BackOfficeSections
-@(form:Form[UserFormData], destination:Call, isNew:Boolean, isInvite:Boolean, activeFirst:Boolean=true)(implicit flash:Flash)
+@(form:Form[UserFormData], destination:Call, isNew:Boolean, isInvite:Boolean, activeFirst:Boolean=true
+ )(implicit flash:Flash, msgs:MessagesProvider)
 
 @content = {
   <div class="container">
@@ -27,13 +28,13 @@
               @if( form.hasGlobalErrors ){
                 <ul>
                 @for( ge <- form.globalErrors ){
-                  <li class="text-danger">@Helpers.messageToEng(ge)</li>
+                  <li class="text-danger">@ge.messages.mkString("<br>")</li>
                 }
                 </ul>
               }
               @if(form("uuid").hasErrors){
                 <div class="errors">
-                @form("uuid").errors.map(Helpers.messageToEng).mkString("<br>")
+                @form("uuid").errors.map(_.message).mkString("<br>")
                 </div>
               }
               <div class="form-group row @Helpers.fieldStatus(form("username"))">
@@ -43,7 +44,7 @@
                   placeholder="username" @if(!isNew){readonly}>
                   @if(form("username").hasErrors){
                     <div class="errors">
-                    @form("username").errors.map(Helpers.messageToEng).mkString("<br>")
+                    @form("username").errors.map(_.message).mkString("<br>")
                     </div>
                   }
                 </div>
@@ -57,7 +58,7 @@
                     placeholder="Password">
                     @if(form("password1").hasErrors){
                       <div class="errors">
-                      @form("password1").errors.map(Helpers.messageToEng).mkString("<br>")
+                      @form("password1").errors.map(_.message).mkString("<br>")
                       </div>
                     }
                   </div>
@@ -69,7 +70,7 @@
                     placeholder="Password">
                     @if(form("password2").hasErrors){
                       <div class="errors">
-                      @form("password2").errors.map(Helpers.messageToEng).mkString("<br>")
+                      @form("password2").errors.map(_.message).mkString("<br>")
                       </div>
                     }
                   </div>
@@ -82,7 +83,7 @@
                   <input type="text" class="form-control" id="nameInput" name="name" value="@form("name").value.getOrElse("")" placeholder="Human name">
                   @if(form("name").hasErrors){
                     <div class="errors">
-                    @form("name").errors.map(Helpers.messageToEng).mkString("<br>")
+                    @form("name").errors.map(_.message).mkString("<br>")
                     </div>
                   }
                 </div>
@@ -95,7 +96,7 @@
                   placeholder="Email address">
                   @if(form("email").hasErrors){
                     <div class="errors">
-                    @form("email").errors.map(Helpers.messageToEng).mkString("<br>")
+                    @form("email").errors.map(_.message).mkString("<br>")
                     </div>
                   }
                   <span class="helper-block">
@@ -125,7 +126,7 @@
                     placeholder="Password">
                     @if(form("previousPassword").hasErrors){
                       <div class="errors">
-                      @form("previousPassword").errors.map(Helpers.messageToEng).mkString("<br>")
+                      @form("previousPassword").errors.map(_.message).mkString("<br>")
                       </div>
                     }
                   </div>
@@ -137,7 +138,7 @@
                     placeholder="Password">
                     @if(form("password1").hasErrors){
                       <div class="errors">
-                      @form("password1").errors.map(Helpers.messageToEng).mkString("<br>")
+                      @form("password1").errors.map(_.message).mkString("<br>")
                       </div>
                     }
                   </div>
@@ -149,7 +150,7 @@
                     placeholder="Password">
                     @if(form("password2").hasErrors){
                       <div class="errors">
-                      @form("password2").errors.map(Helpers.messageToEng).mkString("<br>")
+                      @form("password2").errors.map(_.message).mkString("<br>")
                       </div>
                     }
                   </div>

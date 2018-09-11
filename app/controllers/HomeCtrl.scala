@@ -3,6 +3,7 @@ package controllers
 import javax.inject._
 import play.api._
 import play.api.cache.Cached
+import play.api.i18n.{I18nSupport, Langs, MessagesApi}
 import play.api.mvc._
 
 /**
@@ -10,8 +11,10 @@ import play.api.mvc._
   * application's home page.
   */
 
-class HomeCtrl @Inject()(cc: ControllerComponents, cached: Cached) extends AbstractController(cc) {
+class HomeCtrl @Inject()(langs: Langs, messagesApi: MessagesApi, cached: Cached, cc: ControllerComponents
+                        ) extends AbstractController(cc) with I18nSupport {
   
+//  implicit val mApiImplicit = messagesApi
   /**
     * Create an Action to render an HTML page.
     *
@@ -24,7 +27,7 @@ class HomeCtrl @Inject()(cc: ControllerComponents, cached: Cached) extends Abstr
   }
   
   def sampleNavbar = Action { implicit req =>
-    Ok(views.html.sampleNavbar("A message"))
+    Ok(views.html.sampleNavbar("Karen Lee Kicks"))
   }
   
   def apiSayHi = Action { implicit req => Ok("Hi!") }

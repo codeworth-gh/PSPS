@@ -11,6 +11,7 @@ import play.api.{Configuration, Logger, cache}
 import play.api.cache.Cached
 import play.api.data._
 import play.api.data.Forms._
+import play.api.i18n._
 import play.api.libs.json.{JsObject, JsString}
 import play.api.libs.mailer.{Email, MailerClient}
 import play.api.mvc.{Action, ControllerComponents, InjectedController}
@@ -52,11 +53,14 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
                          cached: Cached, cc:ControllerComponents,
                          users: UsersDAO, uuidForInvitation:InvitationDAO,
                          uuidForForgotPassword:UuidForForgotPasswordDAO,
-                         mailerClient: MailerClient) extends InjectedController {
+                         mailerClient: MailerClient, langs:Langs, messagesApi:MessagesApi) extends InjectedController {
 
   implicit private val ec = cc.executionContext
   private val validUserId = "^[-._a-zA-Z0-9]+$".r
-
+  implicit val messagesProvider: MessagesProvider = {
+    MessagesImpl(langs.availables.head, messagesApi)
+  }
+  
   val userForm = Form(mapping(
       "username" -> text(minLength = 1, maxLength = 64)
         .verifying( "Illegal characters found. Use letters, numbers, and -_. only.", s=>validUserId.findFirstIn(s).isDefined),
@@ -345,8 +349,8 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
         val invitationId = UUID.randomUUID.toString
         uuidForInvitation.addUuid(Invitation(user.email, new Timestamp(System.currentTimeMillis()), invitationId, fd.email))
         val link = fd.protocol_and_host + "/admin/newUserInvitation/" + invitationId
-        val bodyText = "You have been invited to join a policy models server, please click the link below \n" + link
-        val email = Email("Invite user", conf.get[String]("play.mailer.user"), Seq(fd.email), Some(bodyText))
+        val bodyText = Messages("inviteEmail.body", link)
+        val email = Email(Messages("inviteEmail.title"), conf.get[String]("play.mailer.user"), Seq(fd.email), Some(bodyText))
         mailerClient.send(email)
         val message = Informational(InformationalLevel.Success, "User invitation Sent", "To email "+ fd.email)
         Future(Redirect(routes.UserCtrl.userHome()).flashing(FlashKeys.MESSAGE->message.encoded))
