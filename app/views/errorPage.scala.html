@@ -1,23 +1,25 @@
 @( errorCode:Int, message:String, explanation:Option[String]=None, incidentCode:Option[String]=None, request:RequestHeader, msgs:MessagesProvider)
 
 @templates.bsBase("Error " + errorCode, null, null){
-  <div class="row">
-    <div class="col">
-      <div class="errorMessage">
-        <h1>@message</h1>
-        @for( exp<-explanation ){<p>
-          @exp
-        </p>}
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col">
+        <div class="errorMessage">
+          <h1>@message</h1>
+          @for( exp<-explanation ){<p>
+            @exp
+          </p>}
+        </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <small>Error code: <code>@errorCode</code></small>
-      @for( incident<-incidentCode ){
-        <br>
-        <small>Incident code: <code>@incident</code></small>
-      }
+    <div class="row">
+      <div class="col">
+        <small>Error code: <code>@errorCode</code></small>
+        @for( incident<-incidentCode ){
+          <br>
+          <small>Incident code: <code>@incident</code></small>
+        }
+      </div>
     </div>
   </div>
 }(request, msgs)

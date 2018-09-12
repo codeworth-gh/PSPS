@@ -1,7 +1,14 @@
 # https://www.playframework.com/documentation/latest/ScalaI18N
+application.title=PSPS Seed
 navbar.title=PSPS Seed
 navbar.logout=Logout
 inviteEmail.title=Invitation to Open an Account in a PSPS Server
 inviteEmail.body=You have been invited to open an account on a PSPS server. To accept the invitation, please click the link below.\n{0}"
 inviteEmail.confirmationMessage=Invitation email sent
 inviteEmail.confirmationDetails=To email address {0}
+forgotPassword.emailNotFound=Sorry, there is no user with this email in this system.
+forgotPassword.emailSent=An email with instructions of how to reset your password has been send to {0}.
+passwordReset.requestNotFound=Password reset request not found.
+passwordReset.requestExpired=Password reset request expired.
+passwordReset.validationFailed=Passwords must match, and cannot be empty
+passwordReset.success=Password updated successfully

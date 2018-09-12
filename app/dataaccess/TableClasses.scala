@@ -2,7 +2,7 @@ package dataaccess
 
 import java.sql.Timestamp
 
-import models.{Invitation, Setting, User, UuidForForgotPassword}
+import models.{Invitation, Setting, User, PasswordResetRequest}
 import slick.lifted.Tag
 import slick.jdbc.PostgresProfile.api._
 
@@ -29,14 +29,14 @@ class InvitationTable(tag:Tag) extends Table[Invitation](tag, "invitations") {
 
   def * = (email, date, uuid, sender) <> (Invitation.tupled, Invitation.unapply)
 }
-class UuidForForgotPasswordTable(tag:Tag) extends Table[UuidForForgotPassword](tag, "uuid_for_forgot_password"){
+class PasswordResetRequestTable(tag:Tag) extends Table[PasswordResetRequest](tag, "password_reset_requests"){
   def username = column[String]("username")
   def uuid     = column[String]("uuid")
   def reset_password_date = column[Timestamp]("reset_password_date")
 
   def pk = primaryKey("uuid_for_forgot_password_pkey", (username, uuid))
 
-  def * = (username, uuid, reset_password_date) <> (UuidForForgotPassword.tupled, UuidForForgotPassword.unapply)
+  def * = (username, uuid, reset_password_date) <> (PasswordResetRequest.tupled, PasswordResetRequest.unapply)
 }
 
 class SettingsTable( tag:Tag ) extends Table[Setting](tag, "settings") {

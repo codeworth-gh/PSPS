@@ -1,7 +1,7 @@
 # -- forgot password
 
 # -- !Ups
-create table uuid_for_forgot_password(
+create table password_reset_requests(
   username varchar(64),
   uuid    varchar(64),
   reset_password_date TIMESTAMP,
@@ -10,4 +10,4 @@ create table uuid_for_forgot_password(
 );
 
 # -- !Downs
-drop table uuid_for_forgot_password;
+drop table password_reset_reqeusts;

@@ -8,7 +8,7 @@ import slick.jdbc.JdbcProfile
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class SettingsDAO @Inject()(protected val dbConfigProvider:DatabaseConfigProvider, cc:ControllerComponents) extends HasDatabaseConfigProvider[JdbcProfile] {
+class SettingDAO @Inject()(protected val dbConfigProvider:DatabaseConfigProvider, cc:ControllerComponents) extends HasDatabaseConfigProvider[JdbcProfile] {
   
   import profile.api._
   private val settingsTable = TableQuery[SettingsTable]

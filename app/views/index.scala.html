@@ -1,6 +1,6 @@
 @(username:Option[String], message:Option[String])(implicit request:RequestHeader, msgs:MessagesProvider)
 
-@templates.bsBase("BASE-APP") {
+@templates.bsBase(Messages("application.title")) {
   <div class="container">
     <div class="row">
       <div class="col">

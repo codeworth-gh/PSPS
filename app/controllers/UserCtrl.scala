@@ -4,9 +4,9 @@ import java.sql.Timestamp
 import java.util.UUID
 
 import be.objectify.deadbolt.scala.DeadboltActions
-import dataaccess.{InvitationDAO, UsersDAO, UuidForForgotPasswordDAO}
+import dataaccess.{InvitationDAO, UsersDAO, PasswordResetRequestDAO}
 import javax.inject.Inject
-import models.{Invitation, User, UuidForForgotPassword}
+import models.{Invitation, User, PasswordResetRequest}
 import play.api.{Configuration, Logger, cache}
 import play.api.cache.Cached
 import play.api.data._
@@ -34,7 +34,7 @@ object UserFormData {
   def of( u:User ) = UserFormData(u.username, u.name, Option(u.email), Option(""), Option(""), None)
 }
 case class LoginFormData( username:String, password:String )
-case class ForgotPassFormData ( email:String , protocol_and_host:String)
+case class ForgotPassFormData ( email:String )
 case class ResetPassFormData ( password1:String, password2:String, uuid:String)
 case class ChangePassFormData ( previousPassword:String, password1:String, password2:String)
 
@@ -52,7 +52,7 @@ case class ChangePassFormData ( previousPassword:String, password1:String, passw
 class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
                          cached: Cached, cc:ControllerComponents,
                          users: UsersDAO, invitations:InvitationDAO,
-                         forgotPasswords:UuidForForgotPasswordDAO,
+                         forgotPasswords:PasswordResetRequestDAO,
                          mailerClient: MailerClient, langs:Langs, messagesApi:MessagesApi) extends InjectedController {
 
   implicit private val ec = cc.executionContext
@@ -79,8 +79,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
   )
 
   val emailForm = Form(mapping(
-    "email" -> text,
-    "protocol_and_host" -> text
+    "email" -> text
     )(ForgotPassFormData.apply)(ForgotPassFormData.unapply)
   )
 
@@ -273,54 +272,72 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
         for {
           userOpt <- users.getUserByEmail(fd.email)
           userSessionId = UUID.randomUUID.toString
-          emailExists <- userOpt.map(u => forgotPasswords.addUuidForForgotPassword(
-            UuidForForgotPassword(u.username, userSessionId, new Timestamp(System.currentTimeMillis())))
+          emailExists <- userOpt.map(u => forgotPasswords.add(
+            PasswordResetRequest(u.username, userSessionId, new Timestamp(System.currentTimeMillis())))
             .map(_=>true))
             .getOrElse(Future(false))
         } yield {
           if ( emailExists ){
-            val bodyText = "To reset your password, please click the link below: \n " + fd.protocol_and_host + "/admin/resetPassword/" + userSessionId
+            val bodyText = "To reset your password, please click the link below: \n " + conf.get[String]("psps.server.publicUrl") +
+              routes.UserCtrl.showResetPassword(userSessionId).url
             val email = Email("Forgot my password", conf.get[String]("play.mailer.user"), Seq(fd.email), bodyText = Some(bodyText))
             mailerClient.send(email)
-            Redirect( routes.UserCtrl.showLogin() )
+            val msg = Informational( InformationalLevel.Success, Messages("forgotPassword.emailSent", fd.email), "")
+            Redirect( routes.UserCtrl.showLogin() ).flashing( FlashKeys.MESSAGE->msg.encoded )
           }
           else {
-            BadRequest(views.html.users.forgotPassword(Some(fd.email), Some("email does not exist")))
+            BadRequest(views.html.users.forgotPassword(Some(fd.email), Some(Messages("forgotPassword.emailNotFound"))))
           }
         }
       }
     )
   }
 
-  def showResetPassword(randomUuid:String) = Action { implicit req =>
-    Ok( views.html.users.reset(None) )
+  def showResetPassword(requestId:String) = Action.async { implicit req =>
+    forgotPasswords.get(requestId).map( {
+      case None => NotFound( views.html.errorPage(404, Messages("passwordReset.requestNotFound"), None, None, req, messagesProvider ) )
+      case Some(prr) => {
+        if ( isRequestExpired(prr) ) {
+          forgotPasswords.deleteForUser(requestId)
+          Gone(views.html.errorPage(410, Messages("passwordReset.requestExpired"), None, None, req, messagesProvider ))
+        } else {
+          Ok(views.html.users.passwordReset(prr, None))
+        }
+      }
+    })
+    
   }
 
   def doResetPassword() = Action.async{ implicit req =>
     resetPassForm.bindFromRequest().fold(
-      fwi => Future(BadRequest(views.html.users.reset(Some("Error processing reset password form")))),
+      fwi => Future(BadRequest(views.html.users.passwordReset(new PasswordResetRequest("","",null), Some("Error processing reset password form")))),
       fd => {
         for {
-          uuidOpt     <- forgotPasswords.getUuidmeByUuid(fd.uuid)
-          userOpt     <- uuidOpt.map(u => users.get(u.username)).getOrElse(Future(None))
-          timeOK      =  uuidOpt.exists(u => {
-            val oneWeek = 1000 * 60 * 60 * 24 * 7
-            val currentTime = System.currentTimeMillis()
-            currentTime - u.resetPasswordDate.getTime < oneWeek})
-          passwordOK  =  fd.password1.nonEmpty && fd.password1 == fd.password2
-          resetOK = passwordOK && timeOK
+          prrOpt      <- forgotPasswords.get(fd.uuid)
+          userOpt     <- prrOpt.map(u => users.get(u.username)).getOrElse(Future(None))
+          invalidPass =  fd.password1.trim.isEmpty || fd.password1 != fd.password2
+          reqExpired  =  prrOpt.exists(u => isRequestExpired(u))
+          
         } yield {
-          if (resetOK) {
-            userOpt.map(u => {
-              forgotPasswords.deleteUuid(u.username)
-              users.updatePassword(u, fd.password1)
-              Redirect(routes.UserCtrl.userHome())}
-            ).getOrElse(BadRequest(views.html.users.reset(Some("uuid does not exist"))))
-          } else {
-            if ( !timeOK ){
-              BadRequest(views.html.users.reset(Some("It's been more then a week")))
-            } else {
-              BadRequest(views.html.users.reset(Some("Passwords must match, and cannot be empty")))
+          prrOpt match {
+            case None => NotFound( views.html.errorPage(404, Messages("passwordReset.requestNotFound"), None, None, req, messagesProvider ) )
+            case Some(prr) => {
+              if ( invalidPass ) BadRequest(views.html.users.passwordReset(prr, Some(Messages("passwordReset.validationFailed"))))
+              else if (reqExpired ) Gone(views.html.errorPage(410, Messages("passwordReset.requestExpired"), None, None, req, messagesProvider ))
+              else {
+                userOpt match {
+                  case None => {
+                    // user might have been deleted
+                    Gone(views.html.errorPage(410, Messages("passwordReset.requestExpired"), None, None, req, messagesProvider ))
+                  }
+                  case Some(user) => {
+                    // we're OK to reset
+                    forgotPasswords.deleteForUser(prr.username)
+                    users.updatePassword(user, fd.password1)
+                    Redirect(routes.UserCtrl.userHome()).flashing(FlashKeys.MESSAGE->Messages("passwordReset.success"))
+                  }
+                }
+              }
             }
           }
         }
@@ -401,5 +418,11 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
         }
       }
     )
+  }
+  
+  def isRequestExpired( prr:PasswordResetRequest ):Boolean = {
+    val oneWeek = 1000 * 60 * 60 * 24 * 7
+    val currentTime = System.currentTimeMillis()
+    (currentTime - prr.resetPasswordDate.getTime) > oneWeek
   }
 }
