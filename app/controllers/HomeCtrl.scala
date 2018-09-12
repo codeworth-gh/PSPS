@@ -4,6 +4,7 @@ import javax.inject._
 import play.api._
 import play.api.cache.Cached
 import play.api.i18n.{I18nSupport, Langs, MessagesApi}
+import play.api.libs.json.{JsObject, Json}
 import play.api.mvc._
 
 /**
@@ -27,10 +28,14 @@ class HomeCtrl @Inject()(langs: Langs, messagesApi: MessagesApi, cached: Cached,
   }
   
   def sampleNavbar = Action { implicit req =>
-    Ok(views.html.sampleNavbar("Karen Lee Kicks"))
+    Ok(views.html.sampleNavbar("Parametrized Message"))
   }
   
-  def apiSayHi = Action { implicit req => Ok("Hi!") }
+  def apiSayHi = Action(cc.parsers.tolerantJson) { implicit req =>
+    val json = req.body.as[JsObject]
+    val name = json("name")
+    Ok(Json.obj("message"->s"Hello, $name."))
+  }
   
   /**
     * Routes for the front-end.

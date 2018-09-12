@@ -1,6 +1,6 @@
 @import views._
 @(title:String, sections:Seq[TopSiteSection[_]], currentSection:Object, extraHead: Html=Html(""), extraBottom: Html=Html(""),
-        navbarExtras:Option[Html]=None)(content:Html)(implicit flash: Flash, msgs:MessagesProvider)
+        navbarExtras:Option[Html]=None)(content:Html)(implicit request: RequestHeader, msgs:MessagesProvider)
 
 @showSection(mi:TopSiteSection[_], isSelected:Boolean) = {
   @mi match {

@@ -1,5 +1,5 @@
 @import views._
-@(title:String, currentSection:BackOfficeSections.Value, extraHead: Html=Html(""), extraBottom: Html=Html(""))(content:Html)(implicit flash: Flash, msgs:MessagesProvider)
+@(title:String, currentSection:BackOfficeSections.Value, extraHead: Html=Html(""), extraBottom: Html=Html(""))(content:Html)(implicit request: RequestHeader, msgs:MessagesProvider)
 
 @internalExtraHead = {
 <meta name="robots" content="noindex, nofollow">
@@ -12,6 +12,7 @@
 }
 @logoutButton={
   <form class="form-inline my-2 my-lg-0" action="@routes.UserCtrl.doLogout()" method="POST">
+    @helper.CSRF.formField
     <button type="submit" class="btn btn-outline-danger"> Logout</button>
   </form>
 }

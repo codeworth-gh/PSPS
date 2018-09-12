@@ -1,6 +1,23 @@
-@()(implicit flash:Flash, msgs:MessagesProvider)
+@()(implicit request:RequestHeader, msgs:MessagesProvider)
 
-@templates.bsBase("BASE-APP", Html(""), Html("")) {
+@scripts={
+  <script lang="JavaScript">
+    var pj = new Playjax(feRoutes);
+
+    function runAjax() {
+      var name = document.getElementById("personName").value;
+      console.log("name: " + name);
+      pj.using( c => c.HomeCtrl.apiSayHi() )
+        .fetch( {name:name} )
+        .then( r => r.json() )
+        .then( json => swal("Server returned: " + json.message ) );
+    }
+
+
+  </script>
+}
+
+@templates.bsBase("BASE-APP", Html(""), scripts) {
   <div class="container">
     <div class="row">
       <div class="col">
@@ -13,8 +30,15 @@
     </div>
     <div class="row">
       <div class="col">
-        <h4>Tree</h4>
-        @Helpers.publicItems
+        <h2>Some Sample Content</h2>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis exercitationem libero molestiae molestias officia sed sit vel veritatis! Alias amet, beatae corporis cumque delectus dolores est necessitatibus quis reprehenderit vel vitae voluptas.
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="personName">Ajax Test </label>
+        <input type="text" id="personName" placeholder="Enter name here">
+        <button type="button" onclick="runAjax()">Say Hi</button>
       </div>
     </div>
   </div>

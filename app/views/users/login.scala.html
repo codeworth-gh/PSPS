@@ -1,4 +1,4 @@
-@(form:Form[LoginFormData])(implicit flash:Flash, msgs:MessagesProvider)
+@(form:Form[LoginFormData])(implicit request: RequestHeader, msgs:MessagesProvider)
 
 @scripts = {
   <script lang="Javascript">
@@ -22,6 +22,7 @@
     <div class="row mt-3">
       <div class="col col-md-6 offset-md-3">
         <form action="@routes.UserCtrl.doLogin" method="POST">
+          @helper.CSRF.formField
           @for( m <- form.globalErrors ){
             <div class="form-group has-error">
               <div class="alert alert-danger">@m.message</div>

@@ -18,7 +18,11 @@ message), or a full-fledged `Informational`.
 
 ### Playjax
 
-JS Library to make JS6 `fetch` calls using Play's JS Routers.
+JS Library to make JS6 `fetch` calls using Play's JS Routers. Uses a fluent syntax for getting the route.
+Supports CSRF, by adding an HTML element with id `Playjax_csrfTokenValue` and value
+of the current CSRF token.
 
 ### Smaller issues
 * *Localization support* Using standard Play localization.
+* Separate front-end and back-office JS Routers.
+* Convenience methods for template rendering in `views.Helpers`.

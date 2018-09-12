@@ -1,4 +1,4 @@
-@(u:User)(implicit flash:Flash, msgs:MessagesProvider)
+@(u:User)(implicit request:RequestHeader, msgs:MessagesProvider)
 
 @templates.backEndBase("User Home", views.BackOfficeSections.Home) {
     <h1>User home</h1>

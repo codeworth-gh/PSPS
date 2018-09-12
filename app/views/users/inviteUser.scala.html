@@ -1,4 +1,4 @@
-@(invitations: Seq[Invitation])(implicit flash:Flash, msgs:MessagesProvider)
+@(invitations: Seq[Invitation])(implicit request: RequestHeader, msgs:MessagesProvider)
 @scripts = {
   <script >
           $(document).ready( function(){
@@ -19,6 +19,7 @@
     <div class="row justify-content-md-center">
       <div class="col col-md-8">
         <form action="@routes.UserCtrl.doInviteUser" method="POST">
+          @helper.CSRF.formField
           <div class="form-group row">
             <label for="emailInput" class="col-sm-3 col-form-label">Invite a new user</label>
           </div>

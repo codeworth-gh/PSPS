@@ -1,5 +1,5 @@
 @import views.PublicSections
-@(message:String)(implicit flash:Flash, msgs:MessagesProvider)
+@(message:String)(implicit request:RequestHeader, msgs:MessagesProvider)
 @templates.frontEndBase("Sample", PublicSections.Home){
   <h1>Testing messages</h1>
   <ul>

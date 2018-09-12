@@ -1,4 +1,4 @@
-@(message:Option[String])(implicit flash:Flash, msgs:MessagesProvider)
+@(message:Option[String])(implicit request: RequestHeader, msgs:MessagesProvider)
 
 @scripts = {
     <script >
@@ -17,6 +17,7 @@
     <div class="row">
         <div class="col-md-12">
             <form class="form-horizontal" action="@routes.UserCtrl.doResetPassword()" method="POST">
+              @helper.CSRF.formField
                 @for( m <- message ){
                     <div class="form-group has-error">
                         <div class="alert alert-danger">@m</div>

@@ -1,4 +1,4 @@
-@(users:Seq[User], curUser:User)(implicit flash:Flash, msgs:MessagesProvider)
+@(users:Seq[User], curUser:User)(implicit request:RequestHeader, msgs:MessagesProvider)
 @templates.backEndBase("Users", views.BackOfficeSections.Users) {
     <div class="row">
         <div class="col-md-12">

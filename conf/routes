@@ -28,7 +28,7 @@ POST    /bkofc/newUserInvitation/    controllers.UserCtrl.doNewUserInvitation
 POST    /bkofc/changePassword        controllers.UserCtrl.doChangePassword
 
 # API
-GET     /api/sayHi controllers.HomeCtrl.apiSayHi
+POST    /api/sayHi controllers.HomeCtrl.apiSayHi
 
 
 # Map static resources from the /public folder to the /assets URL path
