@@ -1,6 +1,11 @@
 package views
 
 
+import java.sql.Timestamp
+import java.time.{Instant, LocalDate, LocalDateTime}
+import java.time.format.DateTimeFormatter
+import java.util.TimeZone
+
 import play.api.data.{Field, FormError}
 import play.api.mvc.Request
 import play.api.mvc.Call
@@ -32,6 +37,14 @@ object BackOfficeSections extends Enumeration {
 }
 
 object Helpers {
+  
+  val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+  val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+  def formatDateTime( ldt: LocalDateTime ):String = ldt.format( dateTimeFormatter )
+  def formatDateTime( ldt: Timestamp ):String = formatDateTime( LocalDateTime.ofInstant(Instant.ofEpochMilli(ldt.getTime), TimeZone.getDefault().toZoneId()))
+  def formatDate( ldt: LocalDateTime ):String = ldt.format( dateFormatter )
+  def formatDate( ldt: LocalDate ):String = ldt.format( dateFormatter )
+  
   
   def encodeUriComponent( s:String ) = UriEncoding.encodePathSegment(s, java.nio.charset.StandardCharsets.UTF_8)
   def stripHtmlTags(s:String):String = s.replaceAll("<.*?>","")

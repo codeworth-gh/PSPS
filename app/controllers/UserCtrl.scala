@@ -45,14 +45,14 @@ case class ChangePassFormData ( previousPassword:String, password1:String, passw
   * @param cached
   * @param cc
   * @param users
-  * @param uuidForInvitation
-  * @param uuidForForgotPassword
+  * @param invitations
+  * @param forgotPasswords
   * @param mailerClient
   */
 class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
                          cached: Cached, cc:ControllerComponents,
-                         users: UsersDAO, uuidForInvitation:InvitationDAO,
-                         uuidForForgotPassword:UuidForForgotPasswordDAO,
+                         users: UsersDAO, invitations:InvitationDAO,
+                         forgotPasswords:UuidForForgotPasswordDAO,
                          mailerClient: MailerClient, langs:Langs, messagesApi:MessagesApi) extends InjectedController {
 
   implicit private val ec = cc.executionContext
@@ -102,7 +102,6 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
   def showLogin = Action { implicit req =>
     Ok( views.html.users.login(loginForm) )
   }
-  
   
   def doLogin = Action.async { implicit request =>
     loginForm.bindFromRequest().fold(
@@ -227,7 +226,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
       },
       fData => {
         val res = for {
-          uuidExists     <- fData.uuid.map(uuidForInvitation.uuidExists).getOrElse(Future(false))
+          uuidExists     <- fData.uuid.map(invitations.exists).getOrElse(Future(false))
           usernameExists <- users.usernameExists(fData.username)
           emailExists    <- fData.email.map(users.emailExists).getOrElse(Future(false))
           passwordOK     = fData.pass1.nonEmpty && fData.pass1 == fData.pass2
@@ -236,7 +235,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
           if (canCreateUser){
             val user = User(0, fData.username, fData.name, fData.email.getOrElse(""),
               users.hashPassword(fData.pass1.get))
-            uuidForInvitation.deleteUuid(fData.uuid.get)
+            invitations.delete(fData.uuid.get)
             users.addUser(user).map(_ => Redirect(routes.UserCtrl.userHome()))
           }
           else{
@@ -263,6 +262,10 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
   
   private def notFound(userId:String) = NotFound("User with username '%s' does not exist.".format(userId))
 
+  def showForgotPassword = Action { implicit req =>
+    Ok( views.html.users.forgotPassword(None,None) )
+  }
+
   def doForgotPassword = Action.async{ implicit req =>
     emailForm.bindFromRequest().fold(
       fwi => Future(BadRequest(views.html.users.forgotPassword(None,Some("Error processing forgot password form")))),
@@ -270,7 +273,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
         for {
           userOpt <- users.getUserByEmail(fd.email)
           userSessionId = UUID.randomUUID.toString
-          emailExists <- userOpt.map(u => uuidForForgotPassword.addUuidForForgotPassword(
+          emailExists <- userOpt.map(u => forgotPasswords.addUuidForForgotPassword(
             UuidForForgotPassword(u.username, userSessionId, new Timestamp(System.currentTimeMillis())))
             .map(_=>true))
             .getOrElse(Future(false))
@@ -289,10 +292,6 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     )
   }
 
-  def showForgotPassword = Action { implicit req =>
-    Ok( views.html.users.forgotPassword(None,None) )
-  }
-
   def showResetPassword(randomUuid:String) = Action { implicit req =>
     Ok( views.html.users.reset(None) )
   }
@@ -302,7 +301,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
       fwi => Future(BadRequest(views.html.users.reset(Some("Error processing reset password form")))),
       fd => {
         for {
-          uuidOpt     <- uuidForForgotPassword.getUuidmeByUuid(fd.uuid)
+          uuidOpt     <- forgotPasswords.getUuidmeByUuid(fd.uuid)
           userOpt     <- uuidOpt.map(u => users.get(u.username)).getOrElse(Future(None))
           timeOK      =  uuidOpt.exists(u => {
             val oneWeek = 1000 * 60 * 60 * 24 * 7
@@ -313,7 +312,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
         } yield {
           if (resetOK) {
             userOpt.map(u => {
-              uuidForForgotPassword.deleteUuid(u.username)
+              forgotPasswords.deleteUuid(u.username)
               users.updatePassword(u, fd.password1)
               Redirect(routes.UserCtrl.userHome())}
             ).getOrElse(BadRequest(views.html.users.reset(Some("uuid does not exist"))))
@@ -332,32 +331,55 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
   def showInviteUser = deadbolt.SubjectPresent()(){ implicit req =>
     val user = req.subject.get.asInstanceOf[UserSubject].user
     for {
-      invitations <- uuidForInvitation.all
-    } yield Ok(views.html.users.inviteUser(invitations.filter(i => i.sender == user.email)))
+      invitations <- invitations.all
+    } yield Ok(views.html.users.inviteUser(invitations))
   }
 
   def doInviteUser = deadbolt.SubjectPresent()(){ implicit req =>
     val user = req.subject.get.asInstanceOf[UserSubject].user
     emailForm.bindFromRequest().fold(
-      fwi => {
-        Logger.info( fwi.errors.mkString("\n") )
+      formWithErrors => {
+        Logger.info( formWithErrors.errors.mkString("\n") )
         for {
-          invitations <- uuidForInvitation.all
+          invitations <- invitations.all
         } yield BadRequest(views.html.users.inviteUser(invitations))
       },
       fd => {
         val invitationId = UUID.randomUUID.toString
-        uuidForInvitation.addUuid(Invitation(user.email, new Timestamp(System.currentTimeMillis()), invitationId, fd.email))
-        val link = fd.protocol_and_host + "/admin/newUserInvitation/" + invitationId
-        val bodyText = Messages("inviteEmail.body", link)
-        val email = Email(Messages("inviteEmail.title"), conf.get[String]("play.mailer.user"), Seq(fd.email), Some(bodyText))
-        mailerClient.send(email)
-        val message = Informational(InformationalLevel.Success, "User invitation Sent", "To email "+ fd.email)
-        Future(Redirect(routes.UserCtrl.userHome()).flashing(FlashKeys.MESSAGE->message.encoded))
+        invitations.add(Invitation(fd.email, new Timestamp(System.currentTimeMillis()), invitationId, user.email)).map( invite =>{
+          sendInvitationEmail(invite)
+          val message = Informational(InformationalLevel.Success,
+                                      Messages("inviteEmail.confirmationMessage"),
+                                      Messages("inviteEmail.confirmationDetails",fd.email))
+          Redirect(routes.UserCtrl.userHome()).flashing(FlashKeys.MESSAGE->message.encoded)
+        })
       }
     )
   }
-
+  
+  def apiReInviteUser(invitationUuid:String) = deadbolt.SubjectPresent()(){ implicit req =>
+    for {
+      invitationOpt <- invitations.get( invitationUuid )
+    } yield {
+      invitationOpt match {
+        case None => NotFound
+        case Some(invitation) => sendInvitationEmail(invitation); Ok
+      }
+    }
+  }
+  
+  def apiDeleteInvitation(invitationUuid:String) = deadbolt.SubjectPresent()() { implicit req =>
+    invitations.delete(invitationUuid).map( _ => Ok )
+  }
+  
+  def sendInvitationEmail( invi:Invitation ): Unit = {
+    val link = conf.get[String]("psps.server.publicUrl") + routes.UserCtrl.showNewUserInvitation(invi.uuid).url
+    val bodyText = Messages("inviteEmail.body", link)
+    val email = Email(Messages("inviteEmail.title"), conf.get[String]("play.mailer.user"), Seq(invi.email), Some(bodyText))
+    mailerClient.send(email)
+    invitations.updateLastSend( invi.uuid, java.time.LocalDateTime.now() )
+  }
+  
   def doChangePassword = deadbolt.SubjectPresent()(){ implicit req =>
     val user = req.subject.get.asInstanceOf[UserSubject].user
     changePassForm.bindFromRequest().fold(

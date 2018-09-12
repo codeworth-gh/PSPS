@@ -1,6 +1,6 @@
 /*jshint esversion: 6  */
 
-function deleteUuid(sender, email){
+function deleteUuid(uuid){
     swal({
         title:"Are you sure you want to delete this invitation?",
         icon:"warning",
@@ -10,33 +10,26 @@ function deleteUuid(sender, email){
         }
     }).then( function(willDelete){
         if(willDelete) {
-    var call = beRoutes.controllers.UserCtrl.deleteUserInvitation(sender, email);
-            $.ajax({
-                url: call.url,
-                type: call.type,
-                contentType: "application/json; charset=utf-8"
-            }).done(function (data, status, xhr) {
-                window.location.reload();
-            }).fail(function (xhr, status, error) {
-                console.log("error - " + error + ", status - " + status);
-                console.log(xhr);
-            });
+            new Playjax(beRoutes)
+                .using(function(c){ return c.UserCtrl.apiDeleteInvitation(uuid);}).fetch()
+                .then( function(res){
+                    if (res.ok) {
+                        window.location.reload();
+                    } else {
+                        Informationals.makeDanger("Deletion of invitation "+uuid+" failed", "See server log for details", 1500).show();
+                    }
+                });
         }
     });
 }
 
-function ResendEmail(email, protocol){
-    var emailObj = {"email":email, "protocol":protocol[0].value};
-    var call = beRoutes.controllers.UserCtrl.resendEmail(email, protocol[0].value);
-    $.ajax({
-        url: call.url,
-        type: call.type,
-        data: JSON.stringify(emailObj),
-        contentType: "application/json; charset=utf-8"
-    }).done(function (data, status, xhr) {
-        swal("Email sent again to "+ email);
-    }).fail(function (xhr, status, error) {
-        console.log("error - " + error + ", status - " + status);
-        console.log(xhr);
-    });
+function resendEmail(uuid){
+    new Playjax(beRoutes).using(c=>c.UserCtrl.apiReInviteUser(uuid)).fetch()
+        .then( resp => {
+            if (resp.ok) {
+                Informationals.makeSuccess("Invitation re-sent", "", 1500).show();
+            } else {
+                Informationals.makeDanger("Re-sending the invitation failed", "", 1500).show();
+            }
+        });
 }

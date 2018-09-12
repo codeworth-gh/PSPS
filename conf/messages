@@ -3,3 +3,5 @@ navbar.title=PSPS Seed
 navbar.logout=Logout
 inviteEmail.title=Invitation to Open an Account in a PSPS Server
 inviteEmail.body=You have been invited to open an account on a PSPS server. To accept the invitation, please click the link below.\n{0}"
+inviteEmail.confirmationMessage=Invitation email sent
+inviteEmail.confirmationDetails=To email address {0}

@@ -35,20 +35,22 @@
         </form>
       </div>
     </div>
-    @if(invitations.nonEmpty) {
       <div class="row justify-content-md-center">
         <div class="col col-md-8">
-          <h3>Pending Invitations</h3>
-          <ul>
-          @for(invitation<-invitations){
-            <li>@invitation.email
-            <button class="btn btn-info btn-sm" onclick="deleteUuid('@invitation.sender', '@invitation.email')"><i class="far fa-trash-alt"></i> </button>
-            <button class="btn btn-info btn-sm" onclick="ResendEmail('@invitation.email',$('#protocol_and_host'))"><i class="far fa-paper-plane"></i> </button>
-            </li>
+          @if(invitations.nonEmpty) {
+            <h3>Pending Invitations</h3>
+            <ul>
+            @for(invitation<-invitations){
+              <li>@invitation.email (sent @Helpers.formatDateTime(invitation.date))
+              <button class="btn btn-outline-info btn-sm" onclick="deleteUuid('@invitation.uuid')"><i class="fa fa-trash"></i> </button>
+              <button class="btn btn-outline-info btn-sm" onclick="resendEmail('@invitation.uuid')"><i class="fa fa-paper-plane"></i> </button>
+              </li>
+            }
+            </ul>
+          }else{
+            <div class="noData">No Pending invitations</div>
           }
-          </ul>
         </div>
       </div>
-    }
   </div>
 }

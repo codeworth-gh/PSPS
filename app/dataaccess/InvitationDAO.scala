@@ -1,5 +1,8 @@
 package dataaccess
 
+import java.sql.Timestamp
+import java.time.LocalDateTime
+
 import javax.inject.Inject
 import models.Invitation
 import play.api.{Configuration, Logger}
@@ -14,21 +17,32 @@ class InvitationDAO @Inject() (protected val dbConfigProvider:DatabaseConfigProv
   import profile.api._
   private val invitations = TableQuery[InvitationTable]
 
-  def addUuid(i: Invitation): Future[Invitation] = {
+  def add(i: Invitation): Future[Invitation] = {
     db.run(
       (invitations returning invitations).insertOrUpdate(i)
     ).map( insertRes => insertRes.getOrElse(i) )
   }
 
-  def deleteUuid(u: String): Unit = {
+  def delete(uuid: String): Future[Int] = {
     db.run {
-      invitations.filter(_.uuid === u).delete
+      invitations.filter(_.uuid === uuid).delete
     }
   }
 
-  def uuidExists(u: String): Future[Boolean] = {
+  def exists(uuid: String): Future[Boolean] = {
     db.run {
-      invitations.map(_.uuid).filter(_ === u).exists.result
+      invitations.map(_.uuid).filter(_ === uuid).exists.result
+    }
+  }
+  
+  def get( uuid:String ):Future[Option[Invitation]] = db.run(
+    invitations.filter( _.uuid === uuid).result
+    ).map( _.headOption )
+  
+  def updateLastSend( uuid:String, date:LocalDateTime ):Future[Int] = {
+    val ts = Timestamp.valueOf(date)
+    db.run {
+      invitations.filter(_.uuid === uuid).map(_.date).update(ts)
     }
   }
   

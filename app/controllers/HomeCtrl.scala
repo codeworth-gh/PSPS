@@ -58,7 +58,9 @@ class HomeCtrl @Inject()(langs: Langs, messagesApi: MessagesApi, cached: Cached,
     Action { implicit request =>
       Ok(
         routing.JavaScriptReverseRouter("beRoutes")(
-          routes.javascript.HomeCtrl.apiSayHi
+          routes.javascript.UserCtrl.apiAddUser,
+          routes.javascript.UserCtrl.apiReInviteUser,
+          routes.javascript.UserCtrl.apiDeleteInvitation
         )).as("text/javascript")
     }
   }
