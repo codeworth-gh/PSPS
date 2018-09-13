@@ -3,10 +3,10 @@ package controllers
 import java.sql.Timestamp
 import java.util.UUID
 
-import be.objectify.deadbolt.scala.DeadboltActions
-import dataaccess.{InvitationDAO, UsersDAO, PasswordResetRequestDAO}
+import be.objectify.deadbolt.scala.{AuthenticatedRequest, DeadboltActions}
+import dataaccess.{InvitationDAO, PasswordResetRequestDAO, UsersDAO}
 import javax.inject.Inject
-import models.{Invitation, User, PasswordResetRequest}
+import models.{Invitation, PasswordResetRequest, User}
 import play.api.{Configuration, Logger, cache}
 import play.api.cache.Cached
 import play.api.data._
@@ -215,13 +215,14 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
 
   def showNewUserInvitation(uuid:String) = Action { implicit req =>
     Ok( views.html.users.userEditor( userForm.bind(Map("uuid"->uuid)).discardingErrors, routes.UserCtrl.doNewUserInvitation,
-      isNew=true, isInvite=true ))
+      isNew=true, isInvite=true )(new AuthenticatedRequest(req, None), messagesProvider))
   }
 
   def doNewUserInvitation() = Action.async { implicit req =>
     userForm.bindFromRequest().fold(
       fwe => {
-        Future(BadRequest(views.html.users.userEditor(fwe, routes.UserCtrl.doNewUserInvitation, isNew=true, isInvite=true)))
+        Future(BadRequest(views.html.users.userEditor(fwe, routes.UserCtrl.doNewUserInvitation, isNew=true,
+                                                isInvite=true )(new AuthenticatedRequest(req, None), messagesProvider)))
       },
       fData => {
         val res = for {
@@ -244,7 +245,8 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
             if ( emailExists ) form = form.withError("email", "Email already exists")
             if ( !passwordOK ) form = form.withError("password1", "Passwords must match, and cannot be empty")
               .withError("password2", "Passwords must match, and cannot be empty")
-            Future(BadRequest(views.html.users.userEditor(form, routes.UserCtrl.doNewUserInvitation, isNew = true, isInvite=true)))
+            Future(BadRequest(views.html.users.userEditor(form, routes.UserCtrl.doNewUserInvitation, isNew = true,
+                                                 isInvite=true)(new AuthenticatedRequest(req, None), messagesProvider)))
           }
         }
         scala.concurrent.Await.result(res, Duration(2000, scala.concurrent.duration.MILLISECONDS))
@@ -334,7 +336,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
                     // we're OK to reset
                     forgotPasswords.deleteForUser(prr.username)
                     users.updatePassword(user, fd.password1)
-                    Redirect(routes.UserCtrl.userHome()).flashing(FlashKeys.MESSAGE->Messages("passwordReset.success"))
+                    Redirect(routes.UserCtrl.showLogin()).flashing(FlashKeys.MESSAGE->Messages("passwordReset.success"))
                   }
                 }
               }

@@ -1,6 +1,7 @@
 @import views.BackOfficeSections
+@import be.objectify.deadbolt.scala.AuthenticatedRequest
 @(form:Form[UserFormData], destination:Call, isNew:Boolean, isInvite:Boolean, activeFirst:Boolean=true
- )(implicit request: RequestHeader, msgs:MessagesProvider)
+ )(implicit request: AuthenticatedRequest[_], msgs:MessagesProvider)
 
 @content = {
   <div class="container">

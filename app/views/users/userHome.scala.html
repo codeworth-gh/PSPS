@@ -1,4 +1,5 @@
-@(u:User)(implicit request:RequestHeader, msgs:MessagesProvider)
+@import be.objectify.deadbolt.scala.AuthenticatedRequest
+@(u:User)(implicit request:AuthenticatedRequest[_], msgs:MessagesProvider)
 
 @templates.backEndBase("User Home", views.BackOfficeSections.Home) {
     <h1>User home</h1>

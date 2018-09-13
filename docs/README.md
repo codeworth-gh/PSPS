@@ -6,7 +6,11 @@
 
 ## What does it give me?
 
-### Site sections
+### Logged-in Template
+
+Complete with user account, logout button, etc.
+
+### Site Navigation Tree and NavBar
 
 Using the enums and page trees in `views.Helpers`.
 

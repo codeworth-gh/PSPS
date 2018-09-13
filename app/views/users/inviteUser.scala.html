@@ -1,4 +1,5 @@
-@(invitations: Seq[Invitation])(implicit request: RequestHeader, msgs:MessagesProvider)
+@import be.objectify.deadbolt.scala.AuthenticatedRequest
+@(invitations: Seq[Invitation])(implicit request: AuthenticatedRequest[_], msgs:MessagesProvider)
 @scripts = {
   <script >
           $(document).ready( function(){
@@ -7,7 +8,6 @@
   </script>
   <script src="@routes.Assets.versioned("js/inviteUserPage.js")"></script>
 }
-
 
 @templates.backEndBase("Invite User", views.BackOfficeSections.Users, Html(""), scripts){
   <div class="container">
