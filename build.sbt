@@ -17,7 +17,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "jquery-ui" % "1.12.1",
   "org.webjars" % "tether" % "1.4.0",
   "org.webjars.bower" % "fontawesome" % "4.7.0",
-  "be.objectify" %% "deadbolt-scala" % "2.6.0",
+  "be.objectify" %% "deadbolt-scala" % "2.6.1",
   "org.mindrot" % "jbcrypt" % "0.3m",
   "org.postgresql" % "postgresql" % "42.0.0",
   "com.typesafe.play" %% "play-slick" % "3.0.1",
