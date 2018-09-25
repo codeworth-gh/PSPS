@@ -19,7 +19,7 @@
   * Now reload the configuration by typing in psql console: `select pg_reload_conf();`
 
 ## Adding users
-Add first user by `POST`ing the following json to `$SEREVR/admin/api/users`:
+Add first user by `POST`ing the following json to `$SEREVR/bkofc/api/users`:
 
 ```$json
 {
@@ -30,3 +30,10 @@ Add first user by `POST`ing the following json to `$SEREVR/admin/api/users`:
 ```
 
 **NOTE**: This endpoint is available from localhost only.
+
+
+## Email Setup
+
+PSPS sends emails in certain events (forgotten password, user invitations etc.). To 
+allow this, you must update the `play.mailer` part of the configuration with the
+details of the sending email account. 
