@@ -2,7 +2,7 @@ package dataaccess
 
 import java.sql.Timestamp
 
-import models.{Invitation, Setting, User, PasswordResetRequest}
+import models.{Invitation, User, PasswordResetRequest}
 import slick.lifted.Tag
 import slick.jdbc.PostgresProfile.api._
 
@@ -37,11 +37,4 @@ class PasswordResetRequestTable(tag:Tag) extends Table[PasswordResetRequest](tag
   def pk = primaryKey("uuid_for_forgot_password_pkey", (username, uuid))
 
   def * = (username, uuid, reset_password_date) <> (PasswordResetRequest.tupled, PasswordResetRequest.unapply)
-}
-
-class SettingsTable( tag:Tag ) extends Table[Setting](tag, "settings") {
-  def id = column[String]("id", O.PrimaryKey)
-  def value = column[String]("value")
-  
-  def * = (id, value) <> (Setting.tupled, Setting.unapply)
 }
