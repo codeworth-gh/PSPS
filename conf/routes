@@ -26,6 +26,8 @@ POST    /bkofc/inviteUser/           controllers.UserCtrl.doInviteUser
 GET     /bkofc/newUserInvitation/:id controllers.UserCtrl.showNewUserInvitation(id)
 POST    /bkofc/newUserInvitation/    controllers.UserCtrl.doNewUserInvitation
 POST    /bkofc/changePassword        controllers.UserCtrl.doChangePassword
+GET     /signup                      controllers.UserCtrl.showSignup
+POST    /signup                      controllers.UserCtrl.doSignup
 
 # API
 ## Front end

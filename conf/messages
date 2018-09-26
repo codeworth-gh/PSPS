@@ -12,3 +12,7 @@ passwordReset.requestNotFound=Password reset request not found.
 passwordReset.requestExpired=Password reset request expired.
 passwordReset.validationFailed=Passwords must match, and cannot be empty
 passwordReset.success=Password updated successfully
+signup.title=Sign up as an Account in a PSPS Server
+signup.body=You have been sign up as an account on a PSPS server. To continue, please click the link below.\n{0}"
+signup.confirmationMessage=Invitation email sent
+signup.confirmationDetails=To email address {0}

@@ -398,6 +398,14 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     mailerClient.send(email)
     invitations.updateLastSend( invi.uuid, java.time.LocalDateTime.now() )
   }
+
+  def sendSignupEmail( invi:Invitation ): Unit = {
+    val link = conf.get[String]("psps.server.publicUrl") + routes.UserCtrl.showNewUserInvitation(invi.uuid).url
+    val bodyText = Messages("signup.body", link)
+    val email = Email(Messages("signup.title"), conf.get[String]("play.mailer.user"), Seq(invi.email), Some(bodyText))
+    mailerClient.send(email)
+    invitations.updateLastSend( invi.uuid, java.time.LocalDateTime.now() )
+  }
   
   def doChangePassword = deadbolt.SubjectPresent()(){ implicit req =>
     val user = req.subject.get.asInstanceOf[UserSubject].user
@@ -426,5 +434,34 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     val oneWeek = 1000 * 60 * 60 * 24 * 7
     val currentTime = System.currentTimeMillis()
     (currentTime - prr.resetPasswordDate.getTime) > oneWeek
+  }
+
+  def showSignup() =  Action.async{ implicit req =>
+    Future(
+      if(!conf.getOptional[Boolean]("AllowSignup").getOrElse(true)) {
+        BadRequest(views.html.users.login(loginForm))
+    } else {
+      Ok(views.html.users.signup())
+    })
+  }
+
+
+  def doSignup() = Action.async { implicit req =>
+    emailForm.bindFromRequest().fold(
+      formWithErrors => {
+        Logger.info( formWithErrors.errors.mkString("\n") )
+        Future(BadRequest(views.html.users.login(loginForm)))
+      },
+      fd => {
+        val invitationId = UUID.randomUUID.toString
+        invitations.add(Invitation(fd.email, new Timestamp(System.currentTimeMillis()), invitationId, fd.email)).map( invite =>{
+          sendSignupEmail(invite)
+          val message = Informational(InformationalLevel.Success,
+            Messages("signup.confirmationMessage"),
+            Messages("signup.confirmationDetails",fd.email))
+          Redirect(routes.UserCtrl.showLogin())//.flashing(FlashKeys.MESSAGE->message.encoded)
+        })
+      }
+    )
   }
 }
