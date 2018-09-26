@@ -6,7 +6,10 @@
 GET     /                         controllers.HomeCtrl.index
 GET     /navbar                   controllers.HomeCtrl.sampleNavbar
 
-# Users
+GET     /signup                      controllers.UserCtrl.showSignup
+POST    /signup                      controllers.UserCtrl.doSignup
+
+# back office
 GET     /bkofc/                      controllers.UserCtrl.userHome
 GET     /bkofc/login                 controllers.UserCtrl.showLogin
 POST    /bkofc/login                 controllers.UserCtrl.doLogin
@@ -16,7 +19,6 @@ GET     /bkofc/users/new             controllers.UserCtrl.showNewUserPage
 POST    /bkofc/users/                controllers.UserCtrl.doSaveNewUser
 GET     /bkofc/users/:id/edit        controllers.UserCtrl.showEditUserPage(id)
 POST    /bkofc/users/:id/edit        controllers.UserCtrl.doSaveUser(id)
-POST    /bkofc/api/users/            controllers.UserCtrl.apiAddUser
 GET     /bkofc/forgotPassword        controllers.UserCtrl.showForgotPassword
 POST    /bkofc/forgotPassword        controllers.UserCtrl.doForgotPassword
 GET     /bkofc/resetPassword/:id     controllers.UserCtrl.showResetPassword(id)
@@ -26,14 +28,13 @@ POST    /bkofc/inviteUser/           controllers.UserCtrl.doInviteUser
 GET     /bkofc/newUserInvitation/:id controllers.UserCtrl.showNewUserInvitation(id)
 POST    /bkofc/newUserInvitation/    controllers.UserCtrl.doNewUserInvitation
 POST    /bkofc/changePassword        controllers.UserCtrl.doChangePassword
-GET     /signup                      controllers.UserCtrl.showSignup
-POST    /signup                      controllers.UserCtrl.doSignup
 
 # API
 ## Front end
 POST    /api/sayHi controllers.HomeCtrl.apiSayHi
 
 ## back office
+POST    /bkofc/api/users/            controllers.UserCtrl.apiAddUser
 POST    /bkofc/api/users/invitations/:uuid/resend controllers.UserCtrl.apiReInviteUser(uuid)
 DELETE  /bkofc/api/users/invitations/:uuid        controllers.UserCtrl.apiDeleteInvitation(uuid)
 

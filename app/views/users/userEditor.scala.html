@@ -1,5 +1,7 @@
 @import views.BackOfficeSections
 @import be.objectify.deadbolt.scala.AuthenticatedRequest
+@import Helpers._
+
 @(form:Form[UserFormData], destination:Call, isNew:Boolean, isInvite:Boolean, activeFirst:Boolean=true
  )(implicit request: AuthenticatedRequest[_], msgs:MessagesProvider)
 
@@ -26,28 +28,15 @@
           <div class="tab-pane @if(activeFirst){active}" id="userEditor">
 
             <form class="form-horizontal" action="@destination.url" method="POST">
-              @if( form.hasGlobalErrors ){
-                <ul>
-                @for( ge <- form.globalErrors ){
-                  <li class="text-danger">@ge.messages.mkString("<br>")</li>
-                }
-                </ul>
-              }
-              @if(form("uuid").hasErrors){
-                <div class="errors">
-                @form("uuid").errors.map(_.message).mkString("<br>")
-                </div>
-              }
+              @formErrors(form)
+              @formErrors(form("uuid"))
+
               <div class="form-group row @Helpers.fieldStatus(form("username"))">
                 <label for="idInput" class="col-sm-2 control-label">Username</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="usernameInput" name="username" value="@form("username").value.getOrElse("")"
                   placeholder="username" @if(!isNew){readonly}>
-                  @if(form("username").hasErrors){
-                    <div class="errors">
-                    @form("username").errors.map(_.message).mkString("<br>")
-                    </div>
-                  }
+                  @formErrors(form("username"))
                 </div>
               </div>
 
@@ -57,11 +46,7 @@
                   <div class="col-sm-10">
                     <input type="password" class="form-control" id="password1Input" name="password1" value="@form("password1").value.getOrElse("")"
                     placeholder="Password">
-                    @if(form("password1").hasErrors){
-                      <div class="errors">
-                      @form("password1").errors.map(_.message).mkString("<br>")
-                      </div>
-                    }
+                    @formErrors(form("password1"))
                   </div>
                 </div>
                 <div class="form-group row @Helpers.fieldStatus(form("password2"))">
@@ -69,11 +54,7 @@
                   <div class="col-sm-10">
                     <input type="password" class="form-control" id="password2Input" name="password2" value="@form("password2").value.getOrElse("")"
                     placeholder="Password">
-                    @if(form("password2").hasErrors){
-                      <div class="errors">
-                      @form("password2").errors.map(_.message).mkString("<br>")
-                      </div>
-                    }
+                    @formErrors(form("password2"))
                   </div>
                 </div>
               }
@@ -82,11 +63,7 @@
                 <label for="nameInput" class="col-sm-2 control-label">Name</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="nameInput" name="name" value="@form("name").value.getOrElse("")" placeholder="Human name">
-                  @if(form("name").hasErrors){
-                    <div class="errors">
-                    @form("name").errors.map(_.message).mkString("<br>")
-                    </div>
-                  }
+                  @formErrors(form("name"))
                 </div>
               </div>
 
@@ -95,11 +72,7 @@
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="emailInput" name="email" value="@form("email").value.getOrElse("")"
                   placeholder="Email address">
-                  @if(form("email").hasErrors){
-                    <div class="errors">
-                    @form("email").errors.map(_.message).mkString("<br>")
-                    </div>
-                  }
+                  @formErrors(form("email"))
                   <span class="helper-block">
                     The email address is used for creating new passwords, and sending notifications.
                   </span>

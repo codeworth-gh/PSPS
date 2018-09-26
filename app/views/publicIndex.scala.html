@@ -38,8 +38,11 @@
       <div class="col">
         <label for="personName">Ajax Test </label>
         <input type="text" id="personName" placeholder="Enter name here">
-        <button type="button" onclick="runAjax()">Say Hi</button>
+        <button type="button" onclick="runAjax()" onsubmit="runAjax()">Say Hi</button>
       </div>
+    </div>
+    <div class="row">
+      <div class="col"><a href="@routes.UserCtrl.showSignup()">Sign up</a></div>
     </div>
   </div>
 }

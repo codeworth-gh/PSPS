@@ -240,11 +240,11 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
           }
           else{
             var form = userForm.fill(fData)
-            if ( !uuidExists ) form = form.withError("uuid", "invitation id does not exist")
-            if ( usernameExists ) form = form.withError("username", "Username already taken")
-            if ( emailExists ) form = form.withError("email", "Email already exists")
-            if ( !passwordOK ) form = form.withError("password1", "Passwords must match, and cannot be empty")
-              .withError("password2", "Passwords must match, and cannot be empty")
+            if ( !uuidExists ) form = form.withError("uuid", "error.invitation.doesNotExist")
+            if ( usernameExists ) form = form.withError("username", "error.username.exists")
+            if ( emailExists ) form = form.withError("email", "error.email.exists")
+            if ( !passwordOK ) form = form.withError("password1", "error.password")
+              .withError("password2", "error.password")
             Future(BadRequest(views.html.users.userEditor(form, routes.UserCtrl.doNewUserInvitation, isNew = true,
                                                  isInvite=true)(new AuthenticatedRequest(req, None), messagesProvider)))
           }
@@ -459,7 +459,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
           val message = Informational(InformationalLevel.Success,
             Messages("signup.confirmationMessage"),
             Messages("signup.confirmationDetails",fd.email))
-          Redirect(routes.UserCtrl.showLogin())//.flashing(FlashKeys.MESSAGE->message.encoded)
+          Redirect(routes.HomeCtrl.index()).flashing(FlashKeys.MESSAGE->message.encoded)
         })
       }
     )

@@ -2,4 +2,4 @@
 @(title:String, currentSection:PublicSections.Value, extraHead: Html=Html(""), extraBottom: Html=Html("")
  )(content:Html
  )(implicit request: RequestHeader, msgs:MessagesProvider)
-@bsNavbar(title, views.Helpers.publicItems, currentSection, extraHead, extraBottom, None)(content)
+@bsNavbar(title, views.Structure.publicItems, currentSection, extraHead, extraBottom, None)(content)

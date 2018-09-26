@@ -6,40 +6,18 @@ import java.time.{Instant, LocalDate, LocalDateTime}
 import java.time.format.DateTimeFormatter
 import java.util.TimeZone
 
-import play.api.data.{Field, FormError}
+import play.api.data.{Field, Form, FormError}
 import play.api.mvc.Request
 import play.api.mvc.Call
 import controllers.routes
+import play.api.i18n.MessagesProvider
 import play.twirl.api.Html
 import play.utils.UriEncoding
 
-abstract sealed class SectionItem
-case class PageSectionItem(title:String, call:Call) extends SectionItem
-case object SeparatorSectionItem extends SectionItem
-
-abstract sealed class TopSiteSection[T]{
-  def id:T
-  def title:String
-}
-
-case class PageSection[T](title:String, id:T, call:Call) extends TopSiteSection[T]
-case class MultiPageSection[T](title:String, id:T, children:Seq[SectionItem]) extends TopSiteSection[T]
-
-object PublicSections extends Enumeration {
-  val Home = Value("Home")
-  val Login = Value("Login")
-  val Others = Value("Others")
-}
-
-object BackOfficeSections extends Enumeration {
-  val Home = Value("Home")
-  val Users = Value("Users")
-}
-
 object Helpers {
   
-  val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-  val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+  private val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+  private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
   def formatDateTime( ldt: LocalDateTime ):String = ldt.format( dateTimeFormatter )
   def formatDateTime( ldt: Timestamp ):String = formatDateTime( LocalDateTime.ofInstant(Instant.ofEpochMilli(ldt.getTime), TimeZone.getDefault().toZoneId()))
   def formatDate( ldt: LocalDateTime ):String = ldt.format( dateFormatter )
@@ -62,24 +40,17 @@ object Helpers {
     */
   def fieldStatus(f:Field):String = if(f.hasErrors) "has-error" else ""
   
-  val publicItems:Seq[TopSiteSection[PublicSections.Value]] = Seq(
-    PageSection("Public Home", PublicSections.Home, routes.HomeCtrl.index),
-    PageSection("Login", PublicSections.Login, routes.HomeCtrl.index),
-    MultiPageSection("Other", PublicSections.Others,
-      Seq(
-        PageSectionItem("Login", routes.HomeCtrl.index),
-        SeparatorSectionItem,
-        PageSectionItem("Public Home", routes.HomeCtrl.index)
-      )
-    )
-  )
+  def formErrors( field:Field )(implicit msgs:MessagesProvider ) = {
+    if ( field.hasErrors ) {
+      Html(field.errors.flatMap( _.messages ).map( msgs.messages(_) ).mkString("<ul class=\"errors\"><li>","</li><li>","</li></ul>"))
+    } else Html("")
+  }
   
-  val backOfficeSections:Seq[TopSiteSection[BackOfficeSections.Value]] = Seq(
-    PageSection("BackEnd Home", BackOfficeSections.Home, routes.UserCtrl.userHome() ),
-    MultiPageSection("Users", BackOfficeSections.Users, Seq(
-      PageSectionItem("Invite Users", routes.UserCtrl.showInviteUser()),
-      PageSectionItem("Users", routes.UserCtrl.showUserList()),
-      PageSectionItem("Edit Profile", routes.UserCtrl.showNewUserPage())
-    ))
-  )
+  def formErrors( form:Form[_] )(implicit msgs:MessagesProvider ) = {
+    if ( form.hasGlobalErrors ) {
+      Html(form.globalErrors.flatMap( _.messages ).map( msgs.messages(_) ).mkString("<ul class=\"errors\"><li>","</li><li>","</li></ul>"))
+    } else Html("")
+  }
+  
+  
 }
