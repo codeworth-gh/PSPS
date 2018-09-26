@@ -418,14 +418,17 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
       fd => {
         if(users.verifyPassword(user, fd.previousPassword)){
           if (fd.password1.nonEmpty && fd.password1 == fd.password2) {
-            users.updatePassword(user, fd.password1).map(_ => Redirect(routes.UserCtrl.userHome()))
+            users.updatePassword(user, fd.password1).map(_ => {
+              val message = Informational(InformationalLevel.Success, Messages("password.changed"))
+              Redirect(routes.UserCtrl.userHome()).flashing(FlashKeys.MESSAGE->message.encoded)
+            })
           } else {
-            val form = userForm.fill(UserFormData of user).withError("password1", "Passwords must match, and cannot be empty")
+            val form = userForm.fill(UserFormData of user).withError("password1", "error.password")
               .withError("password2", "Passwords must match, and cannot be empty")
             Future(BadRequest(views.html.users.userEditor(form, routes.UserCtrl.doSaveNewUser, isNew = false, false, activeFirst=false)))
           }
         } else{
-          val form = userForm.fill(UserFormData of user).withError("previousPassword", "incorrect password")
+          val form = userForm.fill(UserFormData of user).withError("previousPassword", "error.password.incorrect")
           Future(BadRequest( views.html.users.userEditor(form, routes.UserCtrl.doSaveNewUser, isNew=false, false, activeFirst=false )))
         }
       }

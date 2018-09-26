@@ -20,7 +20,6 @@ case class Informational(
                            title:String,
                            subtitle:String
                          ) {
-  
   def encoded = Seq(level.toString(), title, subtitle).mkString("|")
 }
 
@@ -38,4 +37,6 @@ object Informational {
      InformationalLevel.Warning -> 3000,
      InformationalLevel.Danger ->10000
    )
+  
+  def apply(level:InformationalLevel.Value, title:String):Informational = Informational(level, title, "")
 }
