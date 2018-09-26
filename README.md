@@ -82,3 +82,4 @@ function resendEmail(uuid){
 * *Localization support* Using standard Play localization.
 * *Separate front-end and back-office JS Routers* for better security (sure, it's security by obscurity, but it helps).
 * *Convenience methods for template rendering* in `views.Helpers`.
+* Template for social media page metadata
