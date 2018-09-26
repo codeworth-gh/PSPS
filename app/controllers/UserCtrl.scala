@@ -236,7 +236,8 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
             val user = User(0, fData.username, fData.name, fData.email.getOrElse(""),
               users.hashPassword(fData.pass1.get))
             invitations.delete(fData.uuid.get)
-            users.addUser(user).map(_ => Redirect(routes.UserCtrl.userHome()))
+            users.addUser(user).map(_ => Redirect(routes.UserCtrl.userHome()).withNewSession.withSession(("userId",user.id.toString)))
+
           }
           else{
             var form = userForm.fill(fData)
@@ -249,6 +250,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
                                                  isInvite=true)(new AuthenticatedRequest(req, None), messagesProvider)))
           }
         }
+        
         scala.concurrent.Await.result(res, Duration(2000, scala.concurrent.duration.MILLISECONDS))
 
       }
