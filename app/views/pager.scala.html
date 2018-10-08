@@ -1,0 +1,30 @@
+@import views.PaginationInfo
+@import views.PublicSections
+@(items:Seq[(Int, String)], pi:PaginationInfo)(implicit request:RequestHeader, msgs:MessagesProvider)
+
+@templates.frontEndBase("pager.title", PublicSections.Components){
+  <div class="row">
+    <div class="col">
+
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Item #</th>
+            <th>Item</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for( itm <- items ){
+            <tr>
+              <td>@itm._1</td>
+              <td>@itm._2</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      @comps.pager(pi){i=>@routes.HomeCtrl.pager(i)}
+
+    </div>
+  </div>
+}

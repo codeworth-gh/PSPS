@@ -6,6 +6,7 @@ import play.api.cache.Cached
 import play.api.i18n.{I18nSupport, Langs, MessagesApi}
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc._
+import views.PaginationInfo
 
 /**
   * This controller creates an `Action` to handle HTTP requests to the
@@ -35,6 +36,11 @@ class HomeCtrl @Inject()(langs: Langs, messagesApi: MessagesApi, cached: Cached,
     val json = req.body.as[JsObject]
     val name = json("name")
     Ok(Json.obj("message"->s"Hello, $name."))
+  }
+  
+  def pager( currentPage:Int ) = Action{ implicit req =>
+    Ok( views.html.pager(generateDataPage(currentPage, 10), PaginationInfo(currentPage, 23)) )
+    
   }
   
   /**
@@ -67,5 +73,17 @@ class HomeCtrl @Inject()(langs: Langs, messagesApi: MessagesApi, cached: Cached,
   
   def notImplYet = TODO
   
+  val prefixes   = Seq("","pro","post","pseudo","pre","auto","anti","multi","single","parallel","concurrent")
+  val adjectives = Seq("cyber","related","sym/tech","general","dental","argumental","side-channel-ly","persistent")
+  val nouns      = Seq("blockchain", "neural network", "css", "browser", "jelly","utopia","shared workspace","lunch")
+  
+  def generateDataPage( pageNum:Int, perPage:Int):Seq[(Int, String)] = {
+    val startNum = (pageNum-1)*perPage
+    scala.collection.immutable.Range.inclusive(1,perPage).map( i => {
+      val itemNum = startNum+i
+      val item = Seq(prefixes(itemNum%prefixes.size), adjectives(itemNum%adjectives.size), nouns(itemNum%nouns.size)).mkString(" ")
+      (itemNum, item)
+    })
+  }
   
 }

@@ -1,0 +1,61 @@
+@import views.PaginationInfo
+@import scala.collection.immutable.Range
+@( pagingInfo:PaginationInfo )(makePageLink:Int=>Html)
+
+  @if( pagingInfo.pageCount > 1 ) {
+    <nav aria-label="result pages">
+      <ul class="pagination justify-content-center">
+        @if( pagingInfo.currentPage > 1 ) {
+          <li class="page-item">
+            <a class="page-link" href="@makePageLink( pagingInfo.currentPage-1 )" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+        } else {
+          <li class="page-item disabled">
+            <a href="#" class="page-link" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+        }
+        @if( pagingInfo.pageCount < 18 ) {
+          @for( pNum <- Range(1, pagingInfo.pageCount + 1)) {
+            @pageItem(pNum, pNum==pagingInfo.currentPage)
+          }
+        } else {
+          @defining( Math.max(1, pagingInfo.currentPage-3) ) { rangeStart =>
+            @defining( Math.min(pagingInfo.currentPage+4, pagingInfo.pageCount + 1) ) { rangeEnd =>
+              @if(rangeStart>1) {
+                @pageItem(1, currentPage=false)
+                @if(rangeStart>2){<li class="page-item disabled"><a class="page-link" href="#"><i class="fa fa-ellipsis-h"></i></a></li>}
+              }
+              @for( pNum <- Range(rangeStart, rangeEnd)) {
+                @pageItem(pNum, pNum==pagingInfo.currentPage)
+              }
+              @if(rangeEnd<pagingInfo.pageCount+1) {
+                <li class="page-item disabled"><a class="page-link" href="#"><i class="fa fa-ellipsis-h"></i></a></li>
+                @pageItem(pagingInfo.pageCount, currentPage=false)
+              }
+            }
+          }
+        }
+        @if( pagingInfo.currentPage < pagingInfo.pageCount ) {
+          <li class="page-item">
+            <a class="page-link" href="@makePageLink(pagingInfo.currentPage+1)" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        } else {
+          <li class="page-item disabled">
+            <a href="#" class="page-link disabled" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        }
+      </ul>
+    </nav>
+  }
+
+  @pageItem(pNum:Int, currentPage:Boolean)={
+    <li class="page-item@if(currentPage){ active"}"><a class="page-link" href="@makePageLink(pNum)">@pNum@if(currentPage){<span class="sr-only">(current)</span>}</a></li>
+  }

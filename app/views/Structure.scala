@@ -23,6 +23,7 @@ case class MultiPageSection[T](title:String, id:T, children:Seq[SectionItem]) ex
 object PublicSections extends Enumeration {
   val Home = Value("Home")
   val Login = Value("Login")
+  val Components = Value("Components")
   val Others = Value("Others")
 }
 
@@ -41,6 +42,11 @@ object Structure {
   val publicItems:Seq[TopSiteSection[PublicSections.Value]] = Seq(
     PageSection("Public Home", PublicSections.Home, routes.HomeCtrl.index),
     PageSection("Login", PublicSections.Login, routes.HomeCtrl.index),
+    MultiPageSection("Components", PublicSections.Components,
+      Seq(
+        PageSectionItem("Pager", routes.HomeCtrl.pager(1))
+      )
+    ),
     MultiPageSection("Other", PublicSections.Others,
       Seq(
         PageSectionItem("Login", routes.HomeCtrl.index),

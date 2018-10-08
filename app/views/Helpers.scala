@@ -14,6 +14,13 @@ import play.api.i18n.MessagesProvider
 import play.twirl.api.Html
 import play.utils.UriEncoding
 
+/**
+  * Information required to show a pager component.
+  * @param currentPage current page being shown
+  * @param pageCount   total number of pages
+  */
+case class PaginationInfo(currentPage:Int, pageCount:Int )
+
 object Helpers {
   
   private val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
