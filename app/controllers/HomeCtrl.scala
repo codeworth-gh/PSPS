@@ -73,9 +73,9 @@ class HomeCtrl @Inject()(langs: Langs, messagesApi: MessagesApi, cached: Cached,
   
   def notImplYet = TODO
   
-  val prefixes   = Seq("","pro","post","pseudo","pre","auto","anti","multi","single","parallel","concurrent")
+  val prefixes   = Seq("","pro","post","pseudo","pre","deep","auto","anti","multi","single","parallel","concurrent")
   val adjectives = Seq("cyber","related","sym/tech","general","dental","argumental","side-channel-ly","persistent")
-  val nouns      = Seq("blockchain", "neural network", "css", "browser", "jelly","utopia","shared workspace","lunch")
+  val nouns      = Seq("blockchain", "neural network", "css", "browser", "jelly","utopia","shared workspace","lunch","machine learning")
   
   def generateDataPage( pageNum:Int, perPage:Int):Seq[(Int, String)] = {
     val startNum = (pageNum-1)*perPage
