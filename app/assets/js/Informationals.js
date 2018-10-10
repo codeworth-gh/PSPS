@@ -13,11 +13,7 @@ var Informationals = (function(){
 
     function dismiss( emt ) {
         var $emt = $(emt);
-        $emt.css({overflow:"hide"});
-        $emt.animate({top: "-" + (0.3*emt.clientHeight) + "px",
-            height:"0px", marginTop:"0px", marginBottom:"0px",
-            opacity:"0"
-        },500, "swing", function() { $emt.remove();} );
+        $emt.slideUp(300,function() { $emt.remove();} );
     }
 
     function initLoaderDialog() {
@@ -48,7 +44,9 @@ var Informationals = (function(){
     var $informationalsArea = null;
     var bkgArea = null;
 
-    var makeYesNoMessage = function(type, title, message, callback, timeout ) {
+    var makeYesNoMessage = function(title, message, callback, timeout, type ) {
+
+        if ( ! type ) type="info";
         var ynm = makeInformational(type, title, message, timeout);
         ynm.callback = callback;
         ynm.messageType = MESSAGE_TYPES.YES_NO;
@@ -219,7 +217,7 @@ var Informationals = (function(){
 
     return {
         loader: loader,
-        make: makeInformational,
+
         makeInfo: function( title, message, timeout ) {
             return makeInformational("info", title, message, timeout);
         },
@@ -232,8 +230,9 @@ var Informationals = (function(){
         makeDanger: function( title, message, timeout ) {
             return makeInformational("danger", title, message, timeout);
         },
-        makeYesNo: function( type, title, message, callback, timeout ) {
-            return makeYesNoMessage(type, title, message, callback, timeout );
+        make: makeInformational,
+        makeYesNo: function( title, message, callback, timeout, type ) {
+            return makeYesNoMessage(title, message, callback, timeout, type );
         },
 
         show: function( informational ) {
@@ -256,6 +255,16 @@ var Informationals = (function(){
             }
             $(bkgArea).append(ldrMsg);
             return ldrMsg;
+        },
+        messageTypes: {
+            PRIMARY: "primary",
+            SECONDARY: "secondary",
+            SUCCESS: "success",
+            DANGER: "danger",
+            WARNING: "warning",
+            INFO: "info",
+            LIGHT: "light",
+            DARK: "dark"
         }
     };
 })();

@@ -1,7 +1,10 @@
 @()(implicit request:RequestHeader, msgs:MessagesProvider)
 
-@scripts={
+@head={
   <link rel="stylesheet" href="@routes.Assets.versioned("css/codeHighlight.min.css")">
+}
+
+@scripts={
   <script type="text/javascript">
     var loaderIdx=0;
     function loaderDemo() {
@@ -61,10 +64,51 @@
                 "Please create one by clicking 'showBackgroundProcess'", 2000).show();
       }
     }
+
+    function makeMake(infoType) {
+        var title = document.getElementById("title").value;
+        var subtitle = document.getElementById("subtitle").value;
+        var timeout = Number(document.getElementById("timeout").value);
+
+        switch (infoType) {
+          case "success": Informationals.makeSuccess(title, subtitle, timeout).show(); break;
+          case "info":    Informationals.makeInfo(title, subtitle, timeout).show(); break;
+          case "warning": Informationals.makeWarning(title, subtitle, timeout).show(); break;
+          case "danger":  Informationals.makeDanger(title, subtitle, timeout).show(); break;
+          default: Informationals.make(document.getElementById("msgType").value, title, subtitle, timeout).show();
+        }
+    }
+
+    function showYesNo() {
+      var title = document.getElementById("ynTitle").value;
+      var subtitle = document.getElementById("ynSubtitle").value;
+      var timeout = Number(document.getElementById("ynTimeout").value);
+      var type = document.getElementById("ynMsgType").value;
+      function callback(res, info){
+          info.dismiss();
+          Informationals.makeInfo("Result was: " + String(res), "This message will self-destruct in 2 seconds", 3000).show();
+      }
+      Informationals.makeYesNo(title, subtitle, callback, timeout, type).show();
+    }
+
+    $(document).ready(function(){
+        var typeMenus = [
+            document.getElementById("ynMsgType"),
+           document.getElementById("msgType")
+        ];
+        for ( var tn in Informationals.messageTypes ) {
+            for ( var i=0; i<typeMenus.length; i++ ) {
+               var opt = document.createElement("option");
+               opt.value = Informationals.messageTypes[tn];
+               opt.innerText = "Informationals.messageTypes." + tn;
+               typeMenus[i].appendChild(opt);
+            }
+        };
+    });
   </script>
 }
 
-@templates.bsNavbar("Informationals", views.Structure.publicItems, views.PublicSections.Components, scripts) {
+@templates.bsNavbar("Informationals", views.Structure.publicItems, views.PublicSections.Components, head, scripts) {
   <div class="row">
     <div class="col">
       <h1>Informationals</h1>
@@ -87,12 +131,15 @@
       <p class="text-center">
         <button class="btn btn-lg btn-primary" onclick="loaderDemo()" type="button">Run Sample</button>
       </p>
+
       <h4>Sample code</h4>
       <pre class="hl">Informationals<span class="hl opt">.</span><span class="hl kwd">loader</span><span class="hl opt">(</span><span class="hl str">&quot;Starting Process&quot;</span><span class="hl opt">);</span> <span class="hl slc">// blocks the UI with a message</span>
 Informationals<span class="hl opt">.</span><span class="hl kwd">loader</span><span class="hl opt">(</span><span class="hl str">&quot;We&apos;re on it...&quot;</span><span class="hl opt">);</span> <span class="hl slc">// updates the message</span>
 Informationals<span class="hl opt">.</span>loader<span class="hl opt">.</span><span class="hl kwd">dismiss</span><span class="hl opt">();</span> <span class="hl slc">// unblock ui</span>
       </pre>
-      <h3><code>Informationals.showBackgroundProcess</code></h3>
+
+
+      <h3 class="mt-4"><code>Informationals.showBackgroundProcess</code></h3>
       <p>
         A way of showing multiple processes that run in the background without blocking the UI.
         Each message component has it's own controller object for the client code to interact with.
@@ -107,7 +154,7 @@ Informationals<span class="hl opt">.</span>loader<span class="hl opt">.</span><s
         <dt>inf.dismiss</dt>
         <dd>Hides the message element.</dd>
       </dl>
-      <h3>Sample Code</h3>
+      <h4>Sample Code</h4>
       <small class="help">
         The code here uses a stack to manage multiple background tasks. But that's just because we're
         trying to keep the UI simple. The message elements can be updated or dismissed in any order.
@@ -121,6 +168,66 @@ Informationals<span class="hl opt">.</span>loader<span class="hl opt">.</span><s
         <button onclick="successBkg()">bkgProcess.success</button>();<br>
         <button onclick="dismissBkg()">bkgProcess.dismiss</button>();<br>
       </div>
+
+      <h3 class="mt-4"><code>Informationals.makeXXX</code></h3>
+      <p>
+        Creates non-blocking messages that appear at the top of the page. Can have a timeout for auto-release.
+        Message types are based on Bootstraps' contextual classes. Note that the informational object itself is just
+        an object - you need to call <code>show()</code> to, well, make it show.
+      </p>
+      <h4>Sample Code</h4>
+      <div class="codeLike">
+          var title = <span class="hl str">"<input class="hl str" type="text" id="title" value="Your message here" width="30">"</span>);<br>
+          var subtitle = <span class="hl str">"<input class="hl str" type="text" id="subtitle" value="Your message's sub-title here" width="30">"</span>);<br>
+          var timeout = <input type="number" step="100" id="timeout" value="" placeholder="timeout (msec)" width="30">);<br>
+          var msgType = <span class="hl str">"</span><select id="msgType"></select><span class="hl str">"</span>;<br>
+          <button onclick="makeMake()">Informationals.make</button>(msgType, title, subtitle, timeout).show(); <br>
+          <button onclick="makeMake('success')">Informationals.makeSuccess</button>(title, subtitle, timeout).show(); <br>
+          <button onclick="makeMake('info')">Informationals.makeInfo</button>(title, subtitle, timeout).show(); <br>
+          <button onclick="makeMake('warning')">Informationals.makeWarning</button>(title, subtitle, timeout).show(); <br>
+          <button onclick="makeMake('danger')">Informationals.makeDanger</button>(title, subtitle, timeout).show(); <br>
+      </div>
+
+      <h3 class="mt-4"><code>Informationals.showYesNo</code></h3>
+      <p>
+        Displays non-modal yes/no message. When the user clicks any of the buttons, the client code is made
+        aware of this through a callback. There's an optional type field, matching the semantics of Bootstrap's contextual classes.
+      </p>
+      <p>
+        The callback function gets two parameters:
+      </p>
+      <dl class="codeDefinitions">
+        <dt>res</dt>
+        <dd>What the user chose. One of <code>true/false/undefined</code> (the latter happens if the prompt timed out).</dd>
+        <dt>info</dt>
+        <dd>The the message element. Call <code>info.dismiss()</code> to hide it.</dd>
+      </dl>
+      <h4>Sample Code</h4>
+      <div class="codeLike">
+          var title = <span class="hl str">"<input class="hl str" type="text" id="ynTitle" value="Your message here" width="30">"</span>);<br>
+          var subtitle = <span class="hl str">"<input class="hl str" type="text" id="ynSubtitle" value="Your message's sub-title here" width="30">"</span>);<br>
+          var timeout = <input type="number" id="ynTimeout" value="" placeholder="timeout (msec)" width="30">);<br>
+          var msgType = <span class="hl str">"</span><select id="ynMsgType"></select><span class="hl str">"</span><br>
+          var callback = function(res, info){...};<br>
+          <button onclick="showYesNo()">Informationals.makeYesNo</button>(title, subtitle, timeout, msgType).show();
+      </div>
+
+      <h3 class="mt-4">
+        Utilities
+      </h3>
+      <ul>
+        <li>Message types are available as constants in <code>Informationals.messageTypes.</code></li>
+        <li>
+          To invoke an informational message from a PlayFramework controller, encode it in the flash under the
+          <code>controllers.FlashKeys.MESSAGE</code>, key, like so:
+
+            <pre class="hl"><code>
+val message = Informational(InformationalLevel.Success,title, subtitle)
+Redirect(routes.UserCtrl.userHome()).<strong>flashing(FlashKeys.MESSAGE->message.encoded)</strong>
+            </code></pre>
+            Note: Currently, only a single message is supported.
+        </li>
+      </ul>
     </div>
   </div>
   <div class="row">

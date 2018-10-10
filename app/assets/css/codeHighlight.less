@@ -13,9 +13,25 @@ dl.codeDefinitions {
 }
 
 .codeLike {
-  font-family: @codeFontFam;
-  font-size: 11pt;
   line-height: 18pt;
+  background-color: #EEE;
+  font-size: 12pt;
+  font-family: @codeFontFam;
+  padding: .5em;
+  border-radius: .5em;
+  box-shadow: 0 0 4px rgba(0,0,0,.5) inset;
+  button {
+    padding: 2px;
+    border-radius: 2px;
+    border: 1px solid #444;
+    background-color: #EEF;
+    &:hover {
+      background-color: #FFE;
+    }
+    &:active {
+      background-color: #FFF;
+    }
+  }
 }
 
 pre.hl {
