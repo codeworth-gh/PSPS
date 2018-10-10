@@ -39,8 +39,11 @@ class HomeCtrl @Inject()(langs: Langs, messagesApi: MessagesApi, cached: Cached,
   }
   
   def pager( currentPage:Int ) = Action{ implicit req =>
-    Ok( views.html.pager(generateDataPage(currentPage, 10), PaginationInfo(currentPage, 23)) )
-    
+    Ok( views.html.pagerSample(generateDataPage(currentPage, 10), PaginationInfo(currentPage, 23)) )
+  }
+  
+  def informationals = Action{ implicit req =>
+    Ok( views.html.informationalsSample() )
   }
   
   /**

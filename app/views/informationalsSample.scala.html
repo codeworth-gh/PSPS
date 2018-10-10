@@ -1,0 +1,129 @@
+@()(implicit request:RequestHeader, msgs:MessagesProvider)
+
+@scripts={
+  <link rel="stylesheet" href="@routes.Assets.versioned("css/codeHighlight.min.css")">
+  <script type="text/javascript">
+    var loaderIdx=0;
+    function loaderDemo() {
+        if ( loaderIdx != 0 ) return; // prevent double invocation
+        var calls = [
+            function(){Informationals.loader("Starting Process");},
+            function(){Informationals.loader("This takes time...");},
+            function(){Informationals.loader("Almost done");},
+            function(){Informationals.loader.dismiss();}
+          ];
+        loaderIdx=0;
+        var nextFrame = function(){
+            var func = calls[++loaderIdx];
+            if ( func ) {
+                func();
+                window.setTimeout(nextFrame, 2000);
+            } else {
+              loaderIdx=0;
+            }
+        };
+        calls[0]();
+        window.setTimeout(nextFrame, 2000);
+    }
+
+    var bkgInf = [];
+    function curBkgInf(){
+        return bkgInf[bkgInf.length-1];
+    }
+    function startBkg() {
+        bkgInf.push(Informationals.showBackgroundProcess(document.getElementById("message1").value));
+    }
+    function updateBkg(){
+        if ( bkgInf.length>0 ) {
+          curBkgInf().update(document.getElementById("message2").value);
+        } else {
+            Informationals.makeDanger("No background process element yet",
+                    "Please create one by clicking 'showBackgroundProcess'", 2000).show();
+        }
+    }
+
+    function successBkg(){
+        if ( bkgInf.length>0 ) {
+          curBkgInf().success();
+          bkgInf.pop();
+        } else {
+            Informationals.makeDanger("No background process element yet",
+                    "Please create one by clicking 'showBackgroundProcess'", 2000).show();
+        }
+    }
+
+    function dismissBkg(){
+      if ( bkgInf.length>0 ) {
+        curBkgInf().dismiss();
+        bkgInf.pop();
+      } else {
+        Informationals.makeDanger("No background process element yet",
+                "Please create one by clicking 'showBackgroundProcess'", 2000).show();
+      }
+    }
+  </script>
+}
+
+@templates.bsNavbar("Informationals", views.Structure.publicItems, views.PublicSections.Components, scripts) {
+  <div class="row">
+    <div class="col">
+      <h1>Informationals</h1>
+      <p>
+        Informationals is a small JS library to show various informational messages. PSPS's <code>bsBase</code> template automatically
+        generates informationals from the flash.
+      </p>
+      <p>
+        This page shows examples of using Informationals, both only on the client-side, and using the server.
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h3><code>Informationals.loader(message)</code></h3>
+      <p>
+        The <code>loader</code> function blocks the UI with a message. To update the message, call <code>loader(msg)</code>
+        again. To unblock the UI, call <code>loader.dismiss()</code>.
+      </p>
+      <p class="text-center">
+        <button class="btn btn-lg btn-primary" onclick="loaderDemo()" type="button">Run Sample</button>
+      </p>
+      <h4>Sample code</h4>
+      <pre class="hl">Informationals<span class="hl opt">.</span><span class="hl kwd">loader</span><span class="hl opt">(</span><span class="hl str">&quot;Starting Process&quot;</span><span class="hl opt">);</span> <span class="hl slc">// blocks the UI with a message</span>
+Informationals<span class="hl opt">.</span><span class="hl kwd">loader</span><span class="hl opt">(</span><span class="hl str">&quot;We&apos;re on it...&quot;</span><span class="hl opt">);</span> <span class="hl slc">// updates the message</span>
+Informationals<span class="hl opt">.</span>loader<span class="hl opt">.</span><span class="hl kwd">dismiss</span><span class="hl opt">();</span> <span class="hl slc">// unblock ui</span>
+      </pre>
+      <h3><code>Informationals.showBackgroundProcess</code></h3>
+      <p>
+        A way of showing multiple processes that run in the background without blocking the UI.
+        Each message component has it's own controller object for the client code to interact with.
+      </p>
+      <dl class="codeDefinitions">
+        <dt>var inf=Informationals.showBackgroundProcess(msg)</dt>
+        <dd>Adds a non-blocking message element to the window. Returns a controller object for the message element.</dd>
+        <dt>inf.update(msg)</dt>
+        <dd>Updates the displayed message.</dd>
+        <dt>inf.success()</dt>
+        <dd>Hides the element, after signaling that the task succeeded.</dd>
+        <dt>inf.dismiss</dt>
+        <dd>Hides the message element.</dd>
+      </dl>
+      <h3>Sample Code</h3>
+      <small class="help">
+        The code here uses a stack to manage multiple background tasks. But that's just because we're
+        trying to keep the UI simple. The message elements can be updated or dismissed in any order.
+      </small>
+      <div class="codeLike">
+        val bkgProcess = <button onclick="startBkg()">Informationals.showBackgroundProcess</button>(
+          <input type="text" id="message1" value="New Process" width="30">);
+          <br>
+        <button onclick="updateBkg()">bkgProcess.update</button>(
+          <input type="text" id="message2" value="Updated message" width="30">);<br>
+        <button onclick="successBkg()">bkgProcess.success</button>();<br>
+        <button onclick="dismissBkg()">bkgProcess.dismiss</button>();<br>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col mb-4">&nbsp;</div>
+  </div>
+}

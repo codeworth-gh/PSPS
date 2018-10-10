@@ -138,10 +138,13 @@ var UiUtils = (function () {
         "error":   {color: "#FFAAAA", count:5, duration:1000},
         "warning": {color: "#ffcb59", count:2, duration:1000},
         "success": {color: "#88FF88", count:1, duration:4000},
-        "defaults": {count:1, duration:2000}
+        "defaults": {color:"#FFFFAA", count:1, duration:2000}
     };
 
     var highlight = function( emt, reason ) {
+        if ( ! reason ) {
+            reason = "defaults";
+        }
         var properties = HIGHLIGHT_PROPERTIES[reason];
         if ( ! properties ) {
             console.log("Warning: reason '" + reason + "' unknown for highlight.");

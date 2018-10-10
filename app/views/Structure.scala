@@ -38,18 +38,18 @@ object BackOfficeSections extends Enumeration {
   */
 object Structure {
   
-  
   val publicItems:Seq[TopSiteSection[PublicSections.Value]] = Seq(
     PageSection("Public Home", PublicSections.Home, routes.HomeCtrl.index),
-    PageSection("Login", PublicSections.Login, routes.HomeCtrl.index),
+    PageSection("Login", PublicSections.Login, routes.UserCtrl.showLogin),
     MultiPageSection("Components", PublicSections.Components,
       Seq(
-        PageSectionItem("Pager", routes.HomeCtrl.pager(1))
+        PageSectionItem("Pager", routes.HomeCtrl.pager(1)),
+        PageSectionItem("Informationals", routes.HomeCtrl.informationals)
       )
     ),
     MultiPageSection("Other", PublicSections.Others,
       Seq(
-        PageSectionItem("Login", routes.HomeCtrl.index),
+        PageSectionItem("Login", routes.UserCtrl.showLogin),
         SeparatorSectionItem,
         PageSectionItem("Public Home", routes.HomeCtrl.index)
       )

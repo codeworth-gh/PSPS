@@ -151,7 +151,7 @@ var Informationals = (function(){
             UiUtils.makeElement("p", {}, title)
         ];
         var info = UiUtils.makeElement("div", {classes:[MESSAGE_TYPES.BKG_PROCESS, "loading"]}, elements );
-        info.dismiss = function(){ console.log("dismiss called"); dismiss(info); };
+        info.dismiss = function(){ dismiss(info); };
         info.success = function(){
             info.dismiss = function(){}; // no-op, so client code can't double-dismiss this.
             $(this).addClass("done");
@@ -159,49 +159,62 @@ var Informationals = (function(){
             $(this).find("i.text-hide").removeClass("text-hide");
             window.setTimeout(function(){ dismiss(info);}, 1500);
         };
+        info.update = function( value ) {
+          var $p = $(this).find("p");
+          $p.text(value);
+          UiUtils.highlight($p);
+        };
         return info;
     }
 
     var loaderModalTransitioning = false;
     var loaderModalShowing = false;
-    var loader = function( isShow, text ) {
+    var loader = function( toShow ) {
         if ( ! $loaderElement ) {
             initLoaderDialog();
         }
 
         if ( loaderModalTransitioning ) {
             // loader is currently animating, wait 500 ms
-            window.setTimeout(function(){loader(isShow, text);},500);
+            window.setTimeout(function(){loader(toShow);},500);
             return;
         }
 
-        if ( typeof isShow === 'string' ) {
-            text = isShow;
-            isShow = true;
-        }
+        if ( loaderModalShowing ) {
+            // text update, really
+            $loaderElementText.text(toShow);
+            UiUtils.highlight($loaderElementText);
+            return;
 
-        if ( isShow ) {
-            if ( loaderModalShowing ) {
-                // text update, really
-                $loaderElementText.text(text);
-                UiUtils.highlight($loaderElementText, UiUtils.highlight.properties.info);
-                return;
-
-            } else {
-                if ((typeof text !== 'undefined')) {
-                    $loaderElementText.text(text);
-                } else {
-                    $loaderElementText.text("processing...");
-                }
-            }
         } else {
-            if ( ! loaderModalShowing ) return; //hiding a hidden modal
+            // show the blocking modal
+            if ((typeof toShow !== 'undefined')) {
+                $loaderElementText.text(toShow);
+            } else {
+                $loaderElementText.text("processing...");
+            }
+            loaderModalTransitioning = true;
+            $loaderElement.modal( "show" ).on(
+                "shown.bs.modal", function(){
+                    loaderModalShowing=true;
+                    loaderModalTransitioning=false;});
         }
-        var takeFlagDown = function(){loaderModalTransitioning=false;};
-        loaderModalTransitioning = true;
-        $loaderElement.modal( isShow ? "show":"hide" )
-            .on("hidden.bs.modal", function(){ loaderModalShowing=false; takeFlagDown(); } )
-            .on("shown.bs.modal", function(){ loaderModalShowing=true; takeFlagDown(); } );
+
+    };
+
+    loader.dismiss = function(){
+        if ( loaderModalTransitioning ) {
+            // loader is currently animating, wait 500 ms
+            window.setTimeout(function(){loader.dismiss();},500);
+            return;
+        }
+        if ( loaderModalShowing ) {
+            loaderModalTransitioning = true;
+            $loaderElement.modal( "hide" )
+                .on("hidden.bs.modal", function(){
+                    loaderModalShowing=false;
+                    loaderModalTransitioning=false;});
+        }
     };
 
     return {
