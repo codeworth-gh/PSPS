@@ -44,7 +44,8 @@ object Structure {
     MultiPageSection("Components", PublicSections.Components,
       Seq(
         PageSectionItem("Pager", routes.HomeCtrl.pager(1)),
-        PageSectionItem("Informationals", routes.HomeCtrl.informationals)
+        PageSectionItem("Informationals", routes.HomeCtrl.informationals),
+        PageSectionItem("Styled Inputs", routes.HomeCtrl.styledInputs)
       )
     ),
     MultiPageSection("Other", PublicSections.Others,

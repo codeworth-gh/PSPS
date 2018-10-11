@@ -45,6 +45,10 @@ class HomeCtrl @Inject()(langs: Langs, messagesApi: MessagesApi, cached: Cached,
   def informationals = Action{ implicit req =>
     Ok( views.html.informationalsSample() )
   }
+
+  def styledInputs = Action{ implicit req =>
+    Ok( views.html.styledInputsSample() )
+  }
   
   /**
     * Routes for the front-end.
