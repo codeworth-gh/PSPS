@@ -1,0 +1,117 @@
+// for highlight (http://www.andre-simon.de)
+// based on https://gitlab.com/saalen/highlight/blob/master/extras/themes-resources/base16/example-light.html
+
+@codeFontFam:'Menlo', 'Courier New', monospace;
+
+dl.codeDefinitions {
+  dt {
+    font-family: @codeFontFam;
+  }
+  dd {
+    padding-left: 1em;
+  }
+}
+
+.codeLike {
+  line-height: 18pt;
+  background-color: #EEE;
+  font-size: 12pt;
+  font-family: @codeFontFam;
+  padding: .5em;
+  border-radius: .5em;
+  box-shadow: 0 0 4px rgba(0,0,0,.5) inset;
+  button {
+    padding: 2px;
+    border-radius: 2px;
+    border: 1px solid #444;
+    background-color: #EEF;
+    &:hover {
+      background-color: #FFE;
+    }
+    &:active {
+      background-color: #FFF;
+    }
+  }
+}
+
+pre.hl {
+  color: #515151;
+  background-color: #EEE;
+  font-size: 12pt;
+  font-family: @codeFontFam;
+  padding: .5em;
+  border-radius: .5em;
+  box-shadow: 0 0 4px rgba(0,0,0,.5) inset;
+}
+
+.hl.num {
+  color: #f99157;
+}
+
+.hl.esc {
+  color: #66cccc;
+}
+
+.hl.str {
+  color: #7ca67c;
+}
+
+.hl.pps {
+  color: #66cccc;
+}
+
+.hl.slc {
+  color: #a09f93;
+  font-style: italic;
+}
+
+.hl.com {
+  color: #a09f93;
+  font-style: italic;
+}
+
+.hl.ppc {
+  color: #d27b53;
+}
+
+.hl.opt {
+  color: #515151;
+}
+
+.hl.ipl {
+  color: #f99157;
+}
+
+.hl.lin {
+  color: #747369;
+}
+
+.hl.kwa {
+  color: #cc99cc;
+  font-weight: bold;
+}
+
+.hl.kwb {
+  color: #6699cc;
+  font-weight: bold;
+}
+
+.hl.kwc {
+  color: #f2777a;
+  font-weight: bold;
+}
+
+.hl.kwd {
+  color: #be984c;
+  font-weight: bold;
+}
+
+.hl.kwe {
+  color: #d27b53;
+  font-weight: bold;
+}
+
+.hl.kwf {
+  color: #f99157;
+  font-weight: bold;
+}

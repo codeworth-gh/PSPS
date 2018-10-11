@@ -17,13 +17,24 @@
   </script>
 }
 
-@templates.bsBase("BASE-APP", Html(""), scripts) {
+@templates.bsNavbar("PSPS Base-app", views.Structure.publicItems, views.PublicSections.Home, Html(""), scripts) {
   <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="jumbotron">
+          <h1 class="display-3"><strong>PSPS Template app</strong></h1>
+          <hr class="my-4">
+          <div class="alert alert-info" role="alert">
+            <strong>Starting point for a rather opinionated application seed, based on PlayFramework, Scala, PostreSQL, and Slick.</strong>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="row">
       <div class="col">
         <div class="text-center">
           Welcome to PSPS basic app template.
-            <hr>
+          <hr>
           <a href="@routes.UserCtrl.showLogin">login</a>
         </div>
       </div>

@@ -1,10 +1,14 @@
 package controllers
 
 object InformationalLevel extends Enumeration {
-  val Success = Value("success")
-  val Info    = Value("info")
-  val Warning = Value("warning")
-  val Danger  = Value("danger")
+  val Primary   = Value("primary")
+  val Secondary = Value("secondary")
+  val Success   = Value("success")
+  val Danger    = Value("danger")
+  val Warning   = Value("warning")
+  val Info      = Value("info")
+  val Light     = Value("light")
+  val Dark      = Value("dark")
 }
 
 /**
