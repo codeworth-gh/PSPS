@@ -1,0 +1,54 @@
+@()(implicit request: RequestHeader, msgs:MessagesProvider)
+
+@head = {
+  <link rel="stylesheet" href="@routes.Assets.versioned("css/codeHighlight.min.css")">
+}
+
+@templates.bsNavbar("styledInputs.title", views.Structure.publicItems, views.PublicSections.Components, head) {
+  <div class="row">
+    <div class="col">
+      <h3>Startup Ideas</h3>
+      <p>Demonstrating the usage of <code>@@css.styledInputs.less</code>.</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h3><code>Radio Button</code></h3>
+      <h4>Sample code</h4>
+      <pre class="hl">
+<span class="hl opt">&lt;</span>input <span class="hl kwa">class</span><span class="hl opt">=</span><span class="hl str">&quot;hidden&quot;</span> type<span class="hl opt">=</span><span class="hl str">&quot;radio&quot;</span> id<span class="hl opt">=</span><span class="hl str">&quot;good&quot;</span> name<span class="hl opt">=</span><span class="hl str">&quot;radioEx&quot;</span> value<span class="hl opt">=</span><span class="hl str">&quot;good&quot;</span> <span class="hl opt">/&gt;</span>
+<span class="hl opt">&lt;</span>label <span class="hl kwa">class</span><span class="hl opt">=</span><span class="hl str">&quot;buttonLike&quot;</span> <span class="hl kwa">for</span><span class="hl opt">=</span><span class="hl str">&quot;good&quot;</span><span class="hl opt">&gt;</span>Good<span class="hl opt">&lt;/</span>label<span class="hl opt">&gt;</span>
+<span class="hl opt">&lt;</span>input <span class="hl kwa">class</span><span class="hl opt">=</span><span class="hl str">&quot;hidden&quot;</span> type<span class="hl opt">=</span><span class="hl str">&quot;radio&quot;</span> id<span class="hl opt">=</span><span class="hl str">&quot;veryGood&quot;</span> name<span class="hl opt">=</span><span class="hl str">&quot;radioEx&quot;</span> value<span class="hl opt">=</span><span class="hl str">&quot;veryGood&quot;</span> <span class="hl opt">/&gt;</span>
+<span class="hl opt">&lt;</span>label <span class="hl kwa">class</span><span class="hl opt">=</span><span class="hl str">&quot;buttonLike&quot;</span> <span class="hl kwa">for</span><span class="hl opt">=</span><span class="hl str">&quot;veryGood&quot;</span><span class="hl opt">&gt;</span>Very Good<span class="hl opt">&lt;/</span>label<span class="hl opt">&gt;</span>
+<span class="hl opt">&lt;</span>input <span class="hl kwa">class</span><span class="hl opt">=</span><span class="hl str">&quot;hidden&quot;</span> type<span class="hl opt">=</span><span class="hl str">&quot;radio&quot;</span> id<span class="hl opt">=</span><span class="hl str">&quot;amazing&quot;</span> name<span class="hl opt">=</span><span class="hl str">&quot;radioEx&quot;</span> value<span class="hl opt">=</span><span class="hl str">&quot;amazing&quot;</span> <span class="hl opt">/&gt;</span>
+<span class="hl opt">&lt;</span>label <span class="hl kwa">class</span><span class="hl opt">=</span><span class="hl str">&quot;buttonLike&quot;</span> <span class="hl kwa">for</span><span class="hl opt">=</span><span class="hl str">&quot;amazing&quot;</span><span class="hl opt">&gt;</span>Amazing<span class="hl opt">&lt;/</span>label<span class="hl opt">&gt;</span></pre>
+      <h4>This demo is</h4>
+      <input class="hidden" type="radio" id="good" name="radioEx" value="good" />
+      <label class="buttonLike" for="good">Good</label>
+      <input class="hidden" type="radio" id="veryGood" name="radioEx" value="veryGood" />
+      <label class="buttonLike" for="veryGood">Very Good</label>
+      <input class="hidden" type="radio" id="amazing" name="radioEx" value="amazing" />
+      <label class="buttonLike" for="amazing">Amazing</label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <h3><code>Checkbox</code></h3>
+      <h4>Sample code</h4>
+      <pre class="hl"><span class="hl opt">&lt;</span>input <span class="hl kwa">class</span><span class="hl opt">=</span><span class="hl str">&quot;hidden&quot;</span> type<span class="hl opt">=</span><span class="hl str">&quot;checkbox&quot;</span> id<span class="hl opt">=</span><span class="hl str">&quot;this&quot;</span> name<span class="hl opt">=</span><span class="hl str">&quot;checkboxEx&quot;</span> value<span class="hl opt">=</span><span class="hl str">&quot;this&quot;</span> <span class="hl opt">/&gt;</span>
+<span class="hl opt">&lt;</span>label <span class="hl kwa">class</span><span class="hl opt">=</span><span class="hl str">&quot;buttonLike&quot;</span> <span class="hl kwa">for</span><span class="hl opt">=</span><span class="hl str">&quot;this&quot;</span><span class="hl opt">&gt;</span>This<span class="hl opt">&lt;/</span>label<span class="hl opt">&gt;</span>
+<span class="hl opt">&lt;</span>input <span class="hl kwa">class</span><span class="hl opt">=</span><span class="hl str">&quot;hidden&quot;</span> type<span class="hl opt">=</span><span class="hl str">&quot;checkbox&quot;</span> id<span class="hl opt">=</span><span class="hl str">&quot;that&quot;</span> name<span class="hl opt">=</span><span class="hl str">&quot;checkboxEx&quot;</span> value<span class="hl opt">=</span><span class="hl str">&quot;that&quot;</span> <span class="hl opt">/&gt;</span>
+<span class="hl opt">&lt;</span>label <span class="hl kwa">class</span><span class="hl opt">=</span><span class="hl str">&quot;buttonLike&quot;</span> <span class="hl kwa">for</span><span class="hl opt">=</span><span class="hl str">&quot;that&quot;</span><span class="hl opt">&gt;</span>That<span class="hl opt">&lt;/</span>label<span class="hl opt">&gt;</span>
+<span class="hl opt">&lt;</span>input <span class="hl kwa">class</span><span class="hl opt">=</span><span class="hl str">&quot;hidden&quot;</span> type<span class="hl opt">=</span><span class="hl str">&quot;checkbox&quot;</span> id<span class="hl opt">=</span><span class="hl str">&quot;other&quot;</span> name<span class="hl opt">=</span><span class="hl str">&quot;checkboxEx&quot;</span> value<span class="hl opt">=</span><span class="hl str">&quot;other&quot;</span> <span class="hl opt">/&gt;</span>
+<span class="hl opt">&lt;</span>label <span class="hl kwa">class</span><span class="hl opt">=</span><span class="hl str">&quot;buttonLike&quot;</span> <span class="hl kwa">for</span><span class="hl opt">=</span><span class="hl str">&quot;other&quot;</span><span class="hl opt">&gt;</span>And Other<span class="hl opt">&lt;/</span>label<span class="hl opt">&gt;</span></pre>
+      <h4>I Want</h4>
+      <input class="hidden" type="checkbox" id="this" name="checkboxEx" value="this" />
+      <label class="buttonLike" for="this">This</label>
+      <input class="hidden" type="checkbox" id="that" name="checkboxEx" value="that" />
+      <label class="buttonLike" for="that">That</label>
+      <input class="hidden" type="checkbox" id="other" name="checkboxEx" value="other" />
+      <label class="buttonLike" for="other">And Other</label>
+    </div>
+  </div>
+}

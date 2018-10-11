@@ -6,6 +6,7 @@
 GET     /                         controllers.HomeCtrl.index
 GET     /pager                    controllers.HomeCtrl.pager(currentPage:Int ?= 1)
 GET     /informationals           controllers.HomeCtrl.informationals
+GET     /styledInputs           controllers.HomeCtrl.styledInputs
 GET     /navbar                   controllers.HomeCtrl.sampleNavbar
 
 GET     /signup                      controllers.UserCtrl.showSignup

@@ -23,3 +23,7 @@ error.username.exists=Username already taken
 error.invitation.doesNotExist=Invitation does not exist
 error.password=Passwords must match, and cannot be empty
 error.password.incorrect=Incorrect password
+
+pager.title=Pager
+informationals.title=Informationals
+styledInputs.title=Styled Inputs

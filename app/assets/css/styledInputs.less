@@ -1,7 +1,6 @@
 label.buttonLike{
   position: relative;
   border: 1px solid gray;
-  border-radius: 4px;
   padding: 4px 1ch;
   box-shadow: 0 2px 4px rgba(0,0,0,.25);
   display: inline-block;
@@ -11,12 +10,23 @@ label.buttonLike{
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
+  &:hover{
+    background-color: #e9f0f0;
+  }
 }
 
 input[type=checkbox]:checked + label.buttonLike,  input[type=radio]:checked + label.buttonLike{
   background-color: #DDD;
   box-shadow: 0 0px 2px rgba(0,0,0,.25);
   top: 2px;
+}
+
+input[type=checkbox] + label.buttonLike{
+
+}
+
+input[type=radio] + label.buttonLike{
+  border-radius: 0.5em;
 }
 
 .hidden{
