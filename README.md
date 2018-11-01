@@ -21,7 +21,7 @@ The Improvery™ (as in: "us") is a software studio that creates custom software
 PSPS uses the following technologies:
 * The [Scala](http://scala-lang.org) variant of [Play Framework](http://playframework.com).
 * [PostgreSQL](http://postgres.org)
-* [Slick](????) As the database connectivity layer
+* [Slick](http://slick.lightbend.com/) As the database connectivity layer
 * [Bootstrap4](http://getbootstrap.com)
 * User-based access control, using (Deadbolt)[https://deadbolt-scala.readme.io].
 * Custom code and templates
