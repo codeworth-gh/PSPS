@@ -1,4 +1,4 @@
-package security
+package modules
 
 import javax.inject.Inject
 import javax.inject.Singleton

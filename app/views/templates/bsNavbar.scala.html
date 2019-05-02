@@ -1,4 +1,5 @@
 @import views._
+@import play.api.mvc.RequestHeader
 @(title:String, sections:Seq[TopSiteSection[_]], currentSection:Object, extraHead: Html=Html(""), extraBottom: Html=Html(""),
         navbarExtras:Option[Html]=None)(content:Html)(implicit request: RequestHeader, msgs:MessagesProvider)
 

@@ -1,4 +1,5 @@
 @import controllers.Informational
+@import play.api.mvc.RequestHeader
 @(title:String, extraHead: Html=Html(""), extraBottom: Html=Html(""))(content:Html)(implicit request: RequestHeader, msgs:MessagesProvider)
 <!DOCTYPE html>
 <html>

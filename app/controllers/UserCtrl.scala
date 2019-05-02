@@ -3,7 +3,8 @@ package controllers
 import java.sql.Timestamp
 import java.util.UUID
 
-import be.objectify.deadbolt.scala.{AuthenticatedRequest, DeadboltActions}
+import com.mohiva.play.silhouette.api.{HandlerResult, Silhouette}
+import com.mohiva.play.silhouette.api.actions.SecuredRequest
 import dataaccess.{InvitationDAO, PasswordResetRequestDAO, UsersDAO}
 import javax.inject.Inject
 import models.{Invitation, PasswordResetRequest, User}
@@ -15,7 +16,7 @@ import play.api.i18n._
 import play.api.libs.json.{JsObject, JsString}
 import play.api.libs.mailer.{Email, MailerClient}
 import play.api.mvc.{Action, ControllerComponents, InjectedController}
-import security.UserSubject
+import modules.{PspsEnv, UserSubject}
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -40,18 +41,19 @@ case class ChangePassFormData ( previousPassword:String, password1:String, passw
 
 /**
   * Contoller for user-related actions (login, account mgmt...)
-  * @param deadbolt
   * @param conf
   * @param cached
   * @param cc
   * @param users
+  * @param silhouette
   * @param invitations
   * @param forgotPasswords
   * @param mailerClient
   */
-class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
+class UserCtrl @Inject()(conf:Configuration,
                          cached: Cached, cc:ControllerComponents,
                          users: UsersDAO, invitations:InvitationDAO,
+                         silhouette: Silhouette[PspsEnv],
                          forgotPasswords:PasswordResetRequestDAO,
                          mailerClient: MailerClient, langs:Langs, messagesApi:MessagesApi) extends InjectedController {
 
@@ -120,9 +122,8 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
       .flashing(FlashKeys.MESSAGE->Informational(InformationalLevel.Success, "You have been logged out.", "").encoded)
   }
 
-  def userHome = deadbolt.SubjectPresent()(){ implicit req =>
-    val user = req.subject.get.asInstanceOf[UserSubject].user
-    
+  def userHome = silhouette.SecuredAction.async { implicit req =>
+    val user = req.identity
     Future(Ok( views.html.users.userHome(user) ))
   }
 
@@ -142,9 +143,8 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
   }
 
 
-  def showEditUserPage( userId:String ) = deadbolt.SubjectPresent()(){ implicit req =>
-    val user = req.subject.get.asInstanceOf[UserSubject].user
-    if ( userId ==  user.username ) {
+  def showEditUserPage( userId:String ) = silhouette.SecuredAction.async{ implicit req =>
+    if ( userId ==  req.identity.username ) {
       users.get(userId).map({
         case None => notFound(userId)
         case Some(user) => Ok(
@@ -157,8 +157,9 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     }
   }
 
-  def doSaveUser(userId:String) = deadbolt.SubjectPresent()(){ implicit req =>
-    val user = req.subject.get.asInstanceOf[UserSubject].user
+  def doSaveUser(userId:String) = silhouette.SecuredAction.async { implicit req =>
+    val user = req.identity
+    req.addAttr(Attrs.User, user)
     if ( userId == user.username ) {
       userForm.bindFromRequest().fold(
         fwe => Future(BadRequest(views.html.users.userEditor(fwe, routes.UserCtrl.doSaveUser(userId), isNew = false, false))),
@@ -177,11 +178,11 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     }
   }
 
-  def showNewUserPage = deadbolt.SubjectPresent()(){ implicit req =>
+  def showNewUserPage = silhouette.SecuredAction.async { implicit req =>
     Future(Ok( views.html.users.userEditor(userForm, routes.UserCtrl.doSaveNewUser, isNew=true, isInvite=false) ))
   }
 
-  def doSaveNewUser = deadbolt.SubjectPresent()(){ implicit req =>
+  def doSaveNewUser = silhouette.SecuredAction.async { implicit req =>
     userForm.bindFromRequest().fold(
       fwe => Future(BadRequest(views.html.users.userEditor(fwe, routes.UserCtrl.doSaveNewUser, isNew=true, isInvite=false))),
       fData => {
@@ -215,14 +216,14 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
 
   def showNewUserInvitation(uuid:String) = Action { implicit req =>
     Ok( views.html.users.userEditor( userForm.bind(Map("uuid"->uuid)).discardingErrors, routes.UserCtrl.doNewUserInvitation,
-      isNew=true, isInvite=true )(new AuthenticatedRequest(req, None), messagesProvider))
+      isNew=true, isInvite=true )(req, messagesProvider))
   }
 
   def doNewUserInvitation() = Action.async { implicit req =>
     userForm.bindFromRequest().fold(
       fwe => {
         Future(BadRequest(views.html.users.userEditor(fwe, routes.UserCtrl.doNewUserInvitation, isNew=true,
-                                                isInvite=true )(new AuthenticatedRequest(req, None), messagesProvider)))
+                                                isInvite=true )(req, messagesProvider)))
       },
       fData => {
         val res = for {
@@ -247,7 +248,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
             if ( !passwordOK ) form = form.withError("password1", "error.password")
               .withError("password2", "error.password")
             Future(BadRequest(views.html.users.userEditor(form, routes.UserCtrl.doNewUserInvitation, isNew = true,
-                                                 isInvite=true)(new AuthenticatedRequest(req, None), messagesProvider)))
+                                                 isInvite=true)(req, messagesProvider)))
           }
         }
         
@@ -258,8 +259,8 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
 
   }
 
-  def showUserList = deadbolt.SubjectPresent()(){ implicit req =>
-    val user = req.subject.get.asInstanceOf[UserSubject].user
+  def showUserList = silhouette.SecuredAction.async { implicit req =>
+    val user = req.identity
     users.allUsers.map( users => Ok(views.html.users.userList(users, user)) )
   }
   
@@ -349,15 +350,15 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     )
   }
 
-  def showInviteUser = deadbolt.SubjectPresent()(){ implicit req =>
-    val user = req.subject.get.asInstanceOf[UserSubject].user
+  def showInviteUser = silhouette.SecuredAction.async{ implicit req =>
+    val user = req.identity
     for {
       invitations <- invitations.all
     } yield Ok(views.html.users.inviteUser(invitations))
   }
 
-  def doInviteUser = deadbolt.SubjectPresent()(){ implicit req =>
-    val user = req.subject.get.asInstanceOf[UserSubject].user
+  def doInviteUser = silhouette.SecuredAction.async { implicit req =>
+    val user = req.identity
     emailForm.bindFromRequest().fold(
       formWithErrors => {
         Logger.info( formWithErrors.errors.mkString("\n") )
@@ -378,7 +379,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     )
   }
   
-  def apiReInviteUser(invitationUuid:String) = deadbolt.SubjectPresent()(){ implicit req =>
+  def apiReInviteUser(invitationUuid:String) = silhouette.SecuredAction.async { implicit req =>
     for {
       invitationOpt <- invitations.get( invitationUuid )
     } yield {
@@ -389,7 +390,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     }
   }
   
-  def apiDeleteInvitation(invitationUuid:String) = deadbolt.SubjectPresent()() { implicit req =>
+  def apiDeleteInvitation(invitationUuid:String) = silhouette.SecuredAction.async  { implicit req =>
     invitations.delete(invitationUuid).map( _ => Ok )
   }
   
@@ -409,8 +410,8 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     invitations.updateLastSend( invi.uuid, java.time.LocalDateTime.now() )
   }
   
-  def doChangePassword = deadbolt.SubjectPresent()(){ implicit req =>
-    val user = req.subject.get.asInstanceOf[UserSubject].user
+  def doChangePassword = silhouette.SecuredAction.async { implicit req =>
+    val user = req.identity
     changePassForm.bindFromRequest().fold(
       fwi => {
         Future(BadRequest(views.html.users.userEditor(userForm, routes.UserCtrl.doSaveNewUser, isNew = false, false)))

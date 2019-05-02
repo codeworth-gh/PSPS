@@ -1,4 +1,4 @@
-package security
+package modules
 
 import be.objectify.deadbolt.scala.AuthenticatedRequest
 import be.objectify.deadbolt.scala.models.{Role, Subject}

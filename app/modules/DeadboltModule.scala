@@ -1,4 +1,4 @@
-package security
+package modules
 
 import be.objectify.deadbolt.scala.cache.HandlerCache
 import play.api.{Configuration, Environment}

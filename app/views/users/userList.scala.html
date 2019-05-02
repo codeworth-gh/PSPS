@@ -1,5 +1,5 @@
-@import be.objectify.deadbolt.scala.AuthenticatedRequest
-@(users:Seq[User], curUser:User)(implicit request:AuthenticatedRequest[_], msgs:MessagesProvider)
+@import play.api.mvc.RequestHeader
+@(users:Seq[User], curUser:User)(implicit request:RequestHeader, msgs:MessagesProvider)
 @templates.backEndBase("Users", views.BackOfficeSections.Users) {
     <div class="row">
         <div class="col-md-12">

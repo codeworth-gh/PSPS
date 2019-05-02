@@ -1,8 +1,8 @@
 @import views._
-@import be.objectify.deadbolt.scala.AuthenticatedRequest
+@import play.api.mvc.RequestHeader
 @(title:String, currentSection:BackOfficeSections.Value, extraHead: Html=Html(""), extraBottom: Html=Html("")
 )(content:Html
-)(implicit request: AuthenticatedRequest[_], msgs:MessagesProvider)
+)(implicit request: RequestHeader, msgs:MessagesProvider)
 
 @internalExtraHead = {
 <meta name="robots" content="noindex, nofollow">
@@ -14,14 +14,14 @@
   @extraBottom
 }
 @logoutButton={
-  @for( sub<-request.subject ){
+  @for(sub <- request.attrs.get(Attrs.User)){
     <ul class="navbar-nav">
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          @@@sub.identifier
+          @@@sub.username
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarUserDropdown">
-          <a class="dropdown-item" href="@routes.UserCtrl.showEditUserPage(sub.identifier)">My Profile</a>
+          <a class="dropdown-item" href="@routes.UserCtrl.showEditUserPage(sub.username)">My Profile</a>
           <div class="dropdown-divider"></div>
           <form class="dropdown-item" action="@routes.UserCtrl.doLogout()" method="POST">
             @helper.CSRF.formField

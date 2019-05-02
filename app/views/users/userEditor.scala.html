@@ -1,9 +1,9 @@
 @import views.BackOfficeSections
-@import be.objectify.deadbolt.scala.AuthenticatedRequest
 @import Helpers._
 
+@import play.api.mvc.RequestHeader
 @(form:Form[UserFormData], destination:Call, isNew:Boolean, isInvite:Boolean, activeFirst:Boolean=true
- )(implicit request: AuthenticatedRequest[_], msgs:MessagesProvider)
+ )(implicit request: RequestHeader, msgs:MessagesProvider)
 
 @content = {
   <div class="container">

@@ -8,6 +8,8 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.11.11"
 
+resolvers += "Atlassian Releases" at "https://maven.atlassian.com/public/"
+
 libraryDependencies ++= Seq(
   ehcache,
   ws,
@@ -25,7 +27,14 @@ libraryDependencies ++= Seq(
   "org.seleniumhq.selenium" % "selenium-java" % "2.35.0" % "test",
   "org.scalamock" %% "scalamock" % "4.0.0" % Test,
   "com.typesafe.play" %% "play-mailer" % "6.0.0",
-  "com.typesafe.play" %% "play-mailer-guice" % "6.0.0"
+  "com.typesafe.play" %% "play-mailer-guice" % "6.0.0",
+  "com.mohiva" %% "play-silhouette" % "5.0.7",
+  "com.mohiva" %% "play-silhouette-password-bcrypt" % "5.0.7",
+  "com.mohiva" %% "play-silhouette-crypto-jca" % "5.0.7",
+  "com.mohiva" %% "play-silhouette-persistence" % "5.0.7",
+  "com.mohiva" %% "play-silhouette-testkit" % "5.0.7" % "test",
+  "com.mohiva" %% "play-silhouette-cas" % "5.0.6",
+  "net.codingwell" %% "scala-guice" % "4.2.3"
 )
 
 // TODO add sections and table helpers

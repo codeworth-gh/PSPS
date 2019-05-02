@@ -1,5 +1,5 @@
-@import be.objectify.deadbolt.scala.AuthenticatedRequest
-@(invitations: Seq[Invitation])(implicit request: AuthenticatedRequest[_], msgs:MessagesProvider)
+@import play.api.mvc.RequestHeader
+@(invitations: Seq[Invitation])(implicit request: RequestHeader, msgs:MessagesProvider)
 @scripts = {
   <script >
           $(document).ready( function(){
