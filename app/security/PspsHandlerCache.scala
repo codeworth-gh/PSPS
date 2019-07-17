@@ -11,7 +11,7 @@ import dataaccess.UsersDAO
   */
 
 @Singleton
-class JfeHandlerCache @Inject()(users:UsersDAO) extends HandlerCache {
+class PspsHandlerCache @Inject()(users:UsersDAO) extends HandlerCache {
   val defaultHandler: DeadboltHandler = new DeadboltHandler(users)
 
   // Get the default handler.
