@@ -1,0 +1,9 @@
+#!/bin/bash
+
+pushd app-current
+
+APP_NAME=$(ls bin | grep -v .bat$ )
+./bin/$APP_NAME -Dconfig.file=conf/server.conf -Dpidfile.path=../RUNNING.pid &
+
+popd
+

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+then
+	echo "Usage: add-user username email password"
+	exit 1
+fi
+
+if ! type curl &>/dev/null;
+then
+  echo This command requires the curl command to be present.
+  exit 2
+fi
+
+ENDPOINT=http://localhost:9000/bkofc/api/users/
+
+json="{\"username\":\""$1"\",\"email\":\""$2"\",\"password\":\""$3"\"}"
+echo Creating user $1 with email $2 and password $3
+
+curl -H "Content-type:application/json" \
+     -X POST -d $json $ENDPOINT
+

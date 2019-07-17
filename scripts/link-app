@@ -1,0 +1,24 @@
+#!/bin/bash
+
+###
+# Creates a symlink to the newly deployed app (deployed using deploy-app),
+# the symlink has the "magic" name `app-current`, which is used
+# by the `start-current` and `stop-current` scripts.
+###
+
+if [ "$#" -ne "1" ]
+then
+  echo "Please supply directory name to link to"
+  exit 1
+fi
+
+if [ -L app-current ]
+  then
+  echo "removing current link"
+  rm app-current
+fi
+
+echo linking app $1 as app-current
+
+ln -s $1 app-current
+

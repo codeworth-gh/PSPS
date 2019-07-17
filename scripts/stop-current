@@ -1,0 +1,14 @@
+#!/bin/bash
+if [ -f RUNNING.pid ];
+then
+	PS_NUM=$(cat RUNNING.pid)
+	PROC_RUNNING=$( ps -A | grep ^$PS_NUM | wc -l )
+	case $PROC_RUNNING in
+        1) kill $( cat RUNNING.pid )
+           ;;
+    esac
+    rm RUNNING.pid
+else
+    echo File "RUNNING.pid" not found.
+fi
+

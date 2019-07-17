@@ -1,0 +1,32 @@
+#!/bin/bash
+
+if [ "$#" -ne "1" ]
+then
+  echo "Please supply zip file name to deploy"
+  exit 1
+fi
+
+if ! type unzip &>/dev/null;
+then
+  echo This command requires the unzip command to be present.
+  exit 2
+fi
+
+ZIP_NAME=$1
+echo deploying app $ZIP_NAME
+APP_DIR=app-$(date +%y%m%d)
+echo into directory $APP_DIR
+unzip -q -d $APP_DIR $ZIP_NAME
+cd $APP_DIR
+
+echo in app dir $(pwd)
+# Files are extracted to a folder whose name we don't know, but it's the only
+# file in the folder we've just created.
+TOP_LEVEL_DIR=$(ls | head -n1)
+echo extracted files to $TOP_LEVEL_DIR
+
+mv $TOP_LEVEL_DIR/* .
+rm -rf $TOP_LEVEL_DIR
+
+echo New application is ready in directory: $APP_DIR
+

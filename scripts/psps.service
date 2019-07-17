@@ -1,0 +1,20 @@
+# /etc/systemd/system/NAME_OF_PLAY_APP.play.service
+
+# APP_DIR: normally would be /opt/company-name/app-name/
+# APP_PATH: normally would be /opt/company-name/app-name/app-current
+
+[Unit]
+Description=NAME_OF_PLAY_APP
+After=syslog.target network.target
+
+[Service]
+ExecStart=APP_PATH/bin/hear-us -Dconfig.file=APP_PATH/conf/server.conf -Dpidfile.path=APP_DIR/RUNNING.pid -Dplay.evolutions.db.default.autoApply=true
+
+# to enable DOWN evolutions, add: -Dplay.evolutions.db.default.autoApplyDowns=true
+
+SuccessExitStatus=143
+PIDFile=APP_DIR/RUNNING.pid
+User=play
+
+[Install]
+WantedBy=multi-user.target
