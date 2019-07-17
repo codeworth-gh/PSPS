@@ -23,7 +23,7 @@ PSPS uses the following technologies:
 * [PostgreSQL](http://postgres.org)
 * [Slick](http://slick.lightbend.com/) As the database connectivity layer
 * [Bootstrap4](http://getbootstrap.com)
-* User-based access control, using (Deadbolt)[https://deadbolt-scala.readme.io].
+* User-based access control, using [Deadbolt](https://deadbolt-scala.readme.io).
 * Custom code and templates
 
 #### To use PSPS
