@@ -1,5 +1,5 @@
 # PSPS
-Play-Scala-Postgres-Slick stack, by The Improvery.
+Play-Scala-Postgres-Slick stack, by CodeWorth.io and the Play community.
 
 ## Overview
 
