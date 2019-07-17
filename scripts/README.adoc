@@ -1,0 +1,34 @@
+# Basic Scripts
+
+Scripts in this directory handle deployment of a Play app on a unix machine (basically, assuming bash and other common unix tools are available to te shell). These are useful when applications are created using `sbt dist`, `scp`-ed to the server, and deployed manually. When the application is mature enough, it is advisable to add it as a systemd unix service - see the `psps.service`.
+
+[NOTE]
+This type of setup is useful on a single-machine setups, e.g. on a VPS running a small-to-medium scale application. Not the kind of thing you'd do in a cloud environment.
+
+[WARNING]
+====
+Before using `psps.service`:
+    
+* Edit it to match the server it would run on
+* Add a user called `play` to the server
+====
+The setup of the application directory is described below. The scripts should be run from that directory.
+
+[pre]
+----
+app/
+    app-190507 <1>
+    app-190620 <2>
+    app-190712 <3>
+    app-current <4>
+    scripts     <5>
+    RUNNING.pid <6>
+----
+<1> Application deployed at May 7th, 2019
+<2> Application deployed at June 20th, 2019
+<3> Application deployed at July 12th, 2019
+<4> Link to the current application
+<5> Scripts folder
+<6> Process id of the running application
+
+This setup allows for a quick rollback in case a newly deployed application does not work properly.
