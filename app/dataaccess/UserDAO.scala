@@ -1,11 +1,14 @@
 package dataaccess
 
+import java.util.logging.LogManager
+
 import javax.inject.Inject
 import models.User
 import org.mindrot.jbcrypt.BCrypt
-import play.api.Configuration
+import play.api.{Configuration, Logger}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
+
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -63,10 +66,13 @@ class UsersDAO @Inject() (protected val dbConfigProvider:DatabaseConfigProvider,
 
   def get(username:String):Future[Option[User]] = db.run( Users.filter( _.username === username).result ).map( _.headOption )
 
+  def getByUsernameOrEmail(usernameOrEmail:String):Future[Option[User]] = db.run( Users.filter
+        ( u => u.username === usernameOrEmail || u.email === usernameOrEmail).result ).map( _.headOption )
+
   def get(userId:Long):Future[Option[User]] = db.run( Users.filter( _.id === userId).result ).map( _.headOption )
 
-  def authenticate(username:String, password:String):Future[Option[User]] = {
-    get(username).map( maybeUser => maybeUser.find(u=>BCrypt.checkpw(password, u.encryptedPassword)) )
+  def authenticate(usernameOrEmail:String, password:String):Future[Option[User]] = {
+    getByUsernameOrEmail(usernameOrEmail).map(maybeUser => maybeUser.find(u=>BCrypt.checkpw(password, u.encryptedPassword)) )
   }
 
   def hashPassword( plaintext:String ) = BCrypt.hashpw(plaintext, BCrypt.gensalt())

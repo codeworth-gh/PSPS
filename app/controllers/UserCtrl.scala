@@ -110,7 +110,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
         users.authenticate(loginData.username.trim, loginData.password.trim)
           .map( _.map(u => Redirect(routes.UserCtrl.userHome).withNewSession.withSession(("userId",u.id.toString)))
             .getOrElse( {
-              BadRequest(views.html.users.login(loginForm.fill(loginData).withGlobalError("Bad username or password")))})
+              BadRequest(views.html.users.login(loginForm.fill(loginData).withGlobalError("Bad username, email or password")))})
           )
       }
     )

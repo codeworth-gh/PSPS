@@ -35,5 +35,6 @@ password.again=Password (again)
 newPassword=New Password
 newPassword.again=New Password (again)
 username=Username
+usernameOrEmail=Username/Email
 name=Name
 email=Email
