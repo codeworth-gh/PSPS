@@ -32,15 +32,11 @@ libraryDependencies ++= Seq(
 
 // TODO add sections and table helpers
 // TwirlKeys.templateImports ++= Seq( "views.Sections", "views.TableHelper")
+TwirlKeys.templateImports ++= Seq("views.Helpers")
 
 LessKeys.compress in Assets := true
 
 includeFilter in (Assets, LessKeys.less) := "*.less"
 
-LessKeys.compress in Assets := true
-
-RjsKeys.modules += WebJs.JS.Object("esversion"->"6")
-
 pipelineStages := Seq(rjs, uglify, digest, gzip)
 
-TwirlKeys.templateImports ++= Seq("views.Helpers")

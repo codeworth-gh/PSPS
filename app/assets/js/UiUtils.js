@@ -105,10 +105,10 @@ var UiUtils = (function () {
     var makeTr = function( options, elementArr ) {
       var $tr = $(makeElement("tr", options));
       $(elementArr).each( function(i,sub) {
-          if (typeof sub === 'string') {
-              $tr.append("<td>" + sub + "</td>");
-          } else {
+          if (sub.nodeName && sub.nodeName === "TD") {
               $tr.append(sub);
+          } else {
+              $tr.append("<td>" + sub + "</td>");
           }
       });
       return $tr;

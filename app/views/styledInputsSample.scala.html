@@ -5,13 +5,13 @@
 }
 
 @templates.bsNavbar("styledInputs.title", views.Structure.publicItems, views.PublicSections.Components, head) {
-  <div class="row">
+  <div class="row my-2">
     <div class="col">
       <h3>Startup Ideas</h3>
       <p>Demonstrating the usage of <code>@@css.styledInputs.less</code>.</p>
     </div>
   </div>
-  <div class="row">
+  <div class="row my-2">
     <div class="col">
       <h3><code>Radio Button</code></h3>
       <h4>Sample code</h4>
@@ -32,7 +32,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row my-2">
     <div class="col">
       <h3><code>Checkbox</code></h3>
       <h4>Sample code</h4>
@@ -49,6 +49,32 @@
       <label class="buttonLike" for="that">That</label>
       <input class="hidden" type="checkbox" id="other" name="checkboxEx" value="other" />
       <label class="buttonLike" for="other">And Other</label>
+    </div>
+  </div>
+
+  <div class="row my-2">
+    <div class="col">
+      <h3><code>Button Group</code></h3>
+      <h4>Sample Code</h4>
+<pre class="hl">
+<span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;buttonLikeGroup&quot;</span><span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;input</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;hidden&quot;</span> <span class="hl kwb">type</span>=<span class="hl str">&quot;radio&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;buttonGroup1&quot;</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;buttonGroup&quot;</span> <span class="hl kwb">value</span>=<span class="hl str">&quot;good&quot;</span> <span class="hl kwa">/&gt;</span>
+  <span class="hl kwa">&lt;label</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;buttonLike&quot;</span> <span class="hl kwb">for</span>=<span class="hl str">&quot;buttonGroup1&quot;</span><span class="hl kwa">&gt;</span>Can<span class="hl kwa">&lt;/label&gt;</span>
+  <span class="hl kwa">&lt;input</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;hidden&quot;</span> <span class="hl kwb">type</span>=<span class="hl str">&quot;radio&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;buttonGroup2&quot;</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;buttonGroup&quot;</span> <span class="hl kwb">value</span>=<span class="hl str">&quot;veryGood&quot;</span> <span class="hl kwa">/&gt;</span>
+  <span class="hl kwa">&lt;label</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;buttonLike&quot;</span> <span class="hl kwb">for</span>=<span class="hl str">&quot;buttonGroup2&quot;</span><span class="hl kwa">&gt;</span>select<span class="hl kwa">&lt;/label&gt;</span>
+  <span class="hl kwa">&lt;input</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;hidden&quot;</span> <span class="hl kwb">type</span>=<span class="hl str">&quot;radio&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;buttonGroup3&quot;</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;buttonGroup&quot;</span> <span class="hl kwb">value</span>=<span class="hl str">&quot;amazing&quot;</span> <span class="hl kwa">/&gt;</span>
+  <span class="hl kwa">&lt;label</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;buttonLike&quot;</span> <span class="hl kwb">for</span>=<span class="hl str">&quot;buttonGroup3&quot;</span><span class="hl kwa">&gt;</span>one<span class="hl kwa">&lt;/label&gt;</span>
+<span class="hl kwa">&lt;/div&gt;</span>
+</pre>
+      <h4>Options</h4>
+      <div class="buttonLikeGroup">
+        <input class="hidden" type="radio" id="buttonGroup1" name="buttonGroup" value="good" />
+        <label class="buttonLike" for="buttonGroup1">Can</label>
+        <input class="hidden" type="radio" id="buttonGroup2" name="buttonGroup" value="veryGood" />
+        <label class="buttonLike" for="buttonGroup2">select</label>
+        <input class="hidden" type="radio" id="buttonGroup3" name="buttonGroup" value="amazing" />
+        <label class="buttonLike" for="buttonGroup3">one</label>
+      </div>
     </div>
   </div>
 }

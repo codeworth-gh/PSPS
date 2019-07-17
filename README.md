@@ -15,7 +15,7 @@ A seed project for websites that have user accounts, a public side, and database
 Sure, that's the textbook way of doing it. But it's impractical, especially as Play goes through an evolution of its own (and a non-backward-compatible one, too). Additionally, Play is large enough to have a non-trivial learning curve. Which is added to Scala's non-trivial learning curve. That's enough curves.
 
 ### Who
-The Improvery™ (as in: "us") is a software studio that creates custom software systems. When we develop web systems, and are free to choose a technology stack, we tend to use Play+Scala. PSPS is a consolidation of the knowledge and practices we've accumulated over the last few years, doing [numerous](http://ecf.org.il) [web](http://index.genevainitiative.org) [sites](http://decision-trees.force11.org) (plus some we can't list here yet).
+CodeWorth.io (as in: "us") is a software studio that creates custom software systems. When we develop web systems, and are free to choose a technology stack, we tend to use Play+Scala. PSPS is a consolidation of the knowledge and practices we've accumulated over the last few years, doing [numerous](http://ecf.org.il) [web](http://index.genevainitiative.org) [sites](http://decision-trees.force11.org) (plus some we can't list here yet).
 
 ### How
 PSPS uses the following technologies:
@@ -33,7 +33,7 @@ Just fork it, and change the code as needed (that's how you use a seed project, 
 
 ### Users Accounts
 
-Including "forgot password" and "invite user" flows, profile editing page, and logged-in only parts.
+Including "forgot password" and "invite user" flows, profile editing page, and logged-in only parts. Users can log on using their username _or_ email. Database constraints prevent duplicate entries.
 
 ### Site Navigation Tree and NavBar
 
@@ -80,6 +80,6 @@ function resendEmail(uuid){
 
 ### More
 * *Localization support* Using standard Play localization.
-* *Separate front-end and back-office JS Routers* for better security (sure, it's security by obscurity, but it helps).
+* *Separate front-end and back-office JS Routers* for better security.
 * *Convenience methods for template rendering* in `views.Helpers`.
 * Template for social media page metadata

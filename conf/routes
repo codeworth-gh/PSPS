@@ -37,7 +37,7 @@ POST    /bkofc/changePassword        controllers.UserCtrl.doChangePassword
 POST    /api/sayHi controllers.HomeCtrl.apiSayHi
 
 ## back office
-POST    /bkofc/api/users/            controllers.UserCtrl.apiAddUser
+POST    /bkofc/api/users/                         controllers.UserCtrl.apiAddUser
 POST    /bkofc/api/users/invitations/:uuid/resend controllers.UserCtrl.apiReInviteUser(uuid)
 DELETE  /bkofc/api/users/invitations/:uuid        controllers.UserCtrl.apiDeleteInvitation(uuid)
 

@@ -26,7 +26,15 @@ var Playjax = function(router){
     function using( pathFn ){
         var route = pathFn(router.controllers);
         return {
+            /**
+             * Return the request object
+             * @param body optional body of request
+             */
             request: function( body ) { return routeToRequest(route, body);},
+            /**
+             * Fetches the request
+             * @param body optional request payload
+             */
             fetch: function( body ) { return fetchRequest(route, body); }
         };
     }
