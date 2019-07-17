@@ -1,11 +1,16 @@
 package controllers
 
+import be.objectify.deadbolt.scala.DeadboltActions
 import javax.inject._
 import play.api._
 import play.api.i18n.{I18nSupport, Langs, MessagesApi}
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc._
 import views.PaginationInfo
+
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+
 
 /**
   * This controller creates an `Action` to handle HTTP requests to the
@@ -29,9 +34,9 @@ object HomeCtrl {
   val beRouteHash:Int = Math.abs(beRouteSeq.map( r => r.f + r.name ).map( _.hashCode ).sum)
 }
 
-class HomeCtrl @Inject()(langs: Langs, messagesApi: MessagesApi, cc: ControllerComponents
+class HomeCtrl @Inject()(deadbolt:DeadboltActions, langs: Langs, messagesApi: MessagesApi, cc: ControllerComponents
                         ) extends AbstractController(cc) with I18nSupport {
-  
+  private val ec = cc.executionContext
 //  implicit val mApiImplicit = messagesApi
   /**
     * Create an Action to render an HTML page.
@@ -86,11 +91,11 @@ class HomeCtrl @Inject()(langs: Langs, messagesApi: MessagesApi, cc: ControllerC
     * @return
     */
   def backEndRoutes =
-    Action { implicit request =>
-      Ok(
+    deadbolt.SubjectPresent()() { implicit request =>
+      Future(Ok(
         routing.JavaScriptReverseRouter("beRoutes")(
           HomeCtrl.beRouteSeq: _*
-        )).as("text/javascript")
+        )).as("text/javascript"))
     }
 
 
