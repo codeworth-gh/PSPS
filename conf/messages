@@ -27,3 +27,13 @@ error.password.incorrect=Incorrect password
 pager.title=Pager
 informationals.title=Informationals
 styledInputs.title=Styled Inputs
+
+cancel=Cancel
+forgotPassword=forgot password
+password=Password
+password.again=Password (again)
+newPassword=New Password
+newPassword.again=New Password (again)
+username=Username
+name=Name
+email=Email

@@ -53,7 +53,8 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
                          cached: Cached, cc:ControllerComponents,
                          users: UsersDAO, invitations:InvitationDAO,
                          forgotPasswords:PasswordResetRequestDAO,
-                         mailerClient: MailerClient, langs:Langs, messagesApi:MessagesApi) extends InjectedController {
+                         mailerClient: MailerClient, langs:Langs,
+                         messagesApi:MessagesApi, localAction:LocalAction) extends InjectedController {
 
   implicit private val ec = cc.executionContext
   private val validUserId = "^[-._a-zA-Z0-9]+$".r
@@ -126,19 +127,14 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     Future(Ok( views.html.users.userHome(user) ))
   }
 
-  def apiAddUser = Action(parse.tolerantJson).async { req =>
-    if ( req.connection.remoteAddress.isLoopbackAddress ) {
-      val payload = req.body.asInstanceOf[JsObject]
+  def apiAddUser = localAction(parse.tolerantJson).async { request =>
+      val payload = request.body.asInstanceOf[JsObject]
       val username = payload("username").as[JsString].value
       val password = payload("password").as[JsString].value
       val email = payload("email").as[JsString].value
       val user = User(0, username, "", email, users.hashPassword(password))
 
       users.addUser(user).map(u => Ok("Added user " + u.username))
-
-    } else {
-      Future( Forbidden("Adding users via API is only available from localhost") )
-    }
   }
 
 
