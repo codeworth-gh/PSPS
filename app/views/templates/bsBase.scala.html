@@ -16,7 +16,7 @@
     </head>
     <body>
         @content
-        <script src="@routes.HomeCtrl.frontEndRoutes()?113"></script>
+        <script src="@routes.HomeCtrl.frontEndRoutes()?@controllers.HomeCtrl.feRouteHash"></script>
         <script src="@routes.Assets.versioned("lib/jquery/jquery.min.js")"></script>
         <script src="@routes.Assets.versioned("lib/jquery-ui/jquery-ui.min.js")"></script>
         <script src="@routes.Assets.versioned("lib/tether/js/tether.min.js")"></script>

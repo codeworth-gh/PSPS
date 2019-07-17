@@ -2,7 +2,6 @@ package controllers
 
 import javax.inject._
 import play.api._
-import play.api.cache.Cached
 import play.api.i18n.{I18nSupport, Langs, MessagesApi}
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc._
@@ -13,7 +12,24 @@ import views.PaginationInfo
   * application's home page.
   */
 
-class HomeCtrl @Inject()(langs: Langs, messagesApi: MessagesApi, cached: Cached, cc: ControllerComponents
+object HomeCtrl {
+
+  val feRouteSeq = Seq(
+    routes.javascript.HomeCtrl.apiSayHi
+  )
+
+  val feRouteHash:Int = Math.abs(feRouteSeq.map( r => r.f + r.name ).map( _.hashCode ).sum)
+
+  val beRouteSeq = Seq(
+    routes.javascript.UserCtrl.apiAddUser,
+    routes.javascript.UserCtrl.apiReInviteUser,
+    routes.javascript.UserCtrl.apiDeleteInvitation
+  )
+
+  val beRouteHash:Int = Math.abs(beRouteSeq.map( r => r.f + r.name ).map( _.hashCode ).sum)
+}
+
+class HomeCtrl @Inject()(langs: Langs, messagesApi: MessagesApi, cc: ControllerComponents
                         ) extends AbstractController(cc) with I18nSupport {
   
 //  implicit val mApiImplicit = messagesApi
@@ -54,29 +70,30 @@ class HomeCtrl @Inject()(langs: Langs, messagesApi: MessagesApi, cached: Cached,
     * Routes for the front-end.
     * @return
     */
-  def frontEndRoutes = cached("ACT_frontEndRoutes") {
+  def frontEndRoutes =
     Action { implicit request =>
       Ok(
         routing.JavaScriptReverseRouter("feRoutes")(
           routes.javascript.HomeCtrl.apiSayHi
         )).as("text/javascript")
     }
-  }
-  
+
+
+
+
   /**
     * Routes for the front-end.
     * @return
     */
-  def backEndRoutes = cached("ACT_backEndRoutes") {
+  def backEndRoutes =
     Action { implicit request =>
       Ok(
         routing.JavaScriptReverseRouter("beRoutes")(
-          routes.javascript.UserCtrl.apiAddUser,
-          routes.javascript.UserCtrl.apiReInviteUser,
-          routes.javascript.UserCtrl.apiDeleteInvitation
+          HomeCtrl.beRouteSeq: _*
         )).as("text/javascript")
     }
-  }
+
+
   
   def notImplYet = TODO
   
