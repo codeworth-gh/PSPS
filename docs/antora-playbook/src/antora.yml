@@ -1,0 +1,6 @@
+name: psps
+title: PSPS
+version: 0.9.5
+start_page: ROOT:index.adoc
+nav:
+- modules/ROOT/nav.adoc

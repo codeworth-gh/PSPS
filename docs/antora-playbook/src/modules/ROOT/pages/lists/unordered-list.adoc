@@ -1,0 +1,103 @@
+= Unordered Lists
+ifndef::env-site,env-github[]
+include::_attributes.adoc[]
+endif::[]
+// Settings
+:idprefix:
+:idseparator: -
+:table-caption!:
+
+== Basic Unordered List
+
+.Basic Unordered List
+[source,asciidoc]
+----
+.Optional Title of List
+* Item A
+* Item B
+* Item C
+----
+
+.Optional Title of List
+* Item A
+* Item B
+* Item C
+
+== Nested Unordered List
+
+.Unordered list with nested levels
+[source,asciidoc]
+----
+* Item A
+* Item B
+** Item B1
+** Item B2
+* Item C
+----
+
+* Item A
+* Item B
+** Item B1
+** Item B2
+* Item C
+
+.Maximum nested level
+[source,asciidoc]
+----
+* level 1
+** level 2
+*** level 3
+**** level 4
+***** level 5
+* level 1
+----
+
+* level 1
+** level 2
+*** level 3
+**** level 4
+***** level 5
+* level 1
+
+////
+== Bullet Style
+
+The list marker (bullet) can be set using the list’s block style.
+
+.Set list marker styles
+[source,asciidoc]
+----
+[square]
+* square
+
+[circle]
+* circle
+
+[disc]
+* disc
+
+[none]
+* none or no-bullet (indented, but no bullet)
+
+[unstyled]
+* unstyled (no indentation or bullet)
+----
+
+.Result
+--
+[square]
+* square
+
+[circle]
+* circle
+
+[disc]
+* disc
+
+[none]
+* none or no-bullet (indented, but no bullet)
+
+[unstyled]
+* unstyled (no indentation or bullet)
+--
+////

@@ -1,0 +1,13 @@
+site:
+  title: PSPS - Play Framework Application Seed
+  # the 404 page and sitemap files only get generated when the url property is set
+  url: https://github.com/codeworth-gh/PSPS
+  start_page: psps::index.adoc
+content:
+  sources:
+  - url: ./src/
+  
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/master/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true

@@ -1,0 +1,144 @@
+= Ordered Lists
+ifndef::env-site,env-github[]
+include::_attributes.adoc[]
+endif::[]
+// Settings
+:idprefix:
+:idseparator: -
+:table-caption!:
+
+== Basic Ordered List
+
+.Basic Ordered List
+[source,asciidoc]
+----
+.Optional Title of List
+. Step 1
+. Step 2
+. Step 3
+----
+
+.Optional Title of List
+. Step 1
+. Step 2
+. Step 3
+
+== Nested Ordered List
+
+.Ordered list with nested levels
+[source,asciidoc]
+----
+. Step 1
+. Step 2
+.. Step 2a
+.. Step 2b
+. Step 3
+----
+
+. Step 1
+. Step 2
+.. Step 2a
+.. Step 2b
+. Step 3
+
+.Maximum nested level
+[source,asciidoc]
+----
+. level 1
+.. level 2
+... level 3
+.... level 4
+..... level 5
+. level 1
+----
+
+. level 1
+.. level 2
+... level 3
+.... level 4
+..... level 5
+. level 1
+
+////
+== Number Style
+
+For ordered lists, Asciidoctor supports the numeration styles such as lowergreek and decimal-leading-zero.
+
+[cols="2,3", width="60%"]
+.Asciidoctor ordered list numeration styles
+|===
+|Block style |CSS list-style-type
+
+|arabic
+|decimal
+
+|decimal
+|decimal-leading-zero
+
+|loweralpha
+|lower-alpha
+
+|upperalpha
+|upper-alpha
+
+|lowerroman
+|lower-roman
+
+|upperroman
+|upper-roman
+
+|lowergreek
+|lower-greek
+|===
+
+.Set list number styles
+[source,asciidoc]
+----
+[upperroman]
+. Upper Roman style
+. Step
+[decimal]
+.. Decimal style
+.. Item
+[lowergreek]
+... Lower Greek style
+. This Level 1 item is still Upper Roman style
+.. But this Level 2 item reverts to the default style
+----
+
+.Result
+--
+[upperroman]
+. Upper Roman style
+. Step
+[decimal]
+.. Decimal style
+.. Item
+[lowergreek]
+... Lower Greek style
+. This Level 1 item is still Upper Roman style
+.. But this Level 2 item reverts to the default style
+--
+
+== Start Number
+
+.Set list start number
+[source,asciidoc]
+----
+.Optional List Title
+[start=5]
+. This list starts at *Five*
+. Six
+.. a
+. Seven
+----
+
+.Optional List Title
+[start=5]
+. This list starts at *Five*
+. Six
+. Seven
+
+IMPORTANT: The start attribute must be a number, even when using a different numeration style.
+For instance, to start an alphabetic list at letter "c", set the numeration style to loweralpha and the start attribute to 3.
+////

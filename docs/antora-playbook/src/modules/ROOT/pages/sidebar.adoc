@@ -1,0 +1,25 @@
+= Sidebar
+ifndef::env-site,env-github[]
+include::_attributes.adoc[]
+endif::[]
+// Settings
+:idprefix:
+:idseparator: -
+
+== Sidebar Block
+
+A sidebar can be titled and contain any type of content such as source code and images.
+
+.Sidebar
+[source,asciidoc]
+----
+.Optional Title of Sidebar
+****
+Sidebars are used to visually separate short, auxiliary bits of content that supplement the main text.
+****
+----
+
+.Optional Title of Sidebar
+****
+Sidebars are used to visually separate short, auxiliary bits of content that supplement the main text.
+****
