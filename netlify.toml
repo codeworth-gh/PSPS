@@ -1,0 +1,42 @@
+[build]
+base = "netlify"
+publish = "public"
+command = """\
+NODE_PATH=node_modules node_modules/.bin/antora --fetch --generator=@antora/xref-validator ../antora-playbook.yml && \
+node_modules/.bin/antora --html-url-extension-style=indexify --redirect-facility=netlify ../antora-playbook.yml && \
+curl -o /dev/null -s -X POST -F "token=$INDEX_WEBHOOK_TOKEN" -F "ref=$BRANCH" -F "variables[TRIGGER_ACTION]=index" $INDEX_WEBHOOK_URL\
+"""
+
+[build.environment]
+NODE_VERSION = "10"
+ANTORA_CACHE_DIR = "node_modules/.cache/antora"
+
+[context.production.environment]
+# ALGOLIA_APP_ID = "E80Q5UHPOS"
+# ALGOLIA_API_KEY = "6e7248a6d21038512a92145e9b903757"
+# ALGOLIA_IDX_NAME = "antora-docs"
+# GOOGLE_ANALYTICS_KEY = "UA-112324747-2"
+
+[context.deploy-preview]
+command = """\
+NODE_PATH=node_modules node_modules/.bin/antora --fetch --generator=@antora/xref-validator ../antora-playbook.yml && \
+node_modules/.bin/antora --url $DEPLOY_PRIME_URL --html-url-extension-style=indexify --redirect-facility=netlify ../antora-playbook.yml\
+"""
+
+# NOTE use settings from _headers file to allow use of netlify command (not currently used)
+#[[headers]]
+#for = "/_/font/*"
+#  [headers.values]
+#  Cache-Control = "public,max-age=604800"
+
+# NOTE these redirects get appended to the redirects defined in the _redirects file
+# [[redirects]]
+# from = "https://antora-docs.netlify.com/*"
+# to = "https://docs.antora.org/:splat"
+# status = 301
+# force = true
+
+# [[redirects]]
+# from = "/antora/latest/*"
+# to = "/antora/2.0/:splat"
+# status = 302
