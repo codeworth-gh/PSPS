@@ -21,8 +21,8 @@ _assuming PostgreSQL is already installed and running_
 
 === Adding users
 
-Add first user by `+POST+`ing the following json to
-`+$SEREVR/bkofc/api/users+`:
+Add first user by `POST`-ing the following json to
+`$SEREVR/bkofc/api/users`:
 
 [source,$json]
 ----

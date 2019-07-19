@@ -1,4 +1,5 @@
 = PSPS
+:experimental:
 
 Play-Scala-Postgres-Slick stack, by http://codeworth.io[CodeWorth.io] and the http://playframework.com[Play Framework] community.
 
@@ -39,12 +40,15 @@ yet).
 
 === How
 
-PSPS uses the following technologies: * The http://scala-lang.org[Scala]
-variant of http://playframework.com[Play Framework]. *
-http://postgres.org[PostgreSQL] * http://slick.lightbend.com/[Slick] As
-the database connectivity layer * http://getbootstrap.com[Bootstrap4] *
-User-based access control, using
-https://deadbolt-scala.readme.io[Deadbolt]. * Custom code and templates
+PSPS uses the following technologies: 
+
+* The http://scala-lang.org[Scala] variant of http://playframework.com[Play Framework].
+* http://postgres.org[PostgreSQL] 
+* http://slick.lightbend.com/[Slick] As the database connectivity layer 
+* http://getbootstrap.com[Bootstrap4] 
+* User-based access control, using https://deadbolt-scala.readme.io[Deadbolt]. 
+* Client-side localization using https://github.com/airbnb/polyglot.js[AirBnB's Polyglot.js].
+* Custom code and templates
 
 ==== To use PSPS
 
@@ -56,8 +60,8 @@ project, right?)
 === Users Accounts
 
 Including "`forgot password`" and "`invite user`" flows, profile editing
-page, and logged-in only parts. Users can log on using their username
-_or_ email. Database constraints prevent duplicate entries.
+page, and logged-in only sections. Users can log on using their username
+_or_ email. Database constraints prevent duplicate entries of both emails and usernames.
 
 === Site Navigation Tree and NavBar
 
@@ -83,7 +87,7 @@ val publicItems:Seq[TopSiteSection[PublicSections.Value]] = Seq(
 
 === Logged-in Template
 
-Complete with user account, logout button, etc.
+Complete with user account, btn:[logout] button, etc.
 
 === Success/Fail/Warn Messages
 

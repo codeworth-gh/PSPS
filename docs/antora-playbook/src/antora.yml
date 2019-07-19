@@ -1,6 +1,6 @@
 name: psps
-title: PSPS
+title: PSPS Application Seed
 version: 0.9.5
-start_page: ROOT:index.adoc
+# start_page: ROOT:index.adoc
 nav:
 - modules/ROOT/nav.adoc

@@ -5,9 +5,14 @@ site:
   start_page: psps::index.adoc
 content:
   sources:
-  - url: ./src/
+  - url: ./../../
+    branches: HEAD, antora-docs
+    start_path: docs/antora-playbook/src/
   
 ui:
   bundle:
-    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/master/raw/build/ui-bundle.zip?job=bundle-stable
+    url:   http://mbarsinai.com/files/psps-antora-ui.zip
+    # url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/master/raw/build/ui-bundle.zip?job=bundle-stable
+    # url: https://gitlab.com/codeworth.io/psps-antora-ui/-/archive/v0.9.5/psps-antora-ui-v0.9.5.zip
+    # url:  https://github.com/anoff/antora-arc42-ui/releases/download/0.2/ui-bundle.zip
     snapshot: true
