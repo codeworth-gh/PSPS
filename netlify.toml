@@ -2,7 +2,7 @@
 base = "netlify"
 publish = "docs/antora-playbook/build/site"
 command = """\
-NODE_PATH=node_modules node_modules/.bin/antora --fetch --generator=@antora/xref-validator ../docs/antora-playbook/site.yml
+NODE_PATH=node_modules node_modules/.bin/antora --fetch --generator=@antora/xref-validator --to-dir ../docs/antora-playbook/build ../docs/antora-playbook/site.yml
 """
 # Original, full command (possibly also indexes and such).
 # command = """\
