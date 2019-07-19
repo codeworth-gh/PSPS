@@ -1,9 +1,9 @@
 [build]
 base = "netlify"
-publish = "public"
+publish = "docs/antora-playbook/build/site"
 command = """\
-NODE_PATH=node_modules node_modules/.bin/antora --fetch --generator=@antora/xref-validator ../docs/site.yml && \
-node_modules/.bin/antora --html-url-extension-style=indexify --redirect-facility=netlify ../docs/site.yml && \
+NODE_PATH=node_modules node_modules/.bin/antora --fetch --generator=@antora/xref-validator ../docs/antora-playbook/site.yml && \
+node_modules/.bin/antora --html-url-extension-style=indexify --redirect-facility=netlify ../docs/antora-playbook/site.yml && \
 curl -o /dev/null -s -X POST -F "token=$INDEX_WEBHOOK_TOKEN" -F "ref=$BRANCH" -F "variables[TRIGGER_ACTION]=index" $INDEX_WEBHOOK_URL\
 """
 
@@ -19,8 +19,8 @@ ANTORA_CACHE_DIR = "node_modules/.cache/antora"
 
 [context.deploy-preview]
 command = """\
-NODE_PATH=node_modules node_modules/.bin/antora --fetch --generator=@antora/xref-validator ../docs/site.yml && \
-node_modules/.bin/antora --url $DEPLOY_PRIME_URL --html-url-extension-style=indexify --redirect-facility=netlify ../docs/site.yml\
+NODE_PATH=node_modules node_modules/.bin/antora --fetch --generator=@antora/xref-validator ../docs/antora-playbook/site.yml && \
+node_modules/.bin/antora --url $DEPLOY_PRIME_URL --html-url-extension-style=indexify --redirect-facility=netlify ../docs/antora-playbook/site.yml\
 """
 
 # NOTE use settings from _headers file to allow use of netlify command (not currently used)
