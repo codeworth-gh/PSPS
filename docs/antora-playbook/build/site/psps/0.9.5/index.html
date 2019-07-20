@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>PSPS :: PSPS - Play Framework Application Seed</title>
+    <link rel="canonical" href="https://github.com/codeworth-gh/PSPS/psps/0.9.5/index.html">
+    <meta name="generator" content="Antora 2.0.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://github.com/codeworth-gh/PSPS">PSPS - Play Framework Application Seed</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="/">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Links</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="http://codeworth.io">CodeWorth.io</a>
+            <a class="navbar-item" href="https://www.lightbend.com">Lightbend</a>
+            <a class="navbar-item" href="https://www.playframework.com">Play Framework</a>
+            <hr>
+            <a class="navbar-item" href="https://antora.org">Antora</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="https://github.com/codeworth-gh/PSPS">Main Repo</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="psps" data-version="0.9.5">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html">PSPS Application Seed</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="setups.html">Setting Up</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="inline-text-formatting.html">Basic Inline Text Formatting</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="special-characters.html">Special Characters &amp; Symbols</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="admonition.html">Admonition</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="sidebar.html">Sidebar</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="ui-macros.html">UI Macros</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Lists</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lists/ordered-list.html">Ordered List</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lists/unordered-list.html">Unordered List</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">PSPS Application Seed</span>
+    <span class="version">0.9.5</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">PSPS Application Seed</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">0.9.5</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main role="main">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link is-current"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">PSPS Application Seed</a></li>
+    <li><a href="index.html">PSPS</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///Users/michael/Documents/Consulting/Own/PSPS/PSPS/docs/antora-playbook/src/modules/ROOT/pages/index.adoc">Edit this Page</a></div>
+</div>
+<article class="doc">
+<h1 class="page">PSPS</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Play-Scala-Postgres-Slick stack, by <a href="http://codeworth.io">CodeWorth.io</a> and the <a href="http://playframework.com">Play Framework</a> community.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_overview"><a class="anchor" href="#_overview"></a>Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="image"><img src="_images/PSPSdemo.gif" alt="Demo"></span></p>
+</div>
+<div class="sect2">
+<h3 id="_what_is_this"><a class="anchor" href="#_what_is_this"></a>What is this?</h3>
+<div class="paragraph">
+<p>A seed project for websites that have user accounts, a public side, and
+database connectivity.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_why"><a class="anchor" href="#_why"></a>Why</h3>
+<div class="paragraph">
+<p><a href="http://playframework.com">Play framework</a> is a very powerful, and a very
+non-opinionated, web platform. It’s a please to use, but we found
+ourselves implementing standard functionality over and over again. Thus,
+we decided to just write it once, properly (we hope) and then fork when
+needed.</p>
+</div>
+<div class="sect3">
+<h4 id="_why_not_sub_class_play"><a class="anchor" href="#_why_not_sub_class_play"></a>Why not Sub-Class Play?</h4>
+<div class="paragraph">
+<p>Sure, that’s the textbook way of doing it. But it’s impractical,
+especially as Play goes through an evolution of its own (and a
+non-backward-compatible one, too). Additionally, Play is large enough to
+have a non-trivial learning curve. Which is added to Scala’s non-trivial
+learning curve. That’s enough curves.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_who"><a class="anchor" href="#_who"></a>Who</h3>
+<div class="paragraph">
+<p>CodeWorth.io (as in: &#8220;us&#8221;) is a software studio that creates custom
+software systems. When we develop web systems, and are free to choose a
+technology stack, we tend to use Play+Scala. PSPS is a consolidation of
+the knowledge and practices we’ve accumulated over the last few years,
+doing <a href="http://ecf.org.il">numerous</a> <a href="http://index.genevainitiative.org">web</a>
+<a href="http://decision-trees.force11.org">sites</a> (plus some we can’t list here
+yet).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how"><a class="anchor" href="#_how"></a>How</h3>
+<div class="paragraph">
+<p>PSPS uses the following technologies:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The <a href="http://scala-lang.org">Scala</a> variant of <a href="http://playframework.com">Play Framework</a>.</p>
+</li>
+<li>
+<p><a href="http://postgres.org">PostgreSQL</a></p>
+</li>
+<li>
+<p><a href="http://slick.lightbend.com/">Slick</a> As the database connectivity layer</p>
+</li>
+<li>
+<p><a href="http://getbootstrap.com">Bootstrap4</a></p>
+</li>
+<li>
+<p>User-based access control, using <a href="https://deadbolt-scala.readme.io">Deadbolt</a>.</p>
+</li>
+<li>
+<p>Client-side localization using <a href="https://github.com/airbnb/polyglot.js">AirBnB&#8217;s Polyglot.js</a>.</p>
+</li>
+<li>
+<p>Custom code and templates</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_to_use_psps"><a class="anchor" href="#_to_use_psps"></a>To use PSPS</h4>
+<div class="paragraph">
+<p>Just fork it, and change the code as needed (that’s how you use a seed
+project, right?)</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_does_psps_have_out_of_its_proverbial_box"><a class="anchor" href="#_what_does_psps_have_out_of_its_proverbial_box"></a>What does PSPS have, out of its proverbial box?</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_users_accounts"><a class="anchor" href="#_users_accounts"></a>Users Accounts</h3>
+<div class="paragraph">
+<p>Including &#8220;forgot password&#8221; and &#8220;invite user&#8221; flows, profile editing
+page, and logged-in only sections. Users can log on using their username
+<em>or</em> email. Database constraints prevent duplicate entries of both emails and usernames.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_site_navigation_tree_and_navbar"><a class="anchor" href="#_site_navigation_tree_and_navbar"></a>Site Navigation Tree and NavBar</h3>
+<div class="paragraph">
+<p>Using pre-defined tree structure, developers can describe the site
+navigation structure. The UI templates will draw the structure,
+including drop-down items etc. The structure can be dynamic or static.
+Two sample structures are defined in <code>views.Helpers</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-scala hljs" data-lang="scala">val publicItems:Seq[TopSiteSection[PublicSections.Value]] = Seq(
+   PageSection("Public Home", PublicSections.Home, routes.HomeCtrl.index),
+   PageSection("Login", PublicSections.Login, routes.HomeCtrl.index),
+   MultiPageSection("Other", PublicSections.Others,
+     Seq(
+       PageSectionItem("Login", routes.HomeCtrl.index),
+       SeparatorSectionItem,
+       PageSectionItem("Public Home", routes.HomeCtrl.index)
+     )
+   )
+ )</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_logged_in_template"><a class="anchor" href="#_logged_in_template"></a>Logged-in Template</h3>
+<div class="paragraph">
+<p>Complete with user account, <b class="button">logout</b> button, etc.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_successfailwarn_messages"><a class="anchor" href="#_successfailwarn_messages"></a>Success/Fail/Warn Messages</h3>
+<div class="paragraph">
+<p>Are passed over the <code>flash</code> scope, with the key <code>FlashKeys.MESSAGE</code>.
+They are automatically shown to the user by the <code>bsBase</code> template. You
+can either pass a String (which will result in an &#8220;info&#8221; message), or
+a full-fledged <code>Informational</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_playjax"><a class="anchor" href="#_playjax"></a>Playjax</h3>
+<div class="paragraph">
+<p>JS Library to make JS6 <code>fetch</code> calls using Play’s JS Routers. Supports
+CSRF, by adding an HTML element with id <code>Playjax_csrfTokenValue</code> and
+value of the current CSRF token.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-javascript hljs" data-lang="javascript">function resendEmail(uuid){
+    new Playjax(beRoutes).using(c=&gt;c.UserCtrl.apiReInviteUser(uuid)).fetch()
+        .then( resp =&gt; {
+            if (resp.ok) {
+                Informationals.makeSuccess("Invitation re-sent", "", 1500).show();
+            } else {
+                Informationals.makeDanger("Re-sending the invitation failed", "", 1500).show();
+            }
+        });
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_more"><a class="anchor" href="#_more"></a>More</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><em>Localization support</em> Using standard Play localization.</p>
+</li>
+<li>
+<p><em>Separate front-end and back-office JS Routers</em> for better security.</p>
+</li>
+<li>
+<p><em>Convenience methods for template rendering</em> in <code>views.Helpers</code>.</p>
+</li>
+<li>
+<p>Template for social media page metadata</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</article>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using <a href="https://antora.org">Antora</a>, with CodeWorth.io's <a href="https://gitlab.com/codeworth.io/psps-antora-ui">PSPS Antora UI</a>.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

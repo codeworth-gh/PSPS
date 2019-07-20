@@ -6,5 +6,5 @@ target
 /.project
 /.settings
 /RUNNING_PID
-/docs/antora-playbook/build/
+#/docs/antora-playbook/build/
 /.metals/
