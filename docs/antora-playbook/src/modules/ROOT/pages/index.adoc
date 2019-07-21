@@ -1,7 +1,7 @@
 = PSPS
 include::_attributes.adoc[]
 
-**A Play-Scala-Postgres-Slick stack for small web applications. Created by http://codeworth.io[CodeWorth.io] and the http://playframework.com[Play Framework] community.**
+**A Play-Scala-PostgreSQL-Slick stack for web applications. Created by http://codeworth.io[CodeWorth.io] and the http://playframework.com[Play Framework] community.**
 
 == Overview
 

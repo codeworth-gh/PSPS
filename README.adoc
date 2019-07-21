@@ -1,0 +1,17 @@
+= PSPS
+
+**A Play-Scala-PostgreSQL-Slick stack for web applications. Created by http://codeworth.io[CodeWorth.io] and the http://playframework.com[Play Framework] community.**
+
+== Overview
+
+=== What is this?
+
+PSPS is a seed project for websites that have user accounts, a public side, and
+database connectivity. It is targeted at small-to-medium sites, that can use a single main monolith part. In other words, if you need a microservice-based cloud native hyper-distributed app, that's not it. If you need a website that can be hosted on a VPS, have a public and a back-office parts, and scale up nicely, PSPS is a good start.
+
+PSPS is based on our experience with Play for creating such websites. We have sites in production that handle thousands of visitors per month, living on a $4/month VPS.
+
+**https://psps-play-app.netlify.com/[Documentation]**
+
+
+image::https://api.netlify.com/api/v1/badges/fb260db4-9c0f-45d3-8759-02d76d9b015a/deploy-status[link="https://app.netlify.com/sites/psps-play-app/deploys"]
