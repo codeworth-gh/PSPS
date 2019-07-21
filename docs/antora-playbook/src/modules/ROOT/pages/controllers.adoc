@@ -1,0 +1,23 @@
+= Controllers
+
+PSPS comes with the following controllers:
+
+HomeCtrl::
+    Sample pages and Javascript routers.
+
+UserCtrl::
+    Handles user invitations, log in/outs, profile edits, etc.
+
+
+== Local Action
+
+An action that can only be invoked from the local machine. Useful for setup-related API endpoints.
+
+[source, scala]
+----
+def apiAddUser = localAction(parse.tolerantJson).async { request =>
+    val payload = request.body.asInstanceOf[JsObject]
+    ...
+    users.addUser(user).map(u => Ok("Added user " + u.username))
+}
+----

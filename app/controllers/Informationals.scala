@@ -24,7 +24,7 @@ case class Informational(
                            title:String,
                            subtitle:String
                          ) {
-  def encoded = Seq(level.toString(), title, subtitle).mkString("|")
+  def encoded = Seq(level.toString, title, subtitle).mkString("|")
 }
 
 object Informational {

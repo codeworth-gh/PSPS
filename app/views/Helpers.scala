@@ -31,7 +31,7 @@ object Helpers {
   def formatDate( ldt: LocalDate ):String = ldt.format( dateFormatter )
   
   
-  def encodeUriComponent( s:String ) = UriEncoding.encodePathSegment(s, java.nio.charset.StandardCharsets.UTF_8)
+  def encodeUriComponent( s:String ):String = UriEncoding.encodePathSegment(s, java.nio.charset.StandardCharsets.UTF_8)
   def stripHtmlTags(s:String):String = s.replaceAll("<.*?>","")
   
   def ifNotEmpty(s:String)(block:String=>Html):Html = {

@@ -1,2 +1,7 @@
+:experimental:
 :moduledir: ..
-include::{moduledir}/_attributes.adoc[]
+:attachmentsdir: {moduledir}/assets/attachments
+:examplesdir: {moduledir}/examples
+:imagesdir: {moduledir}/assets/images
+:partialsdir: {moduledir}/pages/_partials
+

@@ -1,0 +1,102 @@
+= Views
+
+include::_attributes.adoc[]
+
+PSPS users https://getbootstrap.com[Bootstrap 4] for its page templates. The menu:views package contains many facilities for supporting common HTML use-cases -- most of them detailed here.
+
+== Page Templates
+ 
+`bsBase.scala.html`::
+    Base template. Includes Bootstrap, the <<javascript-interop.adoc#feRoutes, front-end Javascript router>>, CSRF token, and common Javascript files.
+
+`bsNavbar.scala.html`::
+    Extends `bsBase` with a nav-bar.
+
+`frontEndBase.scala.html`::
+    Extends `bsNavBar` with the nav data for the public section.
+
+`backEndBase.scala.html`::
+    Extends `bsNavBar` with the nav data for the back-office section. Also includes the back-end Javascript router.
+
+[CAUTION]
+Bootstrap 4 uses https://jquery.org[JQuery], and thus PSPS views include it as well. This dependency will be removed when Bootstrap 5 is released.
+
+== Type-safe Navigation Menus
+
+Using pre-defined tree structure, developers can describe the site
+navigation structure. The UI templates will draw the structure,
+including drop-down items etc. The structure can be static or dynamic (e.g. composed based on user permissions).
+
+For example, the following code: 
+
+[source,scala]
+----
+object Structure {
+  
+  val publicItems:Seq[TopSiteSection[PublicSections.Value]] = Seq(
+    PageSection("Public Home", PublicSections.Home, routes.HomeCtrl.index),
+    PageSection("Login", PublicSections.Login, routes.UserCtrl.showLogin),
+    MultiPageSection("Components", PublicSections.Components,
+      Seq(
+        PageSectionItem("Pager", routes.HomeCtrl.pager(1)),
+        PageSectionItem("Informationals", routes.HomeCtrl.informationals),
+        PageSectionItem("Styled Inputs", routes.HomeCtrl.styledInputs)
+      )
+    ),
+    MultiPageSection("Other", PublicSections.Others,
+      Seq(
+        PageSectionItem("Login", routes.UserCtrl.showLogin),
+        SeparatorSectionItem,
+        PageSectionItem("Public Home", routes.HomeCtrl.index)
+      )
+    )
+  )
+  ...
+}
+----
+
+Results in:
+
+image::navbar.png[Navigation bar]
+
+[NOTE]
+File menu:views[Structure.scala] contains the classes and structures of the public and back-office site areas.
+
+== Informationals
+
+This is an infrastructure for UI messages (typically success/fail/info), that can be generated both from a controller, or from Javascript code on the client side. When created from a controller, they are passed over the `+flash+` scope, with the key `+FlashKeys.MESSAGE+` (this covers the common ``POST``-then-``REDIRECT`` pattern).
+
+.Messages can have a title, a sub-title, a color, and a timeout.
+image::messages.png[Messages]
+
+Additional methods allow blocking the UI (e.g. for full page data load), showing background progress, and prompting the user with YES/NO questions.
+
+.Screen blocking
+image::blockUI.png[]
+
+.Yes/No question
+image::yes-no.png[]
+
+.Background progress
+image::bkg.gif[]
+
+[TIP]
+To view and experiment (live!) with the Informationals library, start PSPS and navigate to the menu:Components[Informationals] page.
+
+== Pagers
+
+Having to page through a long list of data is a very common task. PSPS handles this with the `views.PaginationInfo` case class, and the `@comps.pager` partial template. For example, when `pi` is a `PaginationInfo` instance with `currentPage`=3 and `pageCount`=23, the following code:
+
+[source, scala]
+----
+@comps.pager(pi){i=>@routes.HomeCtrl.pager(i)}
+----
+
+... will result in:
+
+image::pager.png[]
+
+
+== `views.Helpers`
+
+This class contains functions that handle many common use-cases, such as date formatting, and conditional rendering. This is also a good place to put additional useful methods (we're happy to take pull requests!)

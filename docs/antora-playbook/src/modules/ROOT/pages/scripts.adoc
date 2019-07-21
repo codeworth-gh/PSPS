@@ -1,0 +1,62 @@
+= Scripts
+include:: _attributes.adoc
+
+The `scripts` folder contains several Bash scripts we found useful. 
+
+== Manual Application Deployment
+
+These scripts handle deployment of a Play app created using `sbt dist` on a unix machine. When the application is mature enough, it is advisable to add it as a `systemd` unix service - see the `psps.service` service definition file.
+
+[NOTE]
+This type of setup is useful on a single-machine setups, e.g. on a VPS running a small-to-medium scale application. Not the kind of thing you'd do in a cloud environment.
+
+The setup of the application directory is described below. The scripts should be run from that directory.
+
+[source]
+----
+app/
+    app-190507 <1>
+    app-190620 <2>
+    app-190712 <3>
+    app-current <4>
+    scripts     <5>
+    RUNNING.pid <6>
+----
+<1> Application deployed at May 7th, 2019
+<2> Application deployed at June 20th, 2019
+<3> Application deployed at July 12th, 2019
+<4> Link to the current application
+<5> Scripts folder
+<6> Process id of the running application
+
+This setup allows for a quick rollback in case a newly deployed application does not work properly.
+
+=== Deploy Scripts
+deploy-app::
+    Unzips the archive, gives the folder a date-based name.
+
+prepare-new::
+    Copies server config files from the previous app version to the new one
+
+link-app::
+    Links the passed application as `app-current`
+
+start-current::
+    Starts the current application.
+
+stop-current::
+    Stops the current application.
+
+
+=== Unix Service using `systemd`
+
+A `systemsd` service definition is available at menu:scripts[psps.service]
+
+
+[WARNING]
+====
+Before using `psps.service`:
+    
+* Edit it to match the server it would run on
+* Add a user called `play` to the server
+====

@@ -1,3 +1,7 @@
+/**
+ * Utility class for converting Javascript objects to HTML tables.
+ * @type {{convert: toHtml}}
+ */
 ObjectHTMLer = (function(){
 
     function objToTable( obj ) {

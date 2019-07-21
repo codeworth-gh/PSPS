@@ -1,9 +1,8 @@
 * xref:setups.adoc[Setting Up]
-* xref:inline-text-formatting.adoc[Basic Inline Text Formatting]
-* xref:special-characters.adoc[Special Characters & Symbols]
-* xref:admonition.adoc[Admonition]
-* xref:sidebar.adoc[Sidebar]
-* xref:ui-macros.adoc[UI Macros]
-* Lists
-** xref:lists/ordered-list.adoc[Ordered List]
-** xref:lists/unordered-list.adoc[Unordered List]
+* xref:controllers.adoc[Controllers]
+* xref:views.adoc[Views]
+* xref:javascript-interop.adoc[Javascript]
+* xref:scripts.adoc[Scripts]
+// * Lists
+// ** xref:lists/ordered-list.adoc[Ordered List]
+// ** xref:lists/unordered-list.adoc[Unordered List]

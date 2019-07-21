@@ -1,0 +1,73 @@
+= Javascript Interoperability
+include:: _attributes.adoc
+:experimental:
+
+== Javascript Routers
+
+Out of the box, PSPS comes with two https://www.playframework.com/documentation/2.7.x/JavaJavascriptRouter#Javascript-Routing[Play Javascript routers], listed below.
+
+[#feRoutes]#`feRoutes`#::
+    Holds routes for front-end related api. Present in all pages, as it is included in menu:views[templates>bsBase].
+
+`beRoutes`::
+    Holds routes for back-end related api. Included in menu:views[templates>backEndBase]. This router is only available to logged-in users.
+
+These routers are defined in `HomeCtrl`. In order to force browsers to reload the routers only when they change, we has the route sequence, and pass the hash value as a parameter. This is done in the following way:
+
+[source, scala]
+----
+object HomeCtrl {
+  ...
+  val beRouteSeq = Seq(         <1>
+    routes.javascript.UserCtrl.apiAddUser,
+    routes.javascript.UserCtrl.apiReInviteUser,
+    routes.javascript.UserCtrl.apiDeleteInvitation
+  )
+
+  val beRouteHash:Int = Math.abs(beRouteSeq.map( r => r.f + r.name ).map( _.hashCode ).sum) <2>
+
+    class HomeCtrl @Inject()(deadbolt:DeadboltActions, cc: ControllerComponents,
+                              langs: Langs, messagesApi: MessagesApi 
+                        ) extends AbstractController(cc) with I18nSupport {
+    ...
+    def backEndRoutes = deadbolt.SubjectPresent()() { implicit request => <3>
+      Future(Ok(
+        routing.JavaScriptReverseRouter("beRoutes")(
+          HomeCtrl.beRouteSeq: _*
+        )).as("text/javascript"))
+    }
+    ...
+    }
+}
+----
+<1> A sequence of the actions in the routes
+<2> A hash of the above sequence
+<3> Returning the actual router (using Scala's `: _*` operator)
+
+And then, in the template:
+
+[source, html]
+----
+<script src="@routes.HomeCtrl.backEndRoutes()?@controllers.HomeCtrl.beRouteHash"></script>
+----
+
+== PlayJax
+
+JS Library to make JS6 `+fetch+` calls using Play’s JS Routers. Supports
+CSRF, by adding an HTML element with id `+Playjax_csrfTokenValue+` and
+value of the current CSRF token.
+
+[source,javascript]
+----
+function resendEmail(uuid){
+    new Playjax(beRoutes).using(c=>c.UserCtrl.apiReInviteUser(uuid)).fetch()
+        .then( resp => {
+            if (resp.ok) {
+                Informationals.makeSuccess("Invitation re-sent", "", 1500).show();
+            } else {
+                Informationals.makeDanger("Re-sending the invitation failed", "", 1500).show();
+            }
+        });
+}
+----
+
