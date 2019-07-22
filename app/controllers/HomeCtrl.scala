@@ -8,8 +8,7 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.mvc._
 import views.PaginationInfo
 
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{ExecutionContext, Future}
 
 
 /**
@@ -36,7 +35,8 @@ object HomeCtrl {
 
 class HomeCtrl @Inject()(deadbolt:DeadboltActions, langs: Langs, messagesApi: MessagesApi, cc: ControllerComponents
                         ) extends AbstractController(cc) with I18nSupport {
-  private val ec = cc.executionContext
+  implicit private val ec: ExecutionContext = cc.executionContext
+  private val logger = Logger(classOf[HomeCtrl])
 //  implicit val mApiImplicit = messagesApi
   /**
     * Create an Action to render an HTML page.

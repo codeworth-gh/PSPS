@@ -26,6 +26,8 @@
 
   <logger name="play" level="INFO" />
   <logger name="application" level="DEBUG" />
+  <logger name="controllers" level="INFO" />
+  <logger name="models" level="INFO" />
 
   <!-- Log slick SQL statements
   <logger name="slick.jdbc.JdbcBackend.statement" level="DEBUG"/>
