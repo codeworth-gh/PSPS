@@ -1,3 +1,5 @@
+import play.sbt.PlayImport.caffeine
+
 name := """PSPS-baseapp"""
 
 organization := "com.example"
@@ -6,10 +8,10 @@ version := "1.0-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-scalaVersion := "2.11.11"
+scalaVersion := "2.12.8"
 
 libraryDependencies ++= Seq(
-  ehcache,
+  caffeine,
   ws,
   guice,
   "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test,
@@ -17,11 +19,11 @@ libraryDependencies ++= Seq(
   "org.webjars" % "jquery-ui" % "1.12.1",
   "org.webjars" % "tether" % "1.4.0",
   "org.webjars.bower" % "fontawesome" % "4.7.0",
-  "be.objectify" %% "deadbolt-scala" % "2.6.1",
+  "be.objectify" %% "deadbolt-scala" % "2.7.0",
   "org.mindrot" % "jbcrypt" % "0.3m",
   "org.postgresql" % "postgresql" % "42.0.0",
-  "com.typesafe.play" %% "play-slick" % "3.0.1",
-  "com.typesafe.play" %% "play-slick-evolutions" % "3.0.1",
+  "com.typesafe.play" %% "play-slick" % "4.0.2",
+  "com.typesafe.play" %% "play-slick-evolutions" % "4.0.2",
   "org.seleniumhq.selenium" % "selenium-java" % "2.35.0" % "test",
   "org.scalamock" %% "scalamock" % "4.0.0" % Test,
   "com.typesafe.play" %% "play-mailer" % "6.0.0",

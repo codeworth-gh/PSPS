@@ -12,13 +12,25 @@ label.buttonLike{
   -webkit-user-select: none;
 }
 
+
+input[type=checkbox] + label.buttonLike,  input[type=radio] + label.buttonLike{
+  &::before{
+    display: inline-block;
+    width: 20px;
+    content:'✘';
+    margin-right:.2em;
+    color: #800;
+  }
+}
+
+
 input[type=checkbox]:checked + label.buttonLike,  input[type=radio]:checked + label.buttonLike{
   background-color: #DDD;
   box-shadow: 0 0 2px rgba(0,0,0,.25);
   top: 2px;
-  &::after{
+  &::before{
     content:'✔︎';
-    margin-left:.2em;
+    margin-right:.2em;
     color: #080;
   }
 }

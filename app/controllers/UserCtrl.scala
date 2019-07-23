@@ -17,8 +17,7 @@ import play.api.libs.mailer.{Email, MailerClient}
 import play.api.mvc.{Action, ControllerComponents, InjectedController}
 import security.UserSubject
 
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration.Duration
 
 
@@ -56,7 +55,9 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
                          mailerClient: MailerClient, langs:Langs,
                          messagesApi:MessagesApi, localAction:LocalAction) extends InjectedController {
 
-  implicit private val ec = cc.executionContext
+  implicit private val ec: ExecutionContext = cc.executionContext
+  private val logger = Logger(classOf[UserCtrl])
+
   private val validUserId = "^[-._a-zA-Z0-9]+$".r
   implicit val messagesProvider: MessagesProvider = {
     MessagesImpl(langs.availables.head, messagesApi)
@@ -356,7 +357,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     val user = req.subject.get.asInstanceOf[UserSubject].user
     emailForm.bindFromRequest().fold(
       formWithErrors => {
-        Logger.info( formWithErrors.errors.mkString("\n") )
+        logger.info( formWithErrors.errors.mkString("\n") )
         for {
           invitations <- invitations.all
         } yield BadRequest(views.html.users.inviteUser(invitations))
@@ -450,7 +451,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
   def doSignup() = Action.async { implicit req =>
     emailForm.bindFromRequest().fold(
       formWithErrors => {
-        Logger.info( formWithErrors.errors.mkString("\n") )
+        logger.info( formWithErrors.errors.mkString("\n") )
         Future(BadRequest(views.html.users.login(loginForm)))
       },
       fd => {
