@@ -4,8 +4,6 @@
 
 == Overview
 
-=== What is this?
-
 PSPS is a seed project for web applications that have user accounts, a public side, and require database connectivity (a very common type indeed). It is targeted at small-to-medium sites, that can use a single main part ("monolith"). In other words, if you need a microservice-based cloud native hyper-distributed app, that's not it. If you need a website that can be hosted on a VPS, have a public and a back-office parts, and scale up nicely, PSPS is a good start.
 
 PSPS is based on our experience with Play for creating web applications. Some of these sites handle thousands of visitors each month, sitting on a $4/month VPS (from https://manage.digitalfyre.com/aff.php?aff=24[digitalFyre], BTW). It works for us (and on our machines!), we hope the play community will find it useful too.
