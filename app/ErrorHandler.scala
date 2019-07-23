@@ -23,13 +23,14 @@ class ErrorHandler @Inject() (
   private implicit val execCtxt = ec
   val accJson = play.api.mvc.Accepting(MimeTypes.JSON)
   val accHtml = play.api.mvc.Accepting(MimeTypes.HTML)
+  val logger = Logger(classOf[ErrorHandler])
   
   private def logException( exception:UsefulException ) = {
     val incidentId = java.util.UUID.randomUUID.toString
-    Logger.error( "[" + incidentId + "] play-id:" + exception.id)
-    Logger.error( "[" + incidentId + "] title:" + exception.title)
-    Logger.error( "[" + incidentId + "] description:" + exception.description)
-    Logger.error( "[" + incidentId + "] cause:", exception.cause)
+    logger.error( "[" + incidentId + "] play-id:" + exception.id)
+    logger.error( "[" + incidentId + "] title:" + exception.title)
+    logger.error( "[" + incidentId + "] description:" + exception.description)
+    logger.error( "[" + incidentId + "] cause:", exception.cause)
     incidentId
   }
   
