@@ -6,7 +6,7 @@ site:
 content:
   sources:
   - url: ./../../.git
-    branches: HEAD, antora-docs
+    branches: master, HEAD
     start_path: docs/antora-playbook/src/
   
 ui:
