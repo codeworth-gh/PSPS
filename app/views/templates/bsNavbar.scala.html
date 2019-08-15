@@ -6,19 +6,19 @@
   @mi match {
     case PageSection(title, id, call) => {
       <li class="nav-item @if(isSelected){active}">
-        <a class="nav-link" href="@call">@title @if(isSelected){<span class="sr-only">(current)</span>}</a>
+        <a class="nav-link" href="@call">@Messages(title) @if(isSelected){<span class="sr-only">(current)</span>}</a>
       </li>
     }
     case MultiPageSection(title, id, children) => {
       <li class="nav-item dropdown @if(isSelected){active}">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          @title @if(isSelected){<span class="sr-only">(current)</span>}
+          @Messages(title) @if(isSelected){<span class="sr-only">(current)</span>}
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           @for( c <- children){
             @c match {
               case SeparatorSectionItem => {<div class="dropdown-divider"></div>}
-              case PageSectionItem(title, call ) => {<a class="dropdown-item" href="@call">@title</a>}
+              case PageSectionItem(title, call ) => {<a class="dropdown-item" href="@call">@Messages(title)</a>}
             }
           }
         </div>

@@ -27,6 +27,14 @@ error.password.incorrect=Incorrect password
 pager.title=Pager
 informationals.title=Informationals
 styledInputs.title=Styled Inputs
+navbar.publicHome=Public Home
+navbar.login=Login
+navbar.components=Components
+navbar.other=Other
+navbar.backend.home=BackEnd Home
+navbar.users=Users Home
+navbar.inviteUser=Invite Users
+navbar.editProfile=Edit Profile
 
 cancel=Cancel
 forgotPassword=forgot password

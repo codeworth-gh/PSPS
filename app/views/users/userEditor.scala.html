@@ -2,7 +2,7 @@
 @import be.objectify.deadbolt.scala.AuthenticatedRequest
 @import Helpers._
 
-@(form:Form[UserFormData], destination:Call, isNew:Boolean, isInvite:Boolean, activeFirst:Boolean=true
+@(form:Form[UserFormData], destination:Call, isNew:Boolean, activeFirst:Boolean=true
  )(implicit request: AuthenticatedRequest[_], msgs:MessagesProvider)
 
 @content = {
@@ -137,7 +137,7 @@
   </div>
 }
 
-@if(!isInvite){
+@if(!isNew){
     @templates.backEndBase("Profile Editor", BackOfficeSections.Users )(content)
 } else {
     @templates.bsBase("New User")(content)
