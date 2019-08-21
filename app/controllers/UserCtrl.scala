@@ -120,7 +120,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
 
   def doLogout = Action { implicit req =>
     Redirect(routes.HomeCtrl.index()).withNewSession
-      .flashing(FlashKeys.MESSAGE->Informational(InformationalLevel.Success, "You have been logged out.", "").encoded)
+      .flashing(FlashKeys.MESSAGE->Informational(Informational.Level.Success, "You have been logged out.", "").encoded)
   }
 
   def userHome = deadbolt.SubjectPresent()(){ implicit req =>
@@ -285,7 +285,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
               routes.UserCtrl.showResetPassword(userSessionId).url
             val email = Email("Forgot my password", conf.get[String]("play.mailer.user"), Seq(fd.email), bodyText = Some(bodyText))
             mailerClient.send(email)
-            val msg = Informational( InformationalLevel.Success, Messages("forgotPassword.emailSent", fd.email), "")
+            val msg = Informational( Informational.Level.Success, Messages("forgotPassword.emailSent", fd.email), "")
             Redirect( routes.UserCtrl.showLogin() ).flashing( FlashKeys.MESSAGE->msg.encoded )
           }
           else {
@@ -368,7 +368,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
         val invitationId = UUID.randomUUID.toString
         invitations.add(Invitation(fd.email, new Timestamp(System.currentTimeMillis()), invitationId, user.email)).map( invite =>{
           sendInvitationEmail(invite)
-          val message = Informational(InformationalLevel.Success,
+          val message = Informational(Informational.Level.Success,
                                       Messages("inviteEmail.confirmationMessage"),
                                       Messages("inviteEmail.confirmationDetails",fd.email))
           Redirect(routes.UserCtrl.userHome()).flashing(FlashKeys.MESSAGE->message.encoded)
@@ -418,7 +418,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
         if(users.verifyPassword(user, fd.previousPassword)){
           if (fd.password1.nonEmpty && fd.password1 == fd.password2) {
             users.updatePassword(user, fd.password1).map(_ => {
-              val message = Informational(InformationalLevel.Success, Messages("password.changed"))
+              val message = Informational(Informational.Level.Success, Messages("password.changed"))
               Redirect(routes.UserCtrl.userHome()).flashing(FlashKeys.MESSAGE->message.encoded)
             })
           } else {
@@ -485,7 +485,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     val user = User(0, form.username, "", form.email.getOrElse(""), users.hashPassword(form.pass1.get.trim))
 
     users.tryAddUser(user).map( {
-      case Success(user) => Redirect(onSuccess).flashing(FlashKeys.MESSAGE->Informational(InformationalLevel.Success, messagesProvider.messages("account.created")).encoded)
+      case Success(user) => Redirect(onSuccess).flashing(FlashKeys.MESSAGE->Informational(Informational.Level.Success, messagesProvider.messages("account.created")).encoded)
       case Failure(exp) => BadRequest( views.html.users.userEditor(userForm.fill(form).withGlobalError(exp.getMessage), onFailure, isNew=true, false))
     } )
   }
