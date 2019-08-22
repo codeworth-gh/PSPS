@@ -1,0 +1,57 @@
+// Styles that are only useful in the application back-end.
+
+.pseudoInput {
+  display: inline-block;
+  border: 1px solid #ddd;
+  height: 26px;
+  vertical-align: text-bottom;
+  min-width: 40ex;
+}
+
+li a.webPage {
+  .pseudoInput;
+  font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  direction: ltr;
+  text-align: left;
+
+}
+
+li div.inputName {
+  .pseudoInput;
+}
+
+ul.editableList {
+  li {
+    margin: .3em 0;
+    padding: .3em;
+    background-color: #FAFAFA;
+  }
+}
+
+[contenteditable=true] {
+  background-color: #FAFAFA;
+  box-shadow: 0 4px 4px rgba(0,0,0,.25) inset;
+}
+
+ul.selectList {
+  padding: 0;
+  list-style: none;
+  column-count: 4;
+}
+
+.messagesTable td {
+  text-align: center;
+}
+
+td.hasMessage {
+  background-color: #484;
+  color: #0F0;
+}
+
+td.noMessage {
+  background-color: #aaa;
+  i.fa {
+    display: none;
+  }
+}
+

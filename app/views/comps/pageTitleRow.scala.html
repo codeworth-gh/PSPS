@@ -1,0 +1,9 @@
+@(title:String, subtitle:String="", btnWidth:Int=3)(buttons:Html=Html(""))
+<div class="row pageTitle">
+  <div class="col-sm-@(12-btnWidth)">
+    <h1>@title</h1>@Helpers.ifNotEmpty(subtitle){s=><div class="subtitle">@s</div>}
+  </div>
+  <div class="col-sm-@btnWidth buttonCtnr">
+  @buttons
+  </div>
+</div>

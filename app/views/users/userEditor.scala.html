@@ -7,11 +7,11 @@
 
 @content = {
   <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <h1>User Profile Editor</h1>
-      </div>
-    </div>
+    @if( isNew ){
+      @comps.pageTitleRow(Messages("userEditor.new.title")) { }
+    }else{
+      @comps.pageTitleRow(Messages("userEditor.title")){ }
+    }
 
     <div class="row">
       <div class="col-md-12">
