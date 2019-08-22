@@ -2,7 +2,7 @@ package security
 
 import be.objectify.deadbolt.scala.AuthenticatedRequest
 import be.objectify.deadbolt.scala.models.{Role, Subject}
-import controllers.{FlashKeys, Informational, InformationalLevel, routes}
+import controllers.{FlashKeys, Informational, routes}
 import dataaccess.UsersDAO
 import models.User
 import play.api.i18n.{Langs, Messages, MessagesApi, MessagesImpl, MessagesProvider}
@@ -46,7 +46,7 @@ class DeadboltHandler(users:UsersDAO, langs:Langs, messagesApi:MessagesApi) exte
     */
   override def onAuthFailure[A](request: AuthenticatedRequest[A]): Future[Result] = {
     Future {
-      val message = Informational(InformationalLevel.Warning, Messages("login.pleaseLogIn"))
+      val message = Informational(Informational.Level.Warning, Messages("login.pleaseLogIn"))
       if ( request.headers.get("Accept").filter(h=> h.contains("html")).isDefined ) {
         // This is a "address bar" call.
         Results.Redirect(routes.UserCtrl.showLogin()).withSession(
