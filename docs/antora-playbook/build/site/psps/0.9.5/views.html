@@ -107,7 +107,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>PSPS users <a href="https://getbootstrap.com">Bootstrap 4</a> for its page templates. The menu:views package contains many facilities for supporting common HTML use-cases&#8201;&#8212;&#8201;most of them detailed here.</p>
+<p>PSPS users <a href="https://getbootstrap.com">Bootstrap 4</a> for its page templates. The <code>views</code> package contains many facilities for supporting common HTML use-cases&#8201;&#8212;&#8201;most of them are detailed below.</p>
 </div>
 </div>
 </div>
@@ -134,11 +134,11 @@
 </dd>
 </dl>
 </div>
-<div class="admonitionblock caution">
+<div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-caution" title="Caution"></i>
+<i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
 Bootstrap 4 uses <a href="https://jquery.org">JQuery</a>, and thus PSPS views include it as well. This dependency will be removed when Bootstrap 5 is released.
@@ -208,6 +208,35 @@ File <span class="menuseq"><b class="menu">views</b>&#160;<i class="fa fa-angle-
 </div>
 </div>
 <div class="sect1">
+<h2 id="_page_title_row"><a class="anchor" href="#_page_title_row"></a>Page Title Row</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is very common to have a title on a page, sometimes with a subtitle, sometimes with another component (e.g. page-wide action buttons), and sometimes with both. These titles involve some boilerplate, e.g. <code>&lt;div class="row"&gt;&lt;div class="col"&gt;&lt;h1&gt;TITLE GOES HERE&lt;/&#8230;&#8203;</code>.</p>
+</div>
+<div class="paragraph">
+<p>Because we&#8217;re not happy to repeat ourselves (we are NOT happy to repeat ourselves, I say!), we wrapped is in the component <code>comps.pageTitleRow</code>. So this code:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-scala hljs" data-lang="scala">@comps.pageTitleRow("My Fancy Page", "In this page, we enjoy subtitles as well as titles"){
+  &lt;button class="btn btn-primary"&gt;Add&lt;/button&gt;
+  &lt;button class="btn btn-warning"&gt;Remove&lt;/button&gt;
+  &lt;button class="btn btn-info"&gt;More Info&lt;/button&gt;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Results in this page header:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/pageTitleRow.png" alt="PageTitleRow component">
+</div>
+<div class="title">Figure 1. PageHeaderRow in action, shown here with title, sub-title, and three buttons as the optional extra HTML.</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_informationals"><a class="anchor" href="#_informationals"></a>Informationals</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -217,7 +246,7 @@ File <span class="menuseq"><b class="menu">views</b>&#160;<i class="fa fa-angle-
 <div class="content">
 <img src="_images/messages.png" alt="Messages">
 </div>
-<div class="title">Figure 1. Messages can have a title, a sub-title, a color, and a timeout.</div>
+<div class="title">Figure 2. Messages can have a title, a sub-title, a color, and a timeout.</div>
 </div>
 <div class="paragraph">
 <p>Additional methods allow blocking the UI (e.g. for full page data load), showing background progress, and prompting the user with YES/NO questions.</p>
@@ -226,19 +255,19 @@ File <span class="menuseq"><b class="menu">views</b>&#160;<i class="fa fa-angle-
 <div class="content">
 <img src="_images/blockUI.png" alt="blockUI">
 </div>
-<div class="title">Figure 2. Screen blocking</div>
+<div class="title">Figure 3. Screen blocking</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/yes-no.png" alt="yes no">
 </div>
-<div class="title">Figure 3. Yes/No question</div>
+<div class="title">Figure 4. Yes/No question</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/bkg.gif" alt="bkg">
 </div>
-<div class="title">Figure 4. Background progress</div>
+<div class="title">Figure 5. Background progress</div>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -283,7 +312,7 @@ To view and experiment (live!) with the Informationals library, start PSPS and n
 <h2 id="_views_helpers"><a class="anchor" href="#_views_helpers"></a><code>views.Helpers</code></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This class contains functions that handle many common use-cases, such as date formatting, and conditional rendering. This is also a good place to put additional useful methods (we&#8217;re happy to take pull requests!)</p>
+<p>This class contains functions that handle many common use-cases, such as date formatting, and conditional rendering. This is also a good place to put additional useful methods (we&#8217;re happy to take pull requests!).</p>
 </div>
 </div>
 </div>
