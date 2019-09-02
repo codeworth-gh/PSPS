@@ -2,7 +2,7 @@
 
 include::_attributes.adoc[]
 
-PSPS users https://getbootstrap.com[Bootstrap 4] for its page templates. The menu:views package contains many facilities for supporting common HTML use-cases -- most of them detailed here.
+PSPS users https://getbootstrap.com[Bootstrap 4] for its page templates. The `views` package contains many facilities for supporting common HTML use-cases -- most of them are detailed below.
 
 == Page Templates
  
@@ -18,7 +18,7 @@ PSPS users https://getbootstrap.com[Bootstrap 4] for its page templates. The men
 `backEndBase.scala.html`::
     Extends `bsNavBar` with the nav data for the back-office section. Also includes the back-end Javascript router.
 
-[CAUTION]
+[NOTE]
 Bootstrap 4 uses https://jquery.org[JQuery], and thus PSPS views include it as well. This dependency will be removed when Bootstrap 5 is released.
 
 == Type-safe Navigation Menus
@@ -62,6 +62,26 @@ image::navbar.png[Navigation bar]
 [NOTE]
 File menu:views[Structure.scala] contains the classes and structures of the public and back-office site areas.
 
+== Page Title Row
+
+It is very common to have a title on a page, sometimes with a subtitle, sometimes with another component (e.g. page-wide action buttons), and sometimes with both. These titles involve some boilerplate, e.g. `<div class="row"><div class="col"><h1>TITLE GOES HERE</...`.
+
+Because we're not happy to repeat ourselves (we are NOT happy to repeat ourselves, I say!), we wrapped is in the component `comps.pageTitleRow`. So this code:
+
+[source, scala]
+----
+@comps.pageTitleRow("My Fancy Page", "In this page, we enjoy subtitles as well as titles"){
+  <button class="btn btn-primary">Add</button>
+  <button class="btn btn-warning">Remove</button>
+  <button class="btn btn-info">More Info</button>
+}
+----
+
+Results in this page header:
+
+.PageHeaderRow in action, shown here with title, sub-title, and three buttons as the optional extra HTML.
+image::pageTitleRow.png[PageTitleRow component]
+
 == Informationals
 
 This is an infrastructure for UI messages (typically success/fail/info), that can be generated both from a controller, or from Javascript code on the client side. When created from a controller, they are passed over the `+flash+` scope, with the key `+FlashKeys.MESSAGE+` (this covers the common ``POST``-then-``REDIRECT`` pattern).
@@ -99,4 +119,4 @@ image::pager.png[]
 
 == `views.Helpers`
 
-This class contains functions that handle many common use-cases, such as date formatting, and conditional rendering. This is also a good place to put additional useful methods (we're happy to take pull requests!)
+This class contains functions that handle many common use-cases, such as date formatting, and conditional rendering. This is also a good place to put additional useful methods (we're happy to take pull requests!).

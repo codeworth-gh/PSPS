@@ -27,7 +27,7 @@
           @helper.CSRF.formField
           @for( m <- form.globalErrors ){
             <div class="form-group has-error">
-              <div class="alert alert-danger">@m.message</div>
+              <div class="alert alert-danger">@Messages(m.message)</div>
             </div>
           }
           <div class="form-group">

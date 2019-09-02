@@ -29,7 +29,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-mailer" % "6.0.0",
   "com.typesafe.play" %% "play-mailer-guice" % "6.0.0",
   "org.webjars" % "sweetalert" % "2.1.0",
-  "org.webjars" % "bootstrap" % "4.3.1"
+  "org.webjars" % "bootstrap" % "4.3.1",
 )
 
 // TODO add sections and table helpers

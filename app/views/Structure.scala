@@ -39,30 +39,31 @@ object BackOfficeSections extends Enumeration {
 object Structure {
   
   val publicItems:Seq[TopSiteSection[PublicSections.Value]] = Seq(
-    PageSection("Public Home", PublicSections.Home, routes.HomeCtrl.index),
-    PageSection("Login", PublicSections.Login, routes.UserCtrl.showLogin),
-    MultiPageSection("Components", PublicSections.Components,
+    PageSection("navbar.publicHome", PublicSections.Home, routes.HomeCtrl.index),
+    PageSection("navbar.login", PublicSections.Login, routes.UserCtrl.showLogin),
+    MultiPageSection("navbar.components", PublicSections.Components,
       Seq(
-        PageSectionItem("Pager", routes.HomeCtrl.pager(1)),
-        PageSectionItem("Informationals", routes.HomeCtrl.informationals),
-        PageSectionItem("Styled Inputs", routes.HomeCtrl.styledInputs)
+        PageSectionItem("pageTitleRow.title", routes.HomeCtrl.pageTitleRow()),
+        PageSectionItem("pager.title", routes.HomeCtrl.pager(1)),
+        PageSectionItem("informationals.title", routes.HomeCtrl.informationals),
+        PageSectionItem("styledInputs.title", routes.HomeCtrl.styledInputs)
       )
     ),
     MultiPageSection("Other", PublicSections.Others,
       Seq(
-        PageSectionItem("Login", routes.UserCtrl.showLogin),
+        PageSectionItem("navbar.login", routes.UserCtrl.showLogin),
         SeparatorSectionItem,
-        PageSectionItem("Public Home", routes.HomeCtrl.index)
+        PageSectionItem("navbar.publicHome", routes.HomeCtrl.index)
       )
     )
   )
   
   val backOfficeSections:Seq[TopSiteSection[BackOfficeSections.Value]] = Seq(
-    PageSection("BackEnd Home", BackOfficeSections.Home, routes.UserCtrl.userHome() ),
-    MultiPageSection("Users", BackOfficeSections.Users, Seq(
-      PageSectionItem("Invite Users", routes.UserCtrl.showInviteUser()),
-      PageSectionItem("Users", routes.UserCtrl.showUserList()),
-      PageSectionItem("Edit Profile", routes.UserCtrl.showNewUserPage())
+    PageSection("navbar.backend.home", BackOfficeSections.Home, routes.UserCtrl.userHome() ),
+    MultiPageSection("navbar.users", BackOfficeSections.Users, Seq(
+      PageSectionItem("navbar.inviteUser", routes.UserCtrl.showInviteUser()),
+      PageSectionItem("navbar.users", routes.UserCtrl.showUserList()),
+      PageSectionItem("navbar.editProfile", routes.UserCtrl.showNewUserPage())
     ))
   )
   

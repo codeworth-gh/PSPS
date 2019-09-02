@@ -11,11 +11,7 @@
 
 @templates.backEndBase("Invite User", views.BackOfficeSections.Users, Html(""), scripts){
   <div class="container">
-    <div class="row my-2">
-      <div class="col">
-        <h1>Invite User</h1>
-      </div>
-    </div>
+    @comps.pageTitleRow(Messages("users.inviteUser")){ }
     <div class="row justify-content-md-center">
       <div class="col col-md-8">
         <form action="@routes.UserCtrl.doInviteUser" method="POST">

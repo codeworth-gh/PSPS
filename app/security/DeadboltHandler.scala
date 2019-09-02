@@ -2,9 +2,10 @@ package security
 
 import be.objectify.deadbolt.scala.AuthenticatedRequest
 import be.objectify.deadbolt.scala.models.{Role, Subject}
-import controllers.routes
+import controllers.{FlashKeys, Informational, routes}
 import dataaccess.UsersDAO
 import models.User
+import play.api.i18n.{Langs, Messages, MessagesApi, MessagesImpl, MessagesProvider}
 import play.api.mvc.{Request, Result, Results}
 
 import scala.concurrent.Future
@@ -22,7 +23,11 @@ case class UserSubject(user:User) extends Subject
 /**
   * Created by michael on 12/3/17.
   */
-class DeadboltHandler(users:UsersDAO) extends be.objectify.deadbolt.scala.DeadboltHandler {
+class DeadboltHandler(users:UsersDAO, langs:Langs, messagesApi:MessagesApi) extends be.objectify.deadbolt.scala.DeadboltHandler {
+
+  implicit val messagesProvider: MessagesProvider = {
+    MessagesImpl(langs.availables.head, messagesApi)
+  }
 
   override def beforeAuthCheck[A](request: Request[A]) = Future(None)
 
@@ -41,8 +46,15 @@ class DeadboltHandler(users:UsersDAO) extends be.objectify.deadbolt.scala.Deadbo
     */
   override def onAuthFailure[A](request: AuthenticatedRequest[A]): Future[Result] = {
     Future {
-      Results.Redirect(routes.UserCtrl.showLogin()).withSession(
-        request.session + ("targetUrl" -> request.path)).flashing(("message","Please login before accessing this page"))
+      val message = Informational(Informational.Level.Warning, Messages("login.pleaseLogIn"))
+      if ( request.headers.get("Accept").filter(h=> h.contains("html")).isDefined ) {
+        // This is a "address bar" call.
+        Results.Redirect(routes.UserCtrl.showLogin()).withSession(
+          request.session + ("targetUrl" -> request.path)).flashing((FlashKeys.MESSAGE,message.encoded))
+      } else {
+        // This is an API call
+        Results.Unauthorized
+      }
     }
   }
 
