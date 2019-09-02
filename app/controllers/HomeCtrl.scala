@@ -71,6 +71,10 @@ class HomeCtrl @Inject()(deadbolt:DeadboltActions, langs: Langs, messagesApi: Me
     Ok( views.html.styledInputsSample() )
   }
   
+  def pageTitleRow = Action{ implicit req =>
+    Ok( views.html.pageTitleRow() )
+  }
+  
   /**
     * Routes for the front-end.
     * @return

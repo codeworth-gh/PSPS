@@ -43,6 +43,7 @@ object Structure {
     PageSection("navbar.login", PublicSections.Login, routes.UserCtrl.showLogin),
     MultiPageSection("navbar.components", PublicSections.Components,
       Seq(
+        PageSectionItem("pageTitleRow.title", routes.HomeCtrl.pageTitleRow()),
         PageSectionItem("pager.title", routes.HomeCtrl.pager(1)),
         PageSectionItem("informationals.title", routes.HomeCtrl.informationals),
         PageSectionItem("styledInputs.title", routes.HomeCtrl.styledInputs)

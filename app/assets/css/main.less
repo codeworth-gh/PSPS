@@ -11,6 +11,39 @@
 
 }
 
+.pageTitleRow-ctnr {
+  display: flex;
+  flex-direction: row;
+  flex-flow: wrap;
+  background-color: rgba(0,0,0,.1);
+  border-bottom: 3px solid rgba(0,0,0,.4);
+  padding: .5em;
+  margin-bottom: 2em;
+
+  h1 {
+    flex-grow: 1;
+    flex-shrink: 0.5;
+  }
+  .pageTitleRow-component{
+    flex-grow: 1;
+    flex-shrink: 1;
+    text-align: end;
+    .btn {
+      vertical-align: text-top;
+      i {
+        vertical-align: middle;
+      }
+    }
+  }
+  .pageTitleRow-subtitle {
+    width: 100%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    font-size: 0.9em;
+    color: #446;
+  }
+}
+
 .noData {
   background-color: #CCC;
   color: #776;
@@ -69,4 +102,11 @@ ul.errors{
 // BS4 fix
 .input-group-text {
   height: 100%;
+}
+
+footer {
+  padding: 3em 0;
+  margin: 5em 0 0 0;
+  border-top: 3px solid #888888;
+  background-color: #EEEEEE;
 }

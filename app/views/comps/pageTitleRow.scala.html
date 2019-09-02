@@ -1,0 +1,10 @@
+@(title:String, subtitle:String="")(component:Html=Html(""))
+<div class="row">
+  <div class="col">
+    <div class="pageTitleRow-ctnr">
+      <h1>@title</h1>
+      @if(component.body.nonEmpty){<div class="pageTitleRow-component">@component</div>  }
+      @Helpers.ifNotEmpty(subtitle) { s => <div class="pageTitleRow-subtitle">@s</div>}
+    </div>
+  </div>
+</div>

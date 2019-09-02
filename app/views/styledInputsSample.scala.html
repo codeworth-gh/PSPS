@@ -5,10 +5,10 @@
 }
 
 @templates.bsNavbar("styledInputs.title", views.Structure.publicItems, views.PublicSections.Components, head) {
+  @comps.pageTitleRow(msgs.messages("styledInputs.title"),"Some styling for HTML components.")()
   <div class="row my-2">
     <div class="col">
-      <h3>Startup Ideas</h3>
-      <p>Demonstrating the usage of <code>@@css.styledInputs.less</code>.</p>
+      <p>This page demonstrates the usage of <code>@@css.styledInputs.less</code>.</p>
     </div>
   </div>
   <div class="row my-2">

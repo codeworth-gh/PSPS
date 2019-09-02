@@ -8,7 +8,7 @@
   <script type="text/javascript">
     var loaderIdx=0;
     function loaderDemo() {
-        if ( loaderIdx != 0 ) return; // prevent double invocation
+        if ( loaderIdx !== 0 ) return; // prevent double invocation
         var calls = [
             function(){Informationals.loader("Starting Process");},
             function(){Informationals.loader("This takes time...");},
@@ -109,14 +109,11 @@
 }
 
 @templates.bsNavbar("informationals.title", views.Structure.publicItems, views.PublicSections.Components, head, scripts) {
+  @comps.pageTitleRow(msgs.messages("informationals.title"), "Informationals is a small JS library to show various informational messages.")()
   <div class="row">
     <div class="col">
-      <h1>Informationals</h1>
       <p>
-        Informationals is a small JS library to show various informational messages. PSPS's <code>bsBase</code> template automatically
-        generates informationals from the flash.
-      </p>
-      <p>
+         PSPS's <code>bsBase</code> template automatically generates informationals from the flash.
         This page shows examples of using Informationals, both only on the client-side, and using the server.
       </p>
     </div>

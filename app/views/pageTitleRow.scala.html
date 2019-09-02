@@ -1,0 +1,52 @@
+@()(implicit request:RequestHeader, msgs:MessagesProvider)
+
+@templates.frontEndBase("pageTitleRow.title", views.PublicSections.Components){
+  @comps.pageTitleRow("Page Title Row",
+    "This component easily creates a page title in a Bootstrap row, complete with optional buttons/components and a subtitle."
+  )()
+
+  <div class="row">
+    <div class="col">
+      <h3>Basic component</h3>
+      <pre><code>
+@@comps.pageTitleRow("My Fancy Page")()
+      </code></pre>
+      Generates:
+    </div>
+  </div>
+
+  @comps.pageTitleRow("My Fancy Page")()
+
+  <div class="row">
+    <div class="col">
+      <h3>Title with subtitle</h3>
+      <pre><code>
+      @@comps.pageTitleRow("My Fancy Page", "In this page, we enjoy subtitles as well as titles")()
+      </code></pre>
+      Generates:
+    </div>
+  </div>
+
+  @comps.pageTitleRow("My Fancy Page", "In this page, we enjoy subtitles as well as titles")()
+
+
+  <div class="row">
+    <div class="col">
+      <h3>Title with subtitle and extra HTML components</h3>
+      <pre><code>
+@@comps.pageTitleRow("My Fancy Page", "In this page, we enjoy subtitles as well as titles"){
+  &lt;button class="btn btn-primary"&gt;Add&lt;/button&gt;
+  &lt;button class="btn btn-warning"&gt;Remove&lt;/button&gt;
+  &lt;button class="btn btn-info"&gt;More Info&lt;/button&gt;
+}
+      </code></pre>
+      Generates:
+    </div>
+  </div>
+
+  @comps.pageTitleRow("My Fancy Page", "In this page, we enjoy subtitles as well as titles"){
+    <button class="btn btn-primary">Add</button>
+    <button class="btn btn-warning">Remove</button>
+    <button class="btn btn-info">More Info</button>
+  }
+}

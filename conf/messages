@@ -25,6 +25,7 @@ error.password=Passwords must match, and cannot be empty
 error.password.incorrect=Incorrect password
 
 pager.title=Pager
+pageTitleRow.title=Page Title Row
 informationals.title=Informationals
 styledInputs.title=Styled Inputs
 navbar.publicHome=Public Home

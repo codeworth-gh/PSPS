@@ -3,11 +3,12 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
-GET     /                         controllers.HomeCtrl.index
-GET     /pager                    controllers.HomeCtrl.pager(currentPage:Int ?= 1)
-GET     /informationals           controllers.HomeCtrl.informationals
-GET     /styledInputs           controllers.HomeCtrl.styledInputs
-GET     /navbar                   controllers.HomeCtrl.sampleNavbar
+GET     /               controllers.HomeCtrl.index
+GET     /pager          controllers.HomeCtrl.pager(currentPage:Int ?= 1)
+GET     /informationals controllers.HomeCtrl.informationals
+GET     /styledInputs   controllers.HomeCtrl.styledInputs
+GET     /navbar         controllers.HomeCtrl.sampleNavbar
+GET     /pageTitleRow   controllers.HomeCtrl.pageTitleRow
 
 GET     /signup                      controllers.UserCtrl.showSignup
 POST    /signup                      controllers.UserCtrl.doSignup

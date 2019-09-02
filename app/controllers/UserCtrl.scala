@@ -245,8 +245,8 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
             if ( emailExists ) form = form.withError("email", "error.email.exists")
             if ( !passwordOK ) form = form.withError("password1", "error.password")
               .withError("password2", "error.password")
-            Future(BadRequest(views.html.users.userEditor(form, routes.UserCtrl.doNewUserInvitation, isNew = true,
-                                                 )(new AuthenticatedRequest(req, None), messagesProvider)))
+            Future(BadRequest(views.html.users.userEditor(form, routes.UserCtrl.doNewUserInvitation, isNew = true
+                  )(new AuthenticatedRequest(req, None), messagesProvider)))
           }
         }
         

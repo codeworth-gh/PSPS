@@ -3,6 +3,7 @@
 @(items:Seq[(Int, String)], pi:PaginationInfo)(implicit request:RequestHeader, msgs:MessagesProvider)
 
 @templates.frontEndBase("pager.title", PublicSections.Components){
+  @comps.pageTitleRow("Pager","PSPS's component and classes for paging a long list or table")()
   <div class="row">
     <div class="col">
       <h3>Startup Ideas</h3>
