@@ -10,43 +10,41 @@
 }
 
 @templates.backEndBase("Invite User", views.BackOfficeSections.Users, Html(""), scripts){
-  <div class="container">
-    @comps.pageTitleRow(Messages("users.inviteUser")){ }
-    <div class="row justify-content-md-center">
-      <div class="col col-md-8">
-        <form action="@routes.UserCtrl.doInviteUser" method="POST">
-          @helper.CSRF.formField
-          <div class="form-group row">
-            <label for="emailInput" class="col-sm-3 col-form-label">Invite a new user</label>
-          </div>
-          <div class="form-group row">
-            <div class="col-sm-9">
-              <input type="email" class="form-control" id="emailInput" name="email" value="" placeholder="email address">
-            </div>
-            <div class="col-sm-3">
-              <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane"></i> Invite User</button>
-            </div>
-          </div>
-          <input type="hidden" value="" name="protocol_and_host" id="protocol_and_host">
-        </form>
+@comps.pageTitleRow(Messages("users.inviteUser")){ }
+<div class="row justify-content-md-center">
+  <div class="col col-md-8">
+    <form action="@routes.UserCtrl.doInviteUser" method="POST">
+      @helper.CSRF.formField
+      <div class="form-group row">
+        <label for="emailInput" class="col-sm-3 col-form-label">Invite a new user</label>
       </div>
-    </div>
-      <div class="row justify-content-md-center">
-        <div class="col col-md-8">
-          @if(invitations.nonEmpty) {
-            <h3>Pending Invitations</h3>
-            <ul>
-            @for(invitation<-invitations){
-              <li>@invitation.email (sent @Helpers.formatDateTime(invitation.date))
-              <button class="btn btn-outline-info btn-sm" onclick="deleteUuid('@invitation.uuid')"><i class="fa fa-trash"></i> </button>
-              <button class="btn btn-outline-info btn-sm" onclick="resendEmail('@invitation.uuid')"><i class="fa fa-paper-plane"></i> </button>
-              </li>
-            }
-            </ul>
-          }else{
-            <div class="noData">No Pending invitations</div>
-          }
+      <div class="form-group row">
+        <div class="col-sm-9">
+          <input type="email" class="form-control" id="emailInput" name="email" value="" placeholder="email address">
+        </div>
+        <div class="col-sm-3">
+          <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane"></i> Invite User</button>
         </div>
       </div>
+      <input type="hidden" value="" name="protocol_and_host" id="protocol_and_host">
+    </form>
+  </div>
+</div>
+  <div class="row justify-content-md-center">
+    <div class="col col-md-8">
+      @if(invitations.nonEmpty) {
+        <h3>@Messages("users.pendingInvitations")</h3>
+        <ul>
+        @for(invitation<-invitations){
+          <li>@invitation.email (sent @Helpers.formatDateTime(invitation.date))
+          <button class="btn btn-outline-info btn-sm" onclick="deleteUuid('@invitation.uuid')"><i class="fa fa-trash"></i> </button>
+          <button class="btn btn-outline-info btn-sm" onclick="resendEmail('@invitation.uuid')"><i class="fa fa-paper-plane"></i> </button>
+          </li>
+        }
+        </ul>
+      }else{
+        <div class="noData">@Messages("users.noPendingInvitations")</div>
+      }
+    </div>
   </div>
 }
