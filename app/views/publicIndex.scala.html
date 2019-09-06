@@ -12,8 +12,6 @@
         .then( r => r.json() )
         .then( json => swal("Server returned: " + json.message ) );
     }
-
-
   </script>
 }
 
@@ -25,7 +23,7 @@
           <h1 class="display-3"><strong>PSPS Template app</strong></h1>
           <hr class="my-4">
           <div class="alert alert-info" role="alert">
-            <strong>Starting point for a rather opinionated application seed, based on PlayFramework, Scala, PostgreSQL, and Slick.</strong>
+            <strong>A rather opinionated application seed</strong>, based on PlayFramework, Scala, PostgreSQL, and Slick (...and Bootstrap, of course).
           </div>
         </div>
       </div>
@@ -35,7 +33,8 @@
         <div class="text-center">
           Welcome to PSPS basic app template.
           <hr>
-          <a href="@routes.UserCtrl.showLogin">login</a>
+          <a class="btn btn-info" href="@routes.UserCtrl.showLogin">@Messages("login")</a>
+          <a class="btn btn-success" href="@routes.UserCtrl.showSignup()">@Messages("signUp")</a>
         </div>
       </div>
     </div>
@@ -47,13 +46,18 @@
     </div>
     <div class="row">
       <div class="col">
-        <label for="personName">Ajax Test </label>
-        <input type="text" id="personName" placeholder="Enter name here">
-        <button type="button" onclick="runAjax()" onsubmit="runAjax()">Say Hi</button>
+        <form>
+          <div class="form-group row my-2">
+            <label for="personName" class="col-sm-2 col-form-label">Ajax Test</label>
+            <div class="col-sm-5">
+              <input class="form-control" type="text" id="personName" placeholder="Enter name here">
+            </div>
+            <div class="col-sm-5">
+              <button class="btn btn-outline-info" type="button" onclick="runAjax()" onsubmit="runAjax()">Say Hi</button>
+            </div>
+          </div>
+        </form>
       </div>
-    </div>
-    <div class="row">
-      <div class="col"><a href="@routes.UserCtrl.showSignup()">Sign up</a></div>
     </div>
   </div>
 }

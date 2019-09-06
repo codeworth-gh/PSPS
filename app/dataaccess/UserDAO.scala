@@ -1,11 +1,9 @@
 package dataaccess
 
-import java.util.logging.LogManager
-
 import javax.inject.Inject
 import models.User
 import org.mindrot.jbcrypt.BCrypt
-import play.api.{Configuration, Logger}
+import play.api.Configuration
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -19,12 +17,12 @@ class UsersDAO @Inject() (protected val dbConfigProvider:DatabaseConfigProvider,
   private val Users = TableQuery[UserTable]
 
   def addUser( u:User ):Future[User] = {
-    db.run( Users.returning(Users.map(_.id))
+    db.run( Users.returning(Users.map(_.id) )
       .into((user,newId)=>user.copy(id=newId)) += u.copy(id=0) )
   }
 
   def tryAddUser( u:User ): Future[Try[User]] = {
-    db.run( (Users.returning(Users.map(_.id))
+    db.run( (Users.returning(Users.map(_.id) )
       .into((user,newId)=>user.copy(id=newId)) += u.copy(id=0)).asTry )
   }
 

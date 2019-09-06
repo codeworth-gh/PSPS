@@ -419,7 +419,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
       if(!conf.getOptional[Boolean]("AllowSignup").getOrElse(true)) {
         BadRequest(views.html.users.login(loginForm))
     } else {
-        Ok( views.html.users.userEditor( userForm, routes.UserCtrl.doSignup, isNew=true
+        Ok( views.html.users.userEditor( userForm, routes.UserCtrl.doSignup, isNew=true, activeFirst = true
         )(new AuthenticatedRequest(req, None), messagesProvider))
     })
   }

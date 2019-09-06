@@ -96,8 +96,7 @@
                 <div class="form-group row">
                   <label for="password1Input" class="col-sm-2 control-label">Previous Password</label>
                   <div class="col-sm-10">
-                    <input type="password" class="form-control" id="previousPassword" name="previousPassword" value=""
-                    placeholder="Password">
+                    <input type="password" class="form-control" id="previousPassword" name="previousPassword" value="" placeholder="Password">
                     @formErrors(form("previousPassword"))
                   </div>
                 </div>
@@ -112,8 +111,7 @@
                 <div class="form-group row">
                   <label for="password2Input" class="col-sm-2 control-label">@Messages("newPassword.again")</label>
                   <div class="col-sm-10">
-                    <input type="password" class="form-control" id="password2Input" name="password2" value=""
-                    placeholder="Password">
+                    <input type="password" class="form-control" id="password2Input" name="password2" value="" placeholder="Password">
                     @formErrors(form("password2"))
                   </div>
                 </div>
@@ -121,7 +119,7 @@
                 <div class="form-group">
                   <div class="col-md-12">
                     <div class="text-right">
-                      <a class="btn btn-default" href="@routes.UserCtrl.userHome()">@Messages("cancel")</a>
+                      <a class="btn btn-secondary" href="@routes.UserCtrl.userHome()">@Messages("cancel")</a>
 
                       <button type="submit" class="btn btn-primary">Change</button>
                     </div>
