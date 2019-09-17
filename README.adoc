@@ -11,3 +11,8 @@ PSPS is based on our experience with Play for creating web applications. Some of
 **https://psps-play-app.netlify.com/[Documentation]**
 
 image::https://api.netlify.com/api/v1/badges/fb260db4-9c0f-45d3-8759-02d76d9b015a/deploy-status[link="https://app.netlify.com/sites/psps-play-app/deploys"]
+
+
+== Change Log
+
+* :arrow_upper_right: Updated SBT to version 1.3.0.
