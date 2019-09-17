@@ -15,5 +15,6 @@ image::https://api.netlify.com/api/v1/badges/fb260db4-9c0f-45d3-8759-02d76d9b015
 
 == Change Log
 
+* :tada: Moved to Scala 2.13
 * :cyclone: Refined the behavior of the prompt on the public index.
 * :arrow_upper_right: Updated SBT to version 1.3.0.

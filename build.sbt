@@ -8,28 +8,28 @@ version := "1.0-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-scalaVersion := "2.12.8"
+scalaVersion := "2.13.0"
 
 libraryDependencies ++= Seq(
   caffeine,
   ws,
   guice,
-  "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test,
+  "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.3" % Test,
   "org.webjars" % "jquery" % "3.2.1",
   "org.webjars" % "jquery-ui" % "1.12.1",
   "org.webjars" % "tether" % "1.4.0",
+  "org.webjars" % "sweetalert" % "2.1.0",
+  "org.webjars" % "bootstrap" % "4.3.1",
   "org.webjars.bower" % "fontawesome" % "4.7.0",
   "be.objectify" %% "deadbolt-scala" % "2.7.0",
   "org.mindrot" % "jbcrypt" % "0.3m",
   "org.postgresql" % "postgresql" % "42.0.0",
   "com.typesafe.play" %% "play-slick" % "4.0.2",
   "com.typesafe.play" %% "play-slick-evolutions" % "4.0.2",
+  "com.typesafe.play" %% "play-mailer" % "7.0.1",
+  "com.typesafe.play" %% "play-mailer-guice" % "7.0.1",
   "org.seleniumhq.selenium" % "selenium-java" % "2.35.0" % "test",
-  "org.scalamock" %% "scalamock" % "4.0.0" % Test,
-  "com.typesafe.play" %% "play-mailer" % "6.0.0",
-  "com.typesafe.play" %% "play-mailer-guice" % "6.0.0",
-  "org.webjars" % "sweetalert" % "2.1.0",
-  "org.webjars" % "bootstrap" % "4.3.1",
+//  "org.scalamock" %% "scalamock" % "4.0.0" % Test,
 )
 
 // TODO add sections and table helpers
