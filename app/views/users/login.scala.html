@@ -11,18 +11,33 @@
 
 @extraHead = {
   <meta name="robots" content="noindex, nofollow">
+  <style>
+          .loginCtnr {
+            border: 2px solid #888;
+            border-radius: 1em;
+            padding: 1em;
+            box-shadow: 0 4px 8px rgba(0,0,0,.25);
+            background-color: #EEE;
+          }
+          body {
+            background-color: #CCC;
+          }
+  </style>
   <script src="@routes.HomeCtrl.backEndRoutes()?@controllers.HomeCtrl.beRouteHash"></script>
 }
 
-@templates.bsBase("Log in", extraHead, scripts ){
-  <div class="container">
-    <div class="row mt-4">
-      <div class="col text-center">
-        <h1>@Messages("login.title", Messages("application.title"))</h1>
-      </div>
+@templates.bsBase("login", extraHead, scripts ){
+<div class="container">
+  <div class="row mt-4">
+    <div class="col text-center">
+      <h1> @Messages("login.title")</h1>
+@*      <h3 class="text-muted">@Html(Messages("application.slogan"))</h3>*@
     </div>
-    <div class="row mt-3">
-      <div class="col col-md-6 offset-md-3">
+  </div>
+  <div class="row mt-5 justify-content-md-center">
+    <div class="col-md-6">
+      <div class="loginCtnr">
+        <h2>@Messages("login")</h2>
         <form action="@routes.UserCtrl.doLogin" method="POST">
           @helper.CSRF.formField
           @for( m <- form.globalErrors ){
@@ -41,15 +56,19 @@
           </div>
 
           <div class="form-group mt-3">
-            <a href="@routes.UserCtrl.showForgotPassword()">@Messages("forgotPassword")?</a>
-            <div class="pull-right">
-              <a class="btn btn-outline-secondary" href="/">@Messages("cancel")</a>
-              <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> Log In</button>
+            <div class="row">
+              <div class="col-md">
+                <a href="@routes.UserCtrl.showForgotPassword()">@Messages("forgotPassword")</a>
+              </div>
+              <div class="col-md text-left">
+                <a class="btn btn-default btn-outline-secondary" href="/"><i class="fa fa-close"></i> @Messages("cancel")</a>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> @Messages("login")</button>
+              </div>
             </div>
           </div>
         </form>
-
       </div>
     </div>
   </div>
+</div>
 }
