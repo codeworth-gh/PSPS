@@ -38,7 +38,7 @@ object Helpers {
     if ( s!=null && s.trim.nonEmpty ) block(s) else Html("")
   }
   def ifNotEmpty(so:Option[String])(block:String=>Html):Html = so.map(s=>ifNotEmpty(s)(block)).getOrElse(Html(""))
-  def ifNotEmpty[T]( col:TraversableOnce[T])(block:TraversableOnce[T]=>Html):Html = if(col!=null && col.nonEmpty) block(col) else Html("")
+  def ifNotEmpty[T]( col:IterableOnce[T])(block:IterableOnce[T]=>Html):Html = if(col!=null && col.iterator.nonEmpty) block(col) else Html("")
   
   /**
     * Gives a proper css class name based on the field's status. Assumes Bootstrap4.

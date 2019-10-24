@@ -5,8 +5,8 @@ site:
   start_page: psps::index.adoc
 content:
   sources:
-  - url: ./../../
-    branches: HEAD, antora-docs
+  - url: ./../../.git
+    branches: master, HEAD
     start_path: docs/antora-playbook/src/
   
 ui:

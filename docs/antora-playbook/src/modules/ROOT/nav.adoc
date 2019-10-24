@@ -1,7 +1,7 @@
-* xref:setups.adoc[Setting Up]
 * xref:controllers.adoc[Controllers]
 * xref:views.adoc[Views]
 * xref:javascript-interop.adoc[Javascript]
+* xref:setups.adoc[Setting Up]
 * xref:scripts.adoc[Scripts]
 // * Lists
 // ** xref:lists/ordered-list.adoc[Ordered List]

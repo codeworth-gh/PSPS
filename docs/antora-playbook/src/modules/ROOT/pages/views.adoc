@@ -77,7 +77,7 @@ Because we're not happy to repeat ourselves (we are NOT happy to repeat ourselve
 }
 ----
 
-Results in the page header:
+Results in this page header:
 
 .PageHeaderRow in action, shown here with title, sub-title, and three buttons as the optional extra HTML.
 image::pageTitleRow.png[PageTitleRow component]
