@@ -21,7 +21,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "sweetalert" % "2.1.0",
   "org.webjars" % "bootstrap" % "4.3.1",
   "org.webjars.bower" % "fontawesome" % "4.7.0",
-  "be.objectify" %% "deadbolt-scala" % "2.7.0",
+  "be.objectify" %% "deadbolt-scala" % "2.7.1",
   "org.mindrot" % "jbcrypt" % "0.3m",
   "org.postgresql" % "postgresql" % "42.0.0",
   "com.typesafe.play" %% "play-slick" % "4.0.2",
