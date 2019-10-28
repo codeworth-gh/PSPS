@@ -36,6 +36,7 @@ pager.title=Pager
 pageTitleRow.title=Page Title Row
 informationals.title=Informationals
 styledInputs.title=Styled Inputs
+jsSectionItem.title=JS Code
 navbar.publicHome=Public Home
 navbar.login=Login
 navbar.components=Components
