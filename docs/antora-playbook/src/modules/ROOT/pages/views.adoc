@@ -33,24 +33,26 @@ For example, the following code:
 ----
 object Structure {
   
-  val publicItems:Seq[TopSiteSection[PublicSections.Value]] = Seq(
-    PageSection("Public Home", PublicSections.Home, routes.HomeCtrl.index),
-    PageSection("Login", PublicSections.Login, routes.UserCtrl.showLogin),
-    MultiPageSection("Components", PublicSections.Components,
-      Seq(
-        PageSectionItem("Pager", routes.HomeCtrl.pager(1)),
-        PageSectionItem("Informationals", routes.HomeCtrl.informationals),
-        PageSectionItem("Styled Inputs", routes.HomeCtrl.styledInputs)
-      )
-    ),
-    MultiPageSection("Other", PublicSections.Others,
-      Seq(
-        PageSectionItem("Login", routes.UserCtrl.showLogin),
-        SeparatorSectionItem,
-        PageSectionItem("Public Home", routes.HomeCtrl.index)
-      )
-    )
-  )
+ val publicItems:Seq[TopSiteSection[PublicSections.Value]] = Seq(
+   PageSection("navbar.publicHome", PublicSections.Home, routes.HomeCtrl.index),
+   PageSection("navbar.login", PublicSections.Login, routes.UserCtrl.showLogin),
+   MultiPageSection("navbar.components", PublicSections.Components,
+     Seq(
+       PageSectionItem("pageTitleRow.title", routes.HomeCtrl.pageTitleRow()),
+       PageSectionItem("pager.title", routes.HomeCtrl.pager(1)),
+       PageSectionItem("informationals.title", routes.HomeCtrl.informationals),
+       PageSectionItem("styledInputs.title", routes.HomeCtrl.styledInputs),
+       JsSectionItem("jsSectionItem.title", Html("swal('This can be any JS code')"))
+     )
+   ),
+   MultiPageSection("Other", PublicSections.Others,
+     Seq(
+       PageSectionItem("navbar.login", routes.UserCtrl.showLogin),
+       SeparatorSectionItem,
+       PageSectionItem("navbar.publicHome", routes.HomeCtrl.index)
+     )
+   )
+ )
   ...
 }
 ----

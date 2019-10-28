@@ -2,6 +2,7 @@ package views
 
 import controllers.routes
 import play.api.mvc.Call
+import play.twirl.api.Html
 
 /*
 This file contains classes and data structures that describe the site structure (or structure*s*, in case
@@ -11,6 +12,7 @@ there are a few sections).
 abstract sealed class SectionItem
 case class PageSectionItem(title:String, call:Call) extends SectionItem
 case object SeparatorSectionItem extends SectionItem
+case class JsSectionItem(title:String, html:Html) extends SectionItem
 
 abstract sealed class TopSiteSection[T]{
   def id:T
@@ -46,7 +48,8 @@ object Structure {
         PageSectionItem("pageTitleRow.title", routes.HomeCtrl.pageTitleRow()),
         PageSectionItem("pager.title", routes.HomeCtrl.pager(1)),
         PageSectionItem("informationals.title", routes.HomeCtrl.informationals),
-        PageSectionItem("styledInputs.title", routes.HomeCtrl.styledInputs)
+        PageSectionItem("styledInputs.title", routes.HomeCtrl.styledInputs),
+        JsSectionItem("jsSectionItem.title", Html("swal('This can be any JS code')"))
       )
     ),
     MultiPageSection("Other", PublicSections.Others,

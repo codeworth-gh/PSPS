@@ -19,6 +19,7 @@
             @c match {
               case SeparatorSectionItem => {<div class="dropdown-divider"></div>}
               case PageSectionItem(title, call ) => {<a class="dropdown-item" href="@call">@Messages(title)</a>}
+              case JsSectionItem(title, jsCode) => {<button class="btn" style="padding:.25rem 1.5rem;" onclick="@jsCode"> @Messages(title)</button>}
             }
           }
         </div>
