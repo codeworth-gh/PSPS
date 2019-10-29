@@ -15,10 +15,9 @@ image::https://api.netlify.com/api/v1/badges/fb260db4-9c0f-45d3-8759-02d76d9b015
 
 == Change Log
 
-=== 2019-10-28
+=== 2019-10
+* :bug: Fixed minor cosmetic issues with button classes
 * :arrow_upper_right: Updated SBT to version 1.3.3.
-
-=== 2019-10-20
 * :tada: Moved to Scala 2.13
 * :cyclone: Refined the behavior of the prompt on the public index.
 * :arrow_upper_right: Updated SBT to version 1.3.0.
