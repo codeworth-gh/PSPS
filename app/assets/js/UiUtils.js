@@ -160,6 +160,23 @@ var UiUtils = (function () {
         mkHighlight(emt, properties.count)();
     };
 
+    var onEnter = function( fld, hdlr ) {
+        fld.addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                hdlr();
+            }
+        });
+    };
+
+    var documentReady = function(callback) {
+        if ( document.readyState!=='loading' ){
+            // document loaded; execute now
+            callback();
+        } else {
+            document.addEventListener('DOMContentLoaded', callback);
+        }
+    };
+
     return {
         makeElement: makeElement,
         makeA: makeA,
@@ -181,6 +198,8 @@ var UiUtils = (function () {
             remove: removeButton
         },
         defaultHeight:defaultHeight,
-        highlight:highlight
+        highlight:highlight,
+        onEnter:onEnter,
+        documentReady:documentReady
     };
 }());
