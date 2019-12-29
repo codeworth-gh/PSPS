@@ -44,6 +44,23 @@
   }
 }
 
+@media( max-width: 400px ) {
+  .pageTitleRow-ctnr {
+    flex-direction: column;
+    h1 {
+      order: 1;
+    }
+    .pageTitleRow-subtitle {
+      order: 2;
+    }
+    .pageTitleRow-component {
+      margin: .5em 0;
+      order: 3;
+      text-align: center;
+    }
+  }
+}
+
 .noData {
   background-color: #CCC;
   color: #776;
