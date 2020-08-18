@@ -10,6 +10,9 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.13.0"
 
+// Targeting JDK11, which is the current LTS
+javacOptions ++= Seq("-source", "11", "-target", "11")
+
 libraryDependencies ++= Seq(
   caffeine,
   ws,

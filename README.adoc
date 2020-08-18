@@ -1,3 +1,14 @@
+ifndef::env-github[:icons: font]
+ifdef::env-github[]
+:status:
+:outfilesuffix: .adoc
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :page_with_curl:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
+
 = PSPS
 
 **A Play-Scala-PostgreSQL-Slick stack for web applications. Created by http://codeworth.io[CodeWorth.io] and the http://playframework.com[Play Framework] community.**
@@ -14,6 +25,10 @@ image::https://api.netlify.com/api/v1/badges/fb260db4-9c0f-45d3-8759-02d76d9b015
 
 
 == Change Log
+
+=== 2020-08
+* :arrow_upper_right: Targeting JDK11 (current Java LTS, also supported by https://www.graalvm.org[GraalVM 20])
+* :arrow_upper_right: Slick configuration moved to `profile` (from the deprecated `driver`).
 
 === 2019-10
 * :bug: Fixed minor cosmetic issues with button classes
