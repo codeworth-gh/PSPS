@@ -48,3 +48,13 @@ The `add-user` script in the _scripts_ allows adding users from the command-line
 PSPS sends emails in certain events (forgotten password, user
 invitations etc.). To allow this, you must update the `+play.mailer+`
 part of the configuration with the details of the sending email account.
+
+
+=== Setting up 
+
+When running the application from the commandline, don't forget to point it to the correct configuration file. the command below does that, and allows forward0only evolutions (only `!Ups`, no `!Downs`).
+
+[source, bash]
+----
+./current/bin/base-app -Dconfig.file=./current/conf/server.conf -Dplay.evolutions.db.default.autoApply=true
+----
