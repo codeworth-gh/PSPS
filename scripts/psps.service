@@ -8,7 +8,7 @@ Description=NAME_OF_PLAY_APP
 After=syslog.target network.target
 
 [Service]
-ExecStart=APP_PATH/bin/hear-us -Dconfig.file=APP_PATH/conf/server.conf -Dpidfile.path=APP_DIR/RUNNING.pid -Dplay.evolutions.db.default.autoApply=true
+ExecStart=APP_PATH/bin/app-name -Dconfig.file=APP_PATH/conf/server.conf -Dpidfile.path=APP_DIR/RUNNING.pid -Dplay.evolutions.db.default.autoApply=true
 
 # to enable DOWN evolutions, add: -Dplay.evolutions.db.default.autoApplyDowns=true
 

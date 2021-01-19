@@ -430,9 +430,10 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     userForm.bindFromRequest().fold(
       formWithErrors => {
         logger.info( formWithErrors.errors.mkString("\n") )
-        Future(BadRequest(views.html.users.userEditor(formWithErrors, routes.UserCtrl.doSignup, true)(new AuthenticatedRequest(req, None), messagesProvider))),
+        Future(BadRequest(views.html.users.userEditor(formWithErrors, routes.UserCtrl.doSignup, isNew = true
+                          )(new AuthenticatedRequest(req, None), messagesProvider)))
       },
-      fd => processUserForm( fd, routes.UserCtrl.showLogin, routes.UserCtrl.doSignup, true)(new AuthenticatedRequest(req, None))
+      fd => processUserForm( fd, routes.UserCtrl.showLogin, routes.UserCtrl.doSignup, isNew = true)(new AuthenticatedRequest(req, None))
     )
   }
 

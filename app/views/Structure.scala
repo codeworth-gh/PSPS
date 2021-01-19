@@ -61,6 +61,13 @@ object Structure {
     )
   )
   
-  S
+  val backOfficeSections:Seq[TopSiteSection[BackOfficeSections.Value]] = Seq(
+    PageSection("BackEnd Home", BackOfficeSections.Home, routes.UserCtrl.userHome() ),
+    MultiPageSection("Users", BackOfficeSections.Users, Seq(
+      PageSectionItem("Invite Users", routes.UserCtrl.showInviteUser()),
+      PageSectionItem("Users", routes.UserCtrl.showUserList()),
+      PageSectionItem("Edit Profile", routes.UserCtrl.showNewUserPage())
+    ))
+  )
   
 }
