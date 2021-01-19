@@ -33,9 +33,9 @@ object HomeCtrl {
   val beRouteHash:Int = Math.abs(beRouteSeq.map( r => r.f + r.name ).map( _.hashCode ).sum)
 }
 
-class HomeCtrl @Inject()(deadbolt:DeadboltActions, langs: Langs, messagesApi: MessagesApi, cc: ControllerComponents
-                        ) extends AbstractController(cc) with I18nSupport {
-  implicit private val ec: ExecutionContext = cc.executionContext
+class HomeCtrl @Inject()(deadbolt:DeadboltActions, cc: ControllerComponents)
+                        (implicit ec:ExecutionContext) extends AbstractController(cc) with I18nSupport {
+  
   private val logger = Logger(classOf[HomeCtrl])
 //  implicit val mApiImplicit = messagesApi
   /**

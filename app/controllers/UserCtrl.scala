@@ -39,7 +39,7 @@ case class ResetPassFormData ( password1:String, password2:String, uuid:String)
 case class ChangePassFormData ( previousPassword:String, password1:String, password2:String)
 
 /**
-  * Contoller for user-related actions (login, account mgmt...)
+  * Controller for user-related actions (login, account mgmt...)
   * @param deadbolt
   * @param conf
   * @param cached
@@ -54,9 +54,10 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
                          users: UsersDAO, invitations:InvitationDAO,
                          forgotPasswords:PasswordResetRequestDAO,
                          mailerClient: MailerClient, langs:Langs,
-                         messagesApi:MessagesApi, localAction:LocalAction) extends InjectedController {
+                         messagesApi:MessagesApi, localAction:LocalAction)(
+                        implicit ec:ExecutionContext
+) extends InjectedController {
 
-  implicit private val ec: ExecutionContext = cc.executionContext
   private val logger = Logger(classOf[UserCtrl])
 
   private val validUserId = "^[-._a-zA-Z0-9]+$".r
