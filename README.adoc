@@ -29,6 +29,13 @@ image::https://api.netlify.com/api/v1/badges/fb260db4-9c0f-45d3-8759-02d76d9b015
 
 == Change Log
 
+=== 2021-01
+
+* :arrow_upper_right: Updated Play to 2.8.7.
+* :arrow_upper_right: Updated libraries to be compatible with 2.8.x
+* :arrow_upper_right: Filters updated
+* :bug: 0 warning-ness
+
 === 2020-08
 * :arrow_upper_right: Targeting JDK11 (current Java LTS, also supported by https://www.graalvm.org[GraalVM 20])
 * :arrow_upper_right: Slick configuration moved to `profile` (from the deprecated `driver`).

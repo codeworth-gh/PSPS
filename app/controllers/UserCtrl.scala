@@ -111,7 +111,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
       badForm   => Future(BadRequest(views.html.users.login(badForm))),
       loginData => {
         users.authenticate(loginData.username.trim, loginData.password.trim)
-          .map( _.map(u => Redirect(routes.UserCtrl.userHome).withNewSession.withSession(("userId",u.id.toString)))
+          .map( _.map(u => Redirect(routes.UserCtrl.userHome()).withNewSession.withSession(("userId",u.id.toString)))
             .getOrElse( {
               BadRequest(views.html.users.login(loginForm.fill(loginData).withGlobalError("login.error.badUsernameEmailOrPassword")))
             })
@@ -166,7 +166,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
             userOpt <- users.get(userId)
             _ <- userOpt.map( user => users.updateUser(fData.update(user)) ).getOrElse(Future(()))
           } yield {
-            userOpt.map(_ => Redirect(routes.UserCtrl.showUserList))
+            userOpt.map(_ => Redirect(routes.UserCtrl.showUserList()))
               .getOrElse(notFound(userId))
           }
         }
@@ -177,25 +177,25 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
   }
 
   def showNewUserPage = deadbolt.SubjectPresent()(){ implicit req =>
-    Future(Ok( views.html.users.userEditor(userForm, routes.UserCtrl.doSaveNewUser, isNew=true) ))
+    Future(Ok( views.html.users.userEditor(userForm, routes.UserCtrl.doSaveNewUser(), isNew=true) ))
   }
 
   def doSaveNewUser = deadbolt.SubjectPresent()(){ implicit req =>
     userForm.bindFromRequest().fold(
-      fwe => Future(BadRequest(views.html.users.userEditor(fwe, routes.UserCtrl.doSaveNewUser, isNew=true))),
-      fData => processUserForm( fData, routes.UserCtrl.showLogin, routes.UserCtrl.doSignup, true)(new AuthenticatedRequest(req, None))
+      fwe => Future(BadRequest(views.html.users.userEditor(fwe, routes.UserCtrl.doSaveNewUser(), isNew=true))),
+      fData => processUserForm( fData, routes.UserCtrl.showLogin(), routes.UserCtrl.doSignup(), true)(new AuthenticatedRequest(req, None))
     )
   }
 
   def showNewUserInvitation(uuid:String) = Action { implicit req =>
-    Ok( views.html.users.userEditor( userForm.bind(Map("uuid"->uuid)).discardingErrors, routes.UserCtrl.doNewUserInvitation,
+    Ok( views.html.users.userEditor( userForm.bind(Map("uuid"->uuid)).discardingErrors, routes.UserCtrl.doNewUserInvitation(),
       isNew=true)(new AuthenticatedRequest(req, None), messagesProvider))
   }
 
   def doNewUserInvitation() = Action.async { implicit req =>
     userForm.bindFromRequest().fold(
       fwe => {
-        Future(BadRequest(views.html.users.userEditor(fwe, routes.UserCtrl.doNewUserInvitation, isNew=true
+        Future(BadRequest(views.html.users.userEditor(fwe, routes.UserCtrl.doNewUserInvitation(), isNew=true
                   )(new AuthenticatedRequest(req, None), messagesProvider)))
       },
       fData => {
@@ -220,7 +220,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
             if ( emailExists ) form = form.withError("email", "error.email.exists")
             if ( !passwordOK ) form = form.withError("password1", "error.password")
               .withError("password2", "error.password")
-            Future(BadRequest(views.html.users.userEditor(form, routes.UserCtrl.doNewUserInvitation, isNew = true
+            Future(BadRequest(views.html.users.userEditor(form, routes.UserCtrl.doNewUserInvitation(), isNew = true
                   )(new AuthenticatedRequest(req, None), messagesProvider)))
           }
         }
@@ -387,7 +387,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     val user = req.subject.get.asInstanceOf[UserSubject].user
     changePassForm.bindFromRequest().fold(
       fwi => {
-        Future(BadRequest(views.html.users.userEditor(userForm, routes.UserCtrl.doSaveNewUser, isNew = false)))
+        Future(BadRequest(views.html.users.userEditor(userForm, routes.UserCtrl.doSaveNewUser(), isNew = false)))
       },
       fd => {
         if(users.verifyPassword(user, fd.previousPassword)){
@@ -399,11 +399,11 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
           } else {
             val form = userForm.fill(UserFormData of user).withError("password1", "error.password")
               .withError("password2", "Passwords must match, and cannot be empty")
-            Future(BadRequest(views.html.users.userEditor(form, routes.UserCtrl.doSaveNewUser, isNew = false, activeFirst=false)))
+            Future(BadRequest(views.html.users.userEditor(form, routes.UserCtrl.doSaveNewUser(), isNew = false, activeFirst=false)))
           }
         } else{
           val form = userForm.fill(UserFormData of user).withError("previousPassword", "error.password.incorrect")
-          Future(BadRequest( views.html.users.userEditor(form, routes.UserCtrl.doSaveNewUser, isNew=false, activeFirst=false )))
+          Future(BadRequest( views.html.users.userEditor(form, routes.UserCtrl.doSaveNewUser(), isNew=false, activeFirst=false )))
         }
       }
     )
@@ -420,7 +420,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
       if(!conf.getOptional[Boolean]("AllowSignup").getOrElse(true)) {
         BadRequest(views.html.users.login(loginForm))
     } else {
-        Ok( views.html.users.userEditor( userForm, routes.UserCtrl.doSignup, isNew=true, activeFirst = true
+        Ok( views.html.users.userEditor( userForm, routes.UserCtrl.doSignup(), isNew=true, activeFirst = true
         )(new AuthenticatedRequest(req, None), messagesProvider))
     })
   }
@@ -430,10 +430,10 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     userForm.bindFromRequest().fold(
       formWithErrors => {
         logger.info( formWithErrors.errors.mkString("\n") )
-        Future(BadRequest(views.html.users.userEditor(formWithErrors, routes.UserCtrl.doSignup, isNew = true
+        Future(BadRequest(views.html.users.userEditor(formWithErrors, routes.UserCtrl.doSignup(), isNew = true
                           )(new AuthenticatedRequest(req, None), messagesProvider)))
       },
-      fd => processUserForm( fd, routes.UserCtrl.showLogin, routes.UserCtrl.doSignup, isNew = true)(new AuthenticatedRequest(req, None))
+      fd => processUserForm( fd, routes.UserCtrl.showLogin(), routes.UserCtrl.doSignup(), isNew = true)(new AuthenticatedRequest(req, None))
     )
   }
 

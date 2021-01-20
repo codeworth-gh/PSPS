@@ -26,11 +26,11 @@ libraryDependencies ++= Seq(
   "org.webjars.bower" % "fontawesome" % "4.7.0",
   "be.objectify" %% "deadbolt-scala" % "2.7.1",
   "org.mindrot" % "jbcrypt" % "0.3m",
-  "org.postgresql" % "postgresql" % "42.0.0",
-  "com.typesafe.play" %% "play-slick" % "4.0.2",
-  "com.typesafe.play" %% "play-slick-evolutions" % "4.0.2",
-  "com.typesafe.play" %% "play-mailer" % "7.0.1",
-  "com.typesafe.play" %% "play-mailer-guice" % "7.0.1",
+  "org.postgresql" % "postgresql" % "42.2.11",
+  "com.typesafe.play" %% "play-slick" % "5.0.0",
+  "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0",
+  "com.typesafe.play" %% "play-mailer" % "8.0.0",
+  "com.typesafe.play" %% "play-mailer-guice" % "8.0.0",
   "org.seleniumhq.selenium" % "selenium-java" % "2.35.0" % "test",
 //  "org.scalamock" %% "scalamock" % "4.0.0" % Test,
 )
@@ -45,3 +45,6 @@ includeFilter in (Assets, LessKeys.less) := "*.less"
 
 pipelineStages := Seq(rjs, uglify, digest, gzip)
 
+// Disable documentation creation
+sources in (Compile, doc) := Seq.empty
+publishArtifact in (Compile, packageDoc) := false
