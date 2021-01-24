@@ -36,6 +36,7 @@ image::https://api.netlify.com/api/v1/badges/fb260db4-9c0f-45d3-8759-02d76d9b015
 * :arrow_upper_right: Filters updated
 * :arrow_upper_right: Sticky footer: on screen bottom when there's not enough space to fill the screen, or at the bottom of the content when the page is higher than the screen.
 * :bug: 0 warning-ness achieved.
+* :arrow_upper_right: Fixed layout issues with the Page Title Row component.
 
 === 2020-08
 * :arrow_upper_right: Targeting JDK11 (current Java LTS, also supported by https://www.graalvm.org[GraalVM 20])
