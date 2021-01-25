@@ -40,7 +40,7 @@ class UsersDAO @Inject() (protected val dbConfigProvider:DatabaseConfigProvider,
     }
   }
 
-  def emailExists ( e:String): Future[Boolean] = {
+  def emailExists( e:String): Future[Boolean] = {
     db.run{
       Users.map(_.email ).filter( _.toLowerCase  === e.toLowerCase ).exists.result
     }

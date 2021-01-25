@@ -10,7 +10,9 @@ create table users (
 );
 
 CREATE UNIQUE INDEX lowercase_user_names ON users (lower(username));
+CREATE UNIQUE INDEX lowercase_user_emails ON users (lower(email));
 
 # --- !Downs
+drop index lowercase_user_emails;
 drop index lowercase_user_names;
 drop table users;

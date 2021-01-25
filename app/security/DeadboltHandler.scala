@@ -19,11 +19,14 @@ case class UserSubject(user:User) extends Subject {
 }
 
 
-/**
-  * Created by michael on 12/3/17.
-  */
-class DeadboltHandler(users:UsersDAO, langs:Langs, messagesApi:MessagesApi) extends be.objectify.deadbolt.scala.DeadboltHandler {
+object DeadboltHandler {
+  val USER_ID_SESSION_KEY = "userId"
+}
 
+
+class DeadboltHandler(users:UsersDAO, langs:Langs, messagesApi:MessagesApi) extends be.objectify.deadbolt.scala.DeadboltHandler {
+  import DeadboltHandler._
+  
   implicit val messagesProvider: MessagesProvider = {
     MessagesImpl(langs.availables.head, messagesApi)
   }
@@ -33,7 +36,7 @@ class DeadboltHandler(users:UsersDAO, langs:Langs, messagesApi:MessagesApi) exte
   override def getDynamicResourceHandler[A](request: Request[A]) = Future(None)
 
   override def getSubject[A](request: AuthenticatedRequest[A]):Future[Option[Subject]] = {
-    request.session.get("userId").map( sId => users.get(sId.toLong).map(_.map(u=>UserSubject(u))) )
+    request.session.get(USER_ID_SESSION_KEY).map( sId => users.get(sId.toLong).map(_.map(u=>UserSubject(u))) )
       .getOrElse( Future(None) )
   }
 
@@ -46,7 +49,7 @@ class DeadboltHandler(users:UsersDAO, langs:Langs, messagesApi:MessagesApi) exte
   override def onAuthFailure[A](request: AuthenticatedRequest[A]): Future[Result] = {
     Future {
       val message = Informational(Informational.Level.Warning, Messages("login.pleaseLogIn"))
-      if ( request.headers.get("Accept").filter(h=> h.contains("html")).isDefined ) {
+      if ( request.headers.get("Accept").exists(h => h.contains("html")) ) {
         // This is a "address bar" call.
         Results.Redirect(routes.UserCtrl.showLogin()).withSession(
           request.session + ("targetUrl" -> request.path)).flashing((FlashKeys.MESSAGE,message.encoded))
