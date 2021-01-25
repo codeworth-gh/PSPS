@@ -66,7 +66,7 @@ object Structure {
     MultiPageSection("Users", BackOfficeSections.Users, Seq(
       PageSectionItem("Invite Users", routes.UserCtrl.showInviteUser()),
       PageSectionItem("Users", routes.UserCtrl.showUserList()),
-      PageSectionItem("Edit Profile", routes.UserCtrl.showNewUserPage())
+      PageSectionItem("Edit Profile", routes.UserCtrl.showEditMyProfile())
     ))
   )
   

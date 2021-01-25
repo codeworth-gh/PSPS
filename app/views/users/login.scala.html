@@ -16,7 +16,6 @@
             border: 2px solid #888;
             border-radius: 1em;
             padding: 1em;
-            box-shadow: 0 4px 8px rgba(0,0,0,.25);
             background-color: #EEE;
           }
           body {
@@ -31,12 +30,12 @@
   <div class="row mt-4">
     <div class="col text-center">
       <h1> @Messages("login.title")</h1>
-@*      <h3 class="text-muted">@Html(Messages("application.slogan"))</h3>*@
+      <h3 class="text-muted">@Html(Messages("application.slogan"))</h3>
     </div>
   </div>
   <div class="row mt-5 justify-content-md-center">
     <div class="col-md-6">
-      <div class="loginCtnr">
+      <div class="loginCtnr shadow-lg">
         <h2>@Messages("login")</h2>
         <form action="@routes.UserCtrl.doLogin" method="POST">
           @helper.CSRF.formField
@@ -45,22 +44,22 @@
               <div class="alert alert-danger">@Messages(m.message)</div>
             </div>
           }
-          <div class="form-group">
-            <label for="usernameInput" class="control-label">@Messages("usernameOrEmail")</label>
+          <div class="form-floating mb-3">
             <input type="text" class="form-control" id="usernameInput" name="username" value="@form("username").value" placeholder="username/email">
+            <label for="usernameInput" class="control-label">@Messages("usernameOrEmail")</label>
           </div>
 
-          <div class="form-group">
-            <label for="passwordInput" class="control-label">@Messages("password")</label>
+          <div class="form-floating">
             <input type="password" class="form-control" id="passwordInput" name="password" placeholder="password">
+            <label for="passwordInput" class="control-label">@Messages("password")</label>
           </div>
 
           <div class="form-group mt-3">
             <div class="row">
-              <div class="col-md">
+              <div class="col-md text-start">
                 <a href="@routes.UserCtrl.showForgotPassword()">@Messages("forgotPassword")</a>
               </div>
-              <div class="col-md text-right">
+              <div class="col-md text-end">
                 <a class="btn btn-default btn-outline-secondary" href="/"><i class="fa fa-close"></i> @Messages("cancel")</a>
                 <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> @Messages("login")</button>
               </div>

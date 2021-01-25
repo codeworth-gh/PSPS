@@ -22,7 +22,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "jquery-ui" % "1.12.1",
   "org.webjars" % "tether" % "1.4.0",
   "org.webjars" % "sweetalert" % "2.1.0",
-  "org.webjars" % "bootstrap" % "4.3.1",
+  "org.webjars" % "bootstrap" % "5.0.0-beta1",
   "org.webjars.bower" % "fontawesome" % "4.7.0",
   "be.objectify" %% "deadbolt-scala" % "2.7.1",
   "org.mindrot" % "jbcrypt" % "0.3m",
@@ -43,7 +43,8 @@ LessKeys.compress in Assets := true
 
 includeFilter in (Assets, LessKeys.less) := "*.less"
 
-pipelineStages := Seq(rjs, uglify, digest, gzip)
+pipelineStages := Seq(digest, gzip)
+//pipelineStages := Seq(rjs, uglify, digest, gzip)
 
 // Disable documentation creation
 sources in (Compile, doc) := Seq.empty

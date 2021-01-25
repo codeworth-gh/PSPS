@@ -1,7 +1,7 @@
 package security
 
 import be.objectify.deadbolt.scala.AuthenticatedRequest
-import be.objectify.deadbolt.scala.models.{Role, Subject}
+import be.objectify.deadbolt.scala.models.{Permission, Role, Subject}
 import controllers.{FlashKeys, Informational, routes}
 import dataaccess.UsersDAO
 import models.User
@@ -12,11 +12,10 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
 
-case class UserSubject(user:User) extends Subject
-{
+case class UserSubject(user:User) extends Subject {
   override def identifier: String = user.username
-  override def roles = List[Role]()
-  override def permissions = Nil
+  override def roles: List[Role] = List[Role]()
+  override def permissions: List[Permission] = Nil
 }
 
 

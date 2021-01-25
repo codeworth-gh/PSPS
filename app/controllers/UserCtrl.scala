@@ -155,7 +155,12 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
       Future( Forbidden("A user cannot edit the profile of another user.") )
     }
   }
-
+  
+  def showEditMyProfile = deadbolt.SubjectPresent()() { req =>
+    val user = req.subject.get.asInstanceOf[UserSubject]
+    Future(Redirect(routes.UserCtrl.showEditUserPage(user.identifier)))
+  }
+  
   def doSaveUser(userId:String) = deadbolt.SubjectPresent()(){ implicit req =>
     val user = req.subject.get.asInstanceOf[UserSubject].user
     if ( userId == user.username ) {

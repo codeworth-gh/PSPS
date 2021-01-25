@@ -9,12 +9,8 @@
 
 @templates.bsBase("Sign up", Html(""), scripts){
   <div class="container">
-    <div class="row my-2">
-      <div class="col">
-        <h1>Sign up</h1>
-      </div>
-    </div>
-    <div class="row justify-content-md-center">
+    @comps.pageTitleRow(Messages("users.signup.title"))()
+    <div class="row my-2 justify-content-md-center">
       <div class="col col-md-8">
         <form action="@routes.UserCtrl.doSignup" method="POST">
           @helper.CSRF.formField

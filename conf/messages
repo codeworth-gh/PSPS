@@ -1,5 +1,6 @@
 # https://www.playframework.com/documentation/latest/ScalaI18N
 application.title=PSPS Seed
+application.slogan=Slogan for the application goes here.
 navbar.title=PSPS Seed
 navbar.logout=Logout
 inviteEmail.title=Invitation to Open an Account in a PSPS Server
@@ -50,6 +51,8 @@ users=Users
 users.inviteUser=Invite User
 users.noPendingInvitations=No pending invitations
 users.pendingInvitations=Pending Invitations
+users.signup.title=Sign up
+users.me=Me!
 userEditor.title=User Profile Editor
 userEditor.new.title=New User
 

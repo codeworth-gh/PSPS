@@ -75,9 +75,9 @@ var Informationals = (function(){
 
     var showInformational = function(informational) {
         var dismissButton = UiUtils.makeButton( function(){},
-            {classes:["close"]},
-            [UiUtils.fa("close")]
-        );
+            {classes:["btn-close"]}, []);
+        dismissButton.dataset.bsDismiss="alert";
+
         var elements = [dismissButton];
         if ( informational.title ) {
             elements.push(UiUtils.makeElement("strong",{}, informational.title));
