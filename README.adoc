@@ -42,6 +42,7 @@ image::https://api.netlify.com/api/v1/badges/fb260db4-9c0f-45d3-8759-02d76d9b015
 * :bug: Various improvements to the site structure.
 * :arrow_upper_right: Improved signup screen - no "change password" tab.
 * :arrow_upper_right: Support for ES6. Existing code upgraded.
+* :arrow_upper_right: Stylesheet pre-processor changed from LESS to SASS.
 
 === 2020-08
 * :arrow_upper_right: Targeting JDK11 (current Java LTS, also supported by https://www.graalvm.org[GraalVM 20])

@@ -38,7 +38,7 @@ body {
   direction: rtl;
 }
 
-@inputGroupBorderRadius: 0.25rem;
+$inputGroupBorderRadius: 0.25rem;
 
 .input-group > .input-group-append:last-child > .btn:not(:last-child):not(.dropdown-toggle),
 .input-group > .input-group-append:last-child > .input-group-text:not(:last-child),
@@ -46,30 +46,30 @@ body {
 .input-group > .input-group-append:not(:last-child) > .input-group-text,
 .input-group > .input-group-prepend > .btn,
 .input-group > .input-group-prepend > .input-group-text {
-  border-radius: 0 @inputGroupBorderRadius @inputGroupBorderRadius 0;
+  border-radius: 0 $inputGroupBorderRadius $inputGroupBorderRadius 0;
   border-left-width: 0;
 }
 
 .input-group > .custom-select:not(:first-child), .input-group > .form-control:not(:first-child) {
-  border-radius: @inputGroupBorderRadius 0 0 @inputGroupBorderRadius;
+  border-radius: $inputGroupBorderRadius 0 0 $inputGroupBorderRadius;
 }
 
 .input-group > .input-group-append > .btn, .input-group > .input-group-append > .input-group-text, .input-group > .input-group-prepend:first-child > .btn:not(:first-child), .input-group > .input-group-prepend:first-child > .input-group-text:not(:first-child), .input-group > .input-group-prepend:not(:first-child) > .btn, .input-group > .input-group-prepend:not(:first-child) > .input-group-text {
-  border-radius: @inputGroupBorderRadius 0 0 @inputGroupBorderRadius;
+  border-radius: $inputGroupBorderRadius 0 0 $inputGroupBorderRadius;
 }
 
 .input-group > .custom-select:not(:last-child),
 .input-group > .form-control:not(:last-child) {
-  border-radius: 0 @inputGroupBorderRadius @inputGroupBorderRadius 0;
+  border-radius: 0 $inputGroupBorderRadius $inputGroupBorderRadius 0;
 }
 
 
 .btn-group.rtl-aware {
   .btn:first-child {
-    border-radius: 0 @inputGroupBorderRadius @inputGroupBorderRadius 0;
+    border-radius: 0 $inputGroupBorderRadius $inputGroupBorderRadius 0;
   }
   .btn:last-child, .btn.dropdown-toggle {
-    border-radius: @inputGroupBorderRadius 0 0 @inputGroupBorderRadius;
+    border-radius: $inputGroupBorderRadius 0 0 $inputGroupBorderRadius;
   }
 }
 

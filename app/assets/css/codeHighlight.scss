@@ -1,11 +1,11 @@
 // for highlight (http://www.andre-simon.de)
 // based on https://gitlab.com/saalen/highlight/blob/master/extras/themes-resources/base16/example-light.html
 
-@codeFontFam:'Menlo', 'Courier New', monospace;
+$codeFontFam:'Menlo', 'Courier New', monospace;
 
 dl.codeDefinitions {
   dt {
-    font-family: @codeFontFam;
+    font-family: $codeFontFam;
   }
   dd {
     padding-left: 1em;
@@ -16,7 +16,7 @@ dl.codeDefinitions {
   line-height: 18pt;
   background-color: #EEE;
   font-size: 12pt;
-  font-family: @codeFontFam;
+  font-family: $codeFontFam;
   padding: .5em;
   border-radius: .5em;
   box-shadow: 0 0 4px rgba(0,0,0,.5) inset;
@@ -41,7 +41,7 @@ pre.hl {
   color: #515151;
   background-color: #EEE;
   font-size: 12pt;
-  font-family: @codeFontFam;
+  font-family: $codeFontFam;
   padding: .5em;
   border-radius: .5em;
   box-shadow: 0 0 4px rgba(0,0,0,.5) inset;

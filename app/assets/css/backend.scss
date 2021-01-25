@@ -9,7 +9,7 @@
 }
 
 li a.webPage {
-  .pseudoInput;
+  @extend .pseudoInput;
   font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   direction: ltr;
   text-align: left;
@@ -17,7 +17,7 @@ li a.webPage {
 }
 
 li div.inputName {
-  .pseudoInput;
+  @extend .pseudoInput;
 }
 
 ul.editableList {

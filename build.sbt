@@ -37,16 +37,18 @@ libraryDependencies ++= Seq(
 //  "org.scalamock" %% "scalamock" % "4.0.0" % Test,
 )
 
+
+import org.irundaia.sbt.sass._
+
+SassKeys.cssStyle := Minified
+
+SassKeys.generateSourceMaps := true
+
 // TODO add sections and table helpers
 // TwirlKeys.templateImports ++= Seq( "views.Sections", "views.TableHelper")
 TwirlKeys.templateImports ++= Seq("views.Helpers")
 
-LessKeys.compress in Assets := true
-
-includeFilter in (Assets, LessKeys.less) := "*.less"
-
 pipelineStages := Seq(digest, gzip)
-//pipelineStages := Seq(rjs, uglify, digest, gzip)
 
 // Disable documentation creation
 sources in (Compile, doc) := Seq.empty
