@@ -4,6 +4,8 @@ name := """PSPS-baseapp"""
 
 organization := "com.example"
 
+maintainer := "your.name@company.org"
+
 version := "1.0-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
@@ -17,7 +19,6 @@ libraryDependencies ++= Seq(
   caffeine,
   ws,
   guice,
-  "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.3" % Test,
   "org.webjars" % "jquery" % "3.2.1",
   "org.webjars" % "jquery-ui" % "1.12.1",
   "org.webjars" % "tether" % "1.4.0",
@@ -31,6 +32,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0",
   "com.typesafe.play" %% "play-mailer" % "8.0.0",
   "com.typesafe.play" %% "play-mailer-guice" % "8.0.0",
+  "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.3" % Test,
   "org.seleniumhq.selenium" % "selenium-java" % "2.35.0" % "test",
 //  "org.scalamock" %% "scalamock" % "4.0.0" % Test,
 )

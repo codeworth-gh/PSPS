@@ -1,23 +1,24 @@
+/* jshint esversion:6 */
 /**
  * Deals with displaying success/fail/info/blocking widgets to the user.
  *
  * Depends on UiUtils.js, Bootstrap 4
  */
 
-var Informationals = (function(){
-    var MESSAGE_TYPES = {
+const Informationals = (function(){
+    const MESSAGE_TYPES = {
         YES_NO:"yesNoMessage",
         INFORMATION:"informational",
         BKG_PROCESS:"backgroundProcess"
     };
 
     function dismiss( emt ) {
-        var $emt = $(emt);
+        const $emt = $(emt);
         $emt.slideUp(300,function() { $emt.remove();} );
     }
 
     function initLoaderDialog() {
-        var dialogHtml = "<div class=\"modal fade\" id=\"InformationalsLoaderModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n" +
+        const dialogHtml = "<div class=\"modal fade\" id=\"InformationalsLoaderModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n" +
             "<div class=\"modal-dialog\"><div class=\"modal-content\"><div class=\"text-center\">\n" +
             "<br /><i class=\"fa fa-cog fa-spin fa-5x\"></i><hr /><h5 id=\"InformationalsLoaderModalText\" class=\"text-center\">Loading</h5><br />\n" +
             "</div></div></div></div>\n" +
@@ -33,35 +34,35 @@ var Informationals = (function(){
     }
 
     function initInformationalsArea() {
-        var area = UiUtils.makeDiv({id:"InformationalsMessageContainer"});
+        const area = UiUtils.makeDiv({id:"InformationalsMessageContainer"});
         area.id = "InformationalsMessageContainer";
         $("body").append(area);
         $informationalsArea = $(area);
     }
 
-    var $loaderElement = null;
-    var $loaderElementText = null;
-    var $informationalsArea = null;
-    var bkgArea = null;
+    let $loaderElement = null;
+    let $loaderElementText = null;
+    let $informationalsArea = null;
+    let bkgArea = null;
 
-    var makeYesNoMessage = function(title, message, callback, timeout, type ) {
+    function makeYesNoMessage(title, message, callback, timeout, type ) {
 
         if ( ! type ) type="info";
-        var ynm = makeInformational(type, title, message, timeout);
+        const ynm = makeInformational(type, title, message, timeout);
         ynm.callback = callback;
         ynm.messageType = MESSAGE_TYPES.YES_NO;
         return ynm;
-    };
+    }
 
-    var makeInformational =  function( type, title, message, timeout ) {
-        var informational =  { title: title,
+    function makeInformational( type, title, message, timeout ) {
+        const informational =  { title: title,
             type: type,
             message: message,
             messageType:MESSAGE_TYPES.INFORMATION
         };
 
         if ( timeout ) {
-            var effTimeout = Number(timeout);
+            const effTimeout = Number(timeout);
             if ( (! isNaN(effTimeout)) && effTimeout > 0 ) {
                 informational.timeout = effTimeout;
             }
@@ -71,14 +72,14 @@ var Informationals = (function(){
         };
 
         return informational;
-    };
+    }
 
-    var showInformational = function(informational) {
-        var dismissButton = UiUtils.makeButton( function(){},
+    function showInformational(informational) {
+        const dismissButton = UiUtils.makeButton( function(){},
             {classes:["btn-close"]}, []);
         dismissButton.dataset.bsDismiss="alert";
 
-        var elements = [dismissButton];
+        const elements = [dismissButton];
         if ( informational.title ) {
             elements.push(UiUtils.makeElement("strong",{}, informational.title));
             elements.push(" ");
@@ -87,7 +88,7 @@ var Informationals = (function(){
             elements.push( informational.message );
         }
 
-        var info = UiUtils.makeElement("div", {classes:["alert","alert-"+informational.type]}, elements);
+        const info = UiUtils.makeElement("div", {classes:["alert","alert-"+informational.type]}, elements);
 
         $informationalsArea.append( info );
 
@@ -98,21 +99,21 @@ var Informationals = (function(){
         }
 
         return info;
-    };
+    }
 
-    var showYesNo = function(ynMsg) {
+    function showYesNo(ynMsg) {
 
-        var yesButton = UiUtils.makeButton( function(){},
+        const yesButton = UiUtils.makeButton( function(){},
             {classes:["btn", "btn-primary"]},
             ["Yes"]
         );
-        var noButton = UiUtils.makeButton( function(){},
+        const noButton = UiUtils.makeButton( function(){},
             {classes:["btn", "btn-default"]},
             ["No"]
         );
-        var btnContainer = UiUtils.makeDiv("btnContainer", [noButton, yesButton]);
+        const btnContainer = UiUtils.makeDiv("btnContainer", [noButton, yesButton]);
 
-        var elements = [btnContainer];
+        const elements = [btnContainer];
         if ( ynMsg.title ) {
             elements.push(UiUtils.makeElement("strong",{}, ynMsg.title));
             elements.push(" ");
@@ -121,13 +122,13 @@ var Informationals = (function(){
             elements.push( ynMsg.message );
         }
 
-        var info = UiUtils.makeElement("div", {classes:["alert","alert-"+ynMsg.type, ynMsg.messageType]}, elements);
+        const info = UiUtils.makeElement("div", {classes:["alert","alert-"+ynMsg.type, ynMsg.messageType]}, elements);
         $informationalsArea.append( info );
 
         info.dismiss = function() {
             dismiss(info);
         };
-        var callbackInProgress = false;
+        let callbackInProgress = false;
         noButton.onclick = function(){ callbackInProgress=true; ynMsg.callback(false, info); };
         yesButton.onclick = function(){ callbackInProgress=true;  ynMsg.callback(true, info); };
 
@@ -140,34 +141,34 @@ var Informationals = (function(){
         }
 
         return info;
-    };
+    }
 
     function makeBackgroundProcessMessage( title ) {
-        var elements = [
+        const elements = [
             UiUtils.makeElement("i", {classes:["fa","fa-spin","fa-cog"]}, ""),
-            UiUtils.makeElement("i", {classes:["fa","fa-check-circle-o","text-hide"]}, ""),
+            UiUtils.makeElement("i", {classes:["fa","fa-check-circle-o","d-none"]}, ""),
             UiUtils.makeElement("p", {}, title)
         ];
-        var info = UiUtils.makeElement("div", {classes:[MESSAGE_TYPES.BKG_PROCESS, "loading"]}, elements );
+        const info = UiUtils.makeElement("div", {classes:[MESSAGE_TYPES.BKG_PROCESS, "loading"]}, elements );
         info.dismiss = function(){ dismiss(info); };
         info.success = function(){
             info.dismiss = function(){}; // no-op, so client code can't double-dismiss this.
             $(this).addClass("done");
             $(this).find("i.fa-spin").remove();
-            $(this).find("i.text-hide").removeClass("text-hide");
+            $(this).find("i.d-none").removeClass("d-none");
             window.setTimeout(function(){ dismiss(info);}, 1500);
         };
         info.update = function( value ) {
-          var $p = $(this).find("p");
+            const $p = $(this).find("p");
           $p.text(value);
           UiUtils.highlight($p);
         };
         return info;
     }
 
-    var loaderModalTransitioning = false;
-    var loaderModalShowing = false;
-    var loader = function( toShow ) {
+    let loaderModalTransitioning = false;
+    let loaderModalShowing = false;
+    function loader( toShow ) {
         if ( ! $loaderElement ) {
             initLoaderDialog();
         }
@@ -198,7 +199,7 @@ var Informationals = (function(){
                     loaderModalTransitioning=false;});
         }
 
-    };
+    }
 
     loader.dismiss = function(){
         if ( loaderModalTransitioning ) {

@@ -1,18 +1,19 @@
+/* jshint esversion:6 */
 /**
  * Little library for working with the PlayFramework router and
  * native JS Fetch api.
  */
 
-var Playjax = function(router){
+function Playjax(router){
 
-    var csrfTokenValue;
+    let csrfTokenValue;
 
     /**
      * Lazy-loads the CSRF token, if exists. Replaces itself once called.
      * @return {boolean} true iff there's a CSRF token on the page
      */
-    var scanForCsrfToken = function() {
-        var csrfEmt = document.getElementById("Playjax_csrfTokenValue");
+    let scanForCsrfToken = function(){
+        const csrfEmt = document.getElementById("Playjax_csrfTokenValue");
         if ( csrfEmt ) {
             csrfTokenValue = csrfEmt.innerText;
             scanForCsrfToken = function(){return true;};
@@ -24,7 +25,7 @@ var Playjax = function(router){
     };
 
     function using( pathFn ){
-        var route = pathFn(router.controllers);
+        const route = pathFn(router.controllers);
         return {
             /**
              * Return the request object
@@ -40,7 +41,7 @@ var Playjax = function(router){
     }
 
     function routeToRequest(route, body) {
-        var properties = {
+        const properties = {
             method: route.method,
             redirect: "follow",
             credentials: "same-origin",
@@ -81,4 +82,4 @@ var Playjax = function(router){
         using:using
     };
 
-};
+}

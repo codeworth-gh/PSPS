@@ -44,7 +44,7 @@ PSPS uses the following technologies:
 * The http://scala-lang.org[Scala] variant of http://playframework.com[Play Framework].
 * http://postgres.org[PostgreSQL] 
 * http://slick.lightbend.com/[Slick] As the database connectivity layer 
-* http://getbootstrap.com[Bootstrap4] 
+* http://getbootstrap.com[Bootstrap 5 (beta-1)]
 * User-based access control, using https://deadbolt-scala.readme.io[Deadbolt]. 
 * Custom code and templates
 

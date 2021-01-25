@@ -1,18 +1,18 @@
+/* jshint esversion:6 */
 /**
  * Utility class for converting Javascript objects to HTML tables.
- * @type {{convert: toHtml}}
  */
-ObjectHTMLer = (function(){
+const ObjectHTMLer = (function(){
 
     function objToTable( obj ) {
-        var table = document.createElement("table");
-        var tbody = document.createElement("tbody");
+        const table = document.createElement("table");
+        const tbody = document.createElement("tbody");
         table.appendChild(tbody);
         Object.keys(obj).forEach( function( k ) {
-            var th = document.createElement("th");
-            var td = toHtml(obj[k]);
+            const th = document.createElement("th");
+            const td = toHtml(obj[k]);
             th.innerText = k;
-            var tr = document.createElement("tr");
+            const tr = document.createElement("tr");
             tr.appendChild(th);
             tr.appendChild(td);
             tbody.appendChild(tr);
@@ -22,9 +22,9 @@ ObjectHTMLer = (function(){
     }
 
     function arrayToUl( arr ){
-        var retVal = document.createElement("ul");
+        const retVal = document.createElement("ul");
         arr.forEach(function(emt){
-           var li = document.createElement("li");
+            const li = document.createElement("li");
            li.appendChild( toHtml(emt) );
            retVal.appendChild(li);
         });
@@ -32,7 +32,7 @@ ObjectHTMLer = (function(){
     }
 
     function atomicValueToSpan( vlu ) {
-        var retVal = document.createElement("span");
+        const retVal = document.createElement("span");
         retVal.innerText = String(vlu);
         return retVal;
     }
