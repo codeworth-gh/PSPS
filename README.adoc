@@ -29,6 +29,10 @@ image::https://api.netlify.com/api/v1/badges/fb260db4-9c0f-45d3-8759-02d76d9b015
 
 == Change Log
 
+=== 2021-02
+* :cyclone: Some minor fixes and refinements
+* :tada: Added ``JsonApiHelper``, a controller helper mix-in that adds useful JSON-related controller methods.
+
 === 2021-01
 
 * :arrow_upper_right: Updated Play to 2.8.7.

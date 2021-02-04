@@ -83,7 +83,7 @@ class HomeCtrl @Inject()(deadbolt:DeadboltActions, cc: ControllerComponents)
     Action { implicit request =>
       Ok(
         routing.JavaScriptReverseRouter("feRoutes")(
-          routes.javascript.HomeCtrl.apiSayHi
+          HomeCtrl.feRouteSeq: _*
         )).as("text/javascript")
     }
 
