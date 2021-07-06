@@ -53,8 +53,17 @@ users.noPendingInvitations=No pending invitations
 users.pendingInvitations=Pending Invitations
 users.signup.title=Sign up
 users.me=Me!
-userEditor.title=User Profile Editor
-userEditor.new.title=New User
+
+userEditor.title=Profile Editor
+userEditor.new.title=New user
+userEditor.tabs.edit=Details
+userEditor.tabs.changePassword=Change password
+userEditor.password.again=New password (again)
+userEditor.previousPassword=Previous password
+userEditor.newPassword=New password
+userEditor.newPasswordAgain=New password (again)
+userEditor.email.help=This email address with be used for password resets.
+userEditor.accountCreated=User account created.
 
 add=Add
 cancel=Cancel
