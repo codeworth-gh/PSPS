@@ -1,19 +1,28 @@
 package controllers
 
-import be.objectify.deadbolt.scala.DeadboltActions
 import play.api.Configuration
 import play.api.mvc.InjectedController
 import play.api.mvc.Results.Ok
-import storage.KmlFileMetadataStore
+
 
 import java.nio.file.{Files, Paths}
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class FileServerCtrl @Inject() (conf:Configuration)( implicit ec:ExecutionContext )
+/**
+  * A controller that serves content from the file system. The content location is configured
+  * by `psps.localBaseFolder` in application.conf.
+  *
+  * This controller handles requests to non-existent files, and blocks
+  * request to files outside of the designated content folder.
+  *
+  * @param conf
+  * @param ec
+  */
+class FileServerCtrl @Inject()(conf:Configuration)(implicit ec:ExecutionContext )
   extends InjectedController {
   
-  private val basePath = Paths.get(conf.get[String]("ecfdb.localBaseFolder"))
+  private val basePath = Paths.get(conf.get[String]("psps.localBaseFolder"))
   
   def get(path:String) = Action{ req =>
     val file =  basePath.resolve(path).normalize()

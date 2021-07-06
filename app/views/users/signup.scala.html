@@ -12,7 +12,7 @@
     @comps.pageTitleRow(Messages("users.signup.title"))()
     <div class="row my-2 justify-content-md-center">
       <div class="col col-md-8">
-        <form action="@routes.UserCtrl.doSignup" method="POST">
+        <form action="@routes.UserCtrl.doSignup()" method="POST">
           @helper.CSRF.formField
           <div class="form-group row">
             <label for="emailInput" class="col-sm-3 col-form-label">Sign up</label>

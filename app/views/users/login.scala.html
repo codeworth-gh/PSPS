@@ -37,7 +37,7 @@
     <div class="col-md-6">
       <div class="loginCtnr shadow-lg">
         <h2>@Messages("login")</h2>
-        <form action="@routes.UserCtrl.doLogin" method="POST">
+        <form action="@routes.UserCtrl.doLogin()" method="POST">
           @helper.CSRF.formField
           @for( m <- form.globalErrors ){
             <div class="form-group has-error">

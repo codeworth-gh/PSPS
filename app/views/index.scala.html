@@ -13,7 +13,7 @@
     </div>
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
-        <form class="form-horizontal" action="@routes.UserCtrl.doLogin" method="POST">
+        <form class="form-horizontal" action="@routes.UserCtrl.doLogin()" method="POST">
           @for( m <- message ){
             <div class="form-group has-error">
               <div class="alert alert-danger">@m</div>
@@ -35,7 +35,7 @@
 
           <div class="form-group">
             <div class="col-md-4">
-              <a href="/admin/forgotPassword">@Messages("forgotPassword")?</a>
+              <a href="@routes.UserCtrl.showForgotPassword()">@Messages("forgotPassword")?</a>
             </div>
             <div class="col-md-8">
               <div class="text-right">

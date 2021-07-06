@@ -53,6 +53,14 @@ footer {
         vertical-align: middle;
       }
     }
+    .vSep {
+      display: inline-block;
+      height: 100%;
+      border-left: 1px solid rgba(0,0,0,.25);
+      border-right: 1px solid rgba(255,255,255,.75);
+      width: 2px;
+      margin: 0 .5em 0 1em;
+    }
   }
   .pageTitleRow-subtitle {
     width: 100%;

@@ -76,7 +76,7 @@ class HomeCtrl @Inject()(deadbolt:DeadboltActions, cc: ControllerComponents)
   }
   
   /**
-    * Routes for the front-end.
+    * Routes for the public part
     * @return
     */
   def frontEndRoutes =
@@ -91,7 +91,7 @@ class HomeCtrl @Inject()(deadbolt:DeadboltActions, cc: ControllerComponents)
 
 
   /**
-    * Routes for the front-end.
+    * Routes for the back office part
     * @return
     */
   def backEndRoutes =

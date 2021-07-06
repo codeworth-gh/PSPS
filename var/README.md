@@ -1,0 +1,1 @@
+This is the base directory for the FileServerCtrl. Use it to store user-uploaded content, and to serve it.
