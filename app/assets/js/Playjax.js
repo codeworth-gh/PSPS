@@ -6,24 +6,6 @@
 
 function Playjax(router){
 
-    let csrfTokenValue;
-
-    /**
-     * Lazy-loads the CSRF token, if exists. Replaces itself once called.
-     * @return {boolean} true iff there's a CSRF token on the page
-     */
-    let scanForCsrfToken = function(){
-        const csrfEmt = document.getElementById("Playjax_csrfTokenValue");
-        if ( csrfEmt ) {
-            csrfTokenValue = csrfEmt.innerText;
-            scanForCsrfToken = function(){return true;};
-        } else {
-            scanForCsrfToken = function(){return false;};
-        }
-
-        return scanForCsrfToken();
-    };
-
     function using( pathFn ){
         const route = pathFn(router.controllers);
         return {
@@ -48,8 +30,8 @@ function Playjax(router){
             headers: new Headers()
         };
 
-        if ( scanForCsrfToken() ) {
-            properties.headers.append("Csrf-Token", csrfTokenValue);
+        if ( Playjax_csrfTokenValue ) {
+            properties.headers.append("Csrf-Token", Playjax_csrfTokenValue);
         }
         if ( body ) {
             switch (typeof body) {

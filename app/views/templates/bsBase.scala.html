@@ -11,7 +11,8 @@
         <link rel="stylesheet" href="@routes.Assets.versioned("css/Informationals.css")">
         <link rel="stylesheet" href="@routes.Assets.versioned("css/main.css")">
         <link rel="stylesheet" href="@routes.Assets.versioned("css/styledInputs.css")">
-      <title>@msgs.messages(title)</title>
+        <title>@msgs.messages(title)</title>
+        @for( csrfToken <- play.filters.csrf.CSRF.getToken ){<script>const Playjax_csrfTokenValue="@csrfToken.value";</script>}
         @extraHead
     </head>
     <body>
@@ -33,7 +34,5 @@
             }
           </script>
         }
-      @for( csrfToken <- play.filters.csrf.CSRF.getToken ){
-      <div id="Playjax_csrfTokenValue" style="display:none">@csrfToken.value</div>}
     </body>
 </html>
