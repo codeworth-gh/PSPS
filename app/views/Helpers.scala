@@ -2,10 +2,9 @@ package views
 
 
 import java.sql.Timestamp
-import java.time.{Instant, LocalDate, LocalDateTime}
+import java.time.{Instant, LocalDate, LocalDateTime, LocalTime}
 import java.time.format.DateTimeFormatter
 import java.util.TimeZone
-
 import play.api.data.{Field, Form, FormError}
 import play.api.mvc.Request
 import play.api.mvc.Call
@@ -23,13 +22,29 @@ case class PaginationInfo(currentPage:Int, pageCount:Int )
 
 object Helpers {
   
-  private val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-  private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-  def formatDateTime( ldt: LocalDateTime ):String = ldt.format( dateTimeFormatter )
-  def formatDateTime( ldt: Timestamp ):String = formatDateTime( LocalDateTime.ofInstant(Instant.ofEpochMilli(ldt.getTime), TimeZone.getDefault.toZoneId))
-  def formatDate( ldt: LocalDateTime ):String = ldt.format( dateFormatter )
-  def formatDate( ldt: LocalDate ):String = ldt.format( dateFormatter )
+  object DateFmt extends Enumeration {
+    val ISO_DateTime: DateFmt.Value = Value
+    val ISO_Time: DateFmt.Value = Value
+    val ISO_Date: DateFmt.Value = Value
+    val HR_DateTime: DateFmt.Value = Value
+    val HR_Time: DateFmt.Value = Value
+    val HR_Date: DateFmt.Value = Value
+  }
   
+  import views.Helpers.DateFmt._
+  val dateFormats = Map(
+    ISO_DateTime -> DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"),
+    ISO_Time     -> DateTimeFormatter.ofPattern("HH:mm"),
+    ISO_Date     -> DateTimeFormatter.ofPattern("yyyy-MM-dd"),
+    HR_DateTime  -> DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy"),
+    HR_Time      -> DateTimeFormatter.ofPattern("HH:mm"),
+    HR_Date      -> DateTimeFormatter.ofPattern("dd/MM/yyyy")
+  )
+  
+  def format(fmtName:DateFmt.Value, ldt: LocalDateTime ):String = ldt.format( dateFormats(fmtName) )
+  def format(fmtName:DateFmt.Value, ldt: LocalDate ):String = ldt.format( dateFormats(fmtName) )
+  def format(fmtName:DateFmt.Value, ldt: LocalTime ):String = ldt.format( dateFormats(fmtName) )
+  def format(fmtName:DateFmt.Value, ldt: Timestamp ):String = format( fmtName, LocalDateTime.ofInstant(Instant.ofEpochMilli(ldt.getTime), TimeZone.getDefault.toZoneId))
   
   def encodeUriComponent( s:String ):String = UriEncoding.encodePathSegment(s, java.nio.charset.StandardCharsets.UTF_8)
   def stripHtmlTags(s:String):String = s.replaceAll("<.*?>","")
