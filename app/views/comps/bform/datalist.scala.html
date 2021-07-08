@@ -1,0 +1,4 @@
+@(listId:String, options:IterableOnce[String])
+<datalist id="@listId">@for(opt<-options){
+  <option>@opt</option>
+}</datalist>

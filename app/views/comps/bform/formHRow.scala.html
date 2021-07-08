@@ -1,0 +1,10 @@
+@(frm:Form[_], fieldName:String, locPrefix:String="", labelText:String=null, labelWidth:Int=2,
+        isReadOnly:Boolean=false, isRequired:Boolean=false, isShowHelp:Boolean=false)(control:Html)(implicit msgs:MessagesProvider)
+<div class="row mb-3">
+  <label for="fld-@fieldName" class="col-sm-@labelWidth col-form-label">@if(labelText!=null){@labelText}else{@Messages(locPrefix+fieldName)}
+    @if(isRequired){<span class="badge bg-warning">@Messages("mandatoryField")</span>}
+  </label>
+  <div class="col-sm-@{12-labelWidth}">@control@if(isShowHelp){
+    <div class="form-text">@Messages(locPrefix+fieldName+".help")</div>
+  }</div>
+</div>

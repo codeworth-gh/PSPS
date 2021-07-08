@@ -1,0 +1,7 @@
+@(frm:Form[_], fieldName:String, locPrefix:String="", labelText:String=null, labelWidth:Int=2, rows:Int=5,
+        isReadOnly:Boolean=false, isRequired:Boolean=false, isShowHelp:Boolean=false)(implicit msgs:MessagesProvider)
+@defining( Seq(if(isReadOnly) "readonly" else "", if(isRequired) "required" else "").mkString(" ") ) { atts =>
+  @formHRow(frm, fieldName, locPrefix, labelText, labelWidth, isReadOnly, isRequired, isShowHelp ){
+    <textarea name="@fieldName" rows="@rows" id="fld-@fieldName" class="form-control@if(isReadOnly){-plaintext}" @atts>@frm(fieldName).value.getOrElse("")</textarea>
+  }
+}

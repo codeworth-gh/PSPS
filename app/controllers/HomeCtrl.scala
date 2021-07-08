@@ -72,6 +72,7 @@ class HomeCtrl @Inject()(deadbolt:DeadboltActions, cc: ControllerComponents)
   }
   
   def svgIcons() = Action{ implicit req => Ok(views.html.svgIcons()) }
+  def editableList() = Action{ implicit req => Ok(views.html.editableList()) }
   
   def pageTitleRow = Action{ implicit req =>
     Ok( views.html.pageTitleRow() )

@@ -1,0 +1,45 @@
+@()(implicit request:RequestHeader, msgs:MessagesProvider)
+
+@scripts = {
+  <script src="@routes.Assets.versioned("js/EditableList.js")"></script>
+  <script>
+    function setup() {
+        const initials = [{name:"Hello",id:1}, {name:"World",id:2}, {name:"wassup?",id:3}];
+        let nextId = initials.length + 2;
+
+        const elRegions = new EditableList("edList", "edList-add", {
+          saveRow: (data)=>{
+              if ( data.id === 0 ) {
+                  console.log("Adding new item");
+                  data.id = (nextId++);
+              }
+              return new Promise((resolve, reject)=>resolve(data));
+          },
+          deleteRow:(id)=>{
+            return new Promise((resolve, reject)=>resolve(id));;
+          }});
+
+          initials.forEach( itm => elRegions.addRow(itm) );
+      }
+
+      UiUtils.documentReady( setup );
+  </script>
+}
+
+@templates.frontEndBase("editableList.title", views.PublicSections.Components, Html(""), scripts) {
+  @comps.pageTitleRow("Editable List", "A JS list that can be altered, and has callbacks etc.")()
+  <div class="row">
+    <div class="col">
+      <ul class="editableList" id="edList">
+        <li>
+          <input type="text" class="form-control d-inline-block w-50" value="" disabled>
+          <button type="button" data-el-role="editBtn" class="el-readMode btn btn-outline-secondary">@comps.svg.edit()</button>
+          <button type="button" data-el-role="delBtn" class="el-readMode btn btn-outline-danger">@comps.svg.trash()</button>
+          <button type="button" data-el-role="commitBtn" class="el-editMode btn btn-outline-success">@comps.svg.check()</button>
+          <button type="button" data-el-role="cancelBtn" class="el-editMode btn btn-outline-danger">@comps.svg.x()</button>
+        </li>
+      </ul>
+      <button type="button" id="edList-add" class="btn btn-outline-primary">@comps.svg.add() @Messages("helperTables.newRow")</button>
+    </div>
+  </div>
+}

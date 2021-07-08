@@ -113,3 +113,31 @@ select.buttonLike {
   margin: 6px 0 10px 0;
   cursor: pointer;
 }
+
+ul.editableList {
+  list-style: none;
+  padding: 0;
+
+  li {
+    padding: .3em 0;
+    margin-bottom: .3em;
+    transition: background-color .5s;
+    button {
+      vertical-align: baseline;
+      &.el-editMode {
+        display:none;
+      }
+    }
+    &.el-editMode {
+      background-color: #dddd39;
+      button {
+        &.el-editMode {
+          display:inline;
+        }
+        &.el-readMode {
+          display:none;
+        }
+      }
+    }
+  }
+}

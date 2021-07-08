@@ -49,6 +49,8 @@ navbar.editProfile=Edit Profile
 
 compSvg.title=BS Icons SVGs
 
+editableList.title=Editable List
+
 users=Users
 users.inviteUser=Invite User
 users.noPendingInvitations=No pending invitations

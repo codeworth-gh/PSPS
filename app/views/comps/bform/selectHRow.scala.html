@@ -1,0 +1,13 @@
+@import views.html.comps.bform.formHRow
+@(frm:Form[_], fieldName:String, options:Seq[(String, String)], locPrefix:String="", labelText:String=null, labelWidth:Int=2,
+        isReadOnly:Boolean=false, isRequired:Boolean=false, isShowHelp:Boolean=false)(implicit msgs:MessagesProvider)
+@defining( Seq(if(isReadOnly) "readonly" else "", if(isRequired) "required" else "").mkString(" ") ) { atts =>
+  @formHRow(frm, fieldName, locPrefix, labelText, labelWidth, isReadOnly, isRequired, isShowHelp ){
+    <select name="@fieldName" id="fld-@fieldName" class="form-select">
+    @defining( frm(fieldName).value ){ curVal =>
+      @if( ! isRequired ){<option@if(curVal.isEmpty){ selected}></option>}
+      @for( r <- options ){<option value="@r._1"@if(curVal.contains(r._1)){ selected}>@r._2</option>}
+    }
+    </select>
+  }
+}

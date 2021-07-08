@@ -1,0 +1,5 @@
+@(title:String)(comps:Html=Html(""))(implicit msgs:MessagesProvider)
+<div class="row mb-3 formTitleRow">
+  <div class="col text-start"><h2>@title</h2></div>
+  @if(comps.toString().trim.nonEmpty){<div class="col text-end">@comps</div>}
+</div>

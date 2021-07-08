@@ -50,6 +50,7 @@ object Structure {
         PageSectionItem("informationals.title", routes.HomeCtrl.informationals()),
         PageSectionItem("styledInputs.title", routes.HomeCtrl.styledInputs()),
         PageSectionItem("compSvg.title", routes.HomeCtrl.svgIcons()),
+        PageSectionItem("editableList.title", routes.HomeCtrl.editableList()),
         JsSectionItem("jsSectionItem.title", Html("swal('This can be any JS code')"))
       )
     ),

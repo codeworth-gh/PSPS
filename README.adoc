@@ -32,9 +32,12 @@ image::https://api.netlify.com/api/v1/badges/fb260db4-9c0f-45d3-8759-02d76d9b015
 === 2021-06
 * :arrow_upper_right: Updated Play to 2.8.8, sbt 1.5.4, tether 1.4.7, and Bootstrap 5.
 * :arrow_upper_right: Improve RTL support.
-* :arrow_upper_right: Added SVG icons library, based on https://icons.getbootstrap.com/[Bootstrap Icons].
+* :arrow_upper_right: :tada: Added SVG icons library, based on https://icons.getbootstrap.com/[Bootstrap Icons].
 * :arrow_upper_right: Updated date/time formatting library.
 * :arrow_upper_right: Added JS escaping in `views.Helpers`. Fixes an issue with informational messages that has quotes.
+* :arrow_upper_right: :tada: Added a set of components to make building forms much easier. These live in `views.comps.bform._`.
+* :arrow_upper_right: Added `views.comps.bform.sortingTH`, a table header with a sorting triangle and a proper link behavior.
+* :arrow_upper_right: Added an editable JS list, useful for controlled vocabularies, such as a closed list of items.
 * :bug: cleaned warnings
 
 

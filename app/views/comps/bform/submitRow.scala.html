@@ -1,0 +1,7 @@
+@(back:Call)(implicit msgs:MessagesProvider)
+<div class="row mb-3">
+  <div class="col text-end">
+    <button type="submit" class="btn btn-primary">@comps.svg.check() @Messages("save")</button>
+    <a class="btn btn-outline-danger" href="@back">@comps.svg.x() @Messages("cancel")</a>
+  </div>
+</div>

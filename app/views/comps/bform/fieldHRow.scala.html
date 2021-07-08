@@ -1,0 +1,9 @@
+@import views.html.comps.bform.formHRow
+@(frm:Form[_], fieldName:String, locPrefix:String="", labelText:String=null, labelWidth:Int=2, inputType:String="text", min:Int=0, max:Int=100, step:Int=1,
+        isReadOnly:Boolean=false, isRequired:Boolean=false, isShowHelp:Boolean=false, isAutocomplete:Boolean=false)(implicit msgs:MessagesProvider)
+@defining( Seq(if(isReadOnly) "readonly" else "", if(isRequired) "required" else "").mkString(" "," ","").trim ) { atts =>
+  @formHRow(frm, fieldName, locPrefix, labelText, labelWidth, isReadOnly, isRequired, isShowHelp ){
+    <input id="fld-@fieldName" type="@inputType" class="form-control@if(isReadOnly){-plaintext}" @if(inputType=="number"){
+     min="@min" max="@max" step="@step"} name="@fieldName" @if(!isAutocomplete){autocomplete="off" }value="@frm(fieldName).value.getOrElse("")" @atts>
+  }
+}
