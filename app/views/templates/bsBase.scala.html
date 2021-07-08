@@ -27,9 +27,9 @@
         <script src="@routes.Assets.versioned("js/Playjax.js")"></script>
         @extraBottom
         @for( msg <- request.flash.get(controllers.FlashKeys.MESSAGE) ){
-          <script language="JavaScript">
+          <script>
             @defining( Informational.decode(msg) ){ inf =>
-              Informationals.make("@inf.level", "@inf.title", "@inf.subtitle", @Informational.defaultTimes.getOrElse(inf.level, "undefined") ).show();
+              Informationals.make("@inf.level", "@Html(Helpers.jsEscape(inf.title))", "@Html(Helpers.jsEscape(inf.subtitle))", @Informational.defaultTimes.getOrElse(inf.level, "undefined") ).show();
             }
           </script>
         }

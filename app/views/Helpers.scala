@@ -49,6 +49,13 @@ object Helpers {
   def encodeUriComponent( s:String ):String = UriEncoding.encodePathSegment(s, java.nio.charset.StandardCharsets.UTF_8)
   def stripHtmlTags(s:String):String = s.replaceAll("<.*?>","")
   
+  /**
+    * Escape a String s.t. it can be embedded in JS code.
+    * @param s The string to be escaped.
+    */
+  def jsEscape(s:String):String = s.replaceAll("\"", "\\\\\"").replaceAll("\n","\\\\n")
+  
+  
   def ifNotEmpty(s:String)(block:String=>Html):Html = {
     if ( s!=null && s.trim.nonEmpty ) block(s) else Html("")
   }
