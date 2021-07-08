@@ -12,7 +12,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class PasswordResetRequestDAO @Inject()(protected val dbConfigProvider:DatabaseConfigProvider, conf:Configuration) extends HasDatabaseConfigProvider[JdbcProfile] {
   import profile.api._
-  private val requests = TableQuery[PasswordResetRequestTable]
+  private val requests = TableQuery[PasswordResetRequestsTable]
 
   def add(u: PasswordResetRequest): Future[PasswordResetRequest] ={
     db.run{

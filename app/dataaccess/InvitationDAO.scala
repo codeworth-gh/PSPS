@@ -15,7 +15,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class InvitationDAO @Inject() (protected val dbConfigProvider:DatabaseConfigProvider, conf:Configuration) extends HasDatabaseConfigProvider[JdbcProfile] {
 
   import profile.api._
-  private val invitations = TableQuery[InvitationTable]
+  private val invitations = TableQuery[InvitationsTable]
 
   def add(i: Invitation): Future[Invitation] = {
     db.run(

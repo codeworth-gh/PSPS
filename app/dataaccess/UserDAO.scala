@@ -14,7 +14,7 @@ import scala.util.Try
 class UsersDAO @Inject() (protected val dbConfigProvider:DatabaseConfigProvider, conf:Configuration) extends HasDatabaseConfigProvider[JdbcProfile] {
 
   import profile.api._
-  private val Users = TableQuery[UserTable]
+  private val Users = TableQuery[UsersTable]
 
   def addUser( u:User ):Future[User] = {
     db.run( Users.returning(Users.map(_.id) )
