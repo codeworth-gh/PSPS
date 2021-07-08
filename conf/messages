@@ -47,6 +47,8 @@ navbar.users=Users
 navbar.inviteUser=Invite Users
 navbar.editProfile=Edit Profile
 
+compSvg.title=BS Icons SVGs
+
 users=Users
 users.inviteUser=Invite User
 users.noPendingInvitations=No pending invitations
@@ -58,7 +60,7 @@ userEditor.title=Profile Editor
 userEditor.new.title=New user
 userEditor.tabs.edit=Details
 userEditor.tabs.changePassword=Change password
-userEditor.password.again=New password (again)
+userEditor.password.again=New password (again)rtl.scss
 userEditor.previousPassword=Previous password
 userEditor.newPassword=New password
 userEditor.newPasswordAgain=New password (again)

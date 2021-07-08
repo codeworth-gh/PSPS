@@ -1,0 +1,56 @@
+@()(implicit request:RequestHeader, msgs:MessagesProvider)
+
+@templates.frontEndBase("compSvg.title", views.PublicSections.Components) {
+  @comps.pageTitleRow("SVG Icons Components", "A set of SVG icons")()
+  <div class="row">
+    <div class="col">
+    <ul>
+      <li>
+        @comps.svg.add() <code>@@comps.svg.add()</code>
+      </li>
+      <li>
+        @comps.svg.arrowDown() <code>@@comps.svg.arrowDown()</code>
+      </li>
+      <li>
+        @comps.svg.arrowLeftCircle() <code>@@comps.svg.arrowLeftCircle()</code>
+      </li>
+      <li>
+        @comps.svg.arrowUp() <code>@@comps.svg.arrowUp()</code>
+      </li>
+      <li>
+        @comps.svg.check() <code>@@comps.svg.check()</code>
+      </li>
+      <li>
+        @comps.svg.edit() <code>@@comps.svg.edit()</code>
+      </li>
+      <li>
+        @comps.svg.fileEarmarkSpreadsheet() <code>@@comps.svg.fileEarmarkSpreadsheet()</code>
+      </li>
+      <li>
+        @comps.svg.github() <code>@@comps.svg.github()</code>
+      </li>
+      <li>
+        @comps.svg.infoCircle() <code>@@comps.svg.infoCircle()</code>
+      </li>
+      <li>
+        @comps.svg.infoSquare() <code>@@comps.svg.infoSquare()</code>
+      </li>
+      <li>
+        @comps.svg.remarks() <code>@@comps.svg.remarks()</code>
+      </li>
+      <li>
+        @comps.svg.search() <code>@@comps.svg.search()</code>
+      </li>
+      <li>
+        @comps.svg.trash() <code>@@comps.svg.trash()</code>
+      </li>
+      <li>
+        @comps.svg.x() <code>@@comps.svg.x()</code>
+      </li>
+      <li>
+        @comps.svg.zoomIn() <code>@@comps.svg.zoomIn()</code>
+      </li>
+    </ul>
+    </div>
+  </div>
+}

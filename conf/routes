@@ -8,6 +8,7 @@ GET     /pager          controllers.HomeCtrl.pager(currentPage:Int ?= 1)
 GET     /informationals controllers.HomeCtrl.informationals()
 GET     /styledInputs   controllers.HomeCtrl.styledInputs()
 GET     /navbar         controllers.HomeCtrl.sampleNavbar()
+GET     /svgs           controllers.HomeCtrl.svgIcons()
 GET     /pageTitleRow   controllers.HomeCtrl.pageTitleRow()
 GET     /files/*file   controllers.FileServerCtrl.get(file)
 
