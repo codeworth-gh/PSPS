@@ -145,7 +145,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
       for {
         userCount <- users.countUsers()
         effUser = if (userCount==0) user.copy(roles=Set(UserRole.Admin)) else user
-        newUser <- users.addUser(user)
+        newUser <- users.addUser(effUser)
       } yield {
         Ok(Json.obj("id"->newUser.id, "username"->newUser.username))
       }
