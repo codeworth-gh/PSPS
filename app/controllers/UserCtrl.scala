@@ -2,17 +2,18 @@ package controllers
 
 import java.sql.Timestamp
 import java.util.UUID
-
 import be.objectify.deadbolt.scala.{AuthenticatedRequest, DeadboltActions}
+import controllers.ControllerUtils.invertOptionFuture
 import dataaccess.{InvitationDAO, PasswordResetRequestDAO, UsersDAO}
+
 import javax.inject.Inject
-import models.{Invitation, PasswordResetRequest, User}
+import models.{Invitation, PasswordResetRequest, User, UserRole}
 import play.api.{Configuration, Logger, cache}
 import play.api.cache.Cached
 import play.api.data._
 import play.api.data.Forms._
 import play.api.i18n._
-import play.api.libs.json.{JsObject, JsString}
+import play.api.libs.json.{JsObject, JsString, Json}
 import play.api.libs.mailer.{Email, MailerClient}
 import play.api.mvc.{Action, Call, ControllerComponents, InjectedController, Result}
 import security.UserSubject
@@ -56,7 +57,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
                          mailerClient: MailerClient, langs:Langs,
                          messagesApi:MessagesApi, localAction:LocalAction)(
                         implicit ec:ExecutionContext
-) extends InjectedController {
+) extends InjectedController with JsonApiHelper {
 
   private val logger = Logger(classOf[UserCtrl])
 
@@ -129,26 +130,35 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     
     Future(Ok( views.html.users.userHome(user) ))
   }
-
+  
+  /**
+    * Adds a user. If it is the first user, that user becomes an admin.
+    * @return
+    */
   def apiAddUser = localAction(parse.tolerantJson).async { request =>
       val payload = request.body.asInstanceOf[JsObject]
       val username = payload("username").as[JsString].value
       val password = payload("password").as[JsString].value
       val email = payload("email").as[JsString].value
-      val user = User(0, username, "", email, users.hashPassword(password))
-
-      users.addUser(user).map(u => Ok("Added user " + u.username))
+      val user = User(0, username, "", email, users.hashPassword(password), Set())
+      
+      for {
+        userCount <- users.countUsers()
+        effUser = if (userCount==0) user.copy(roles=Set(UserRole.Admin)) else user
+        newUser <- users.addUser(user)
+      } yield {
+        Ok(Json.obj("id"->newUser.id, "username"->newUser.username))
+      }
   }
 
-
   def showEditUserPage( userId:String ) = deadbolt.SubjectPresent()(){ implicit req =>
-    val user = req.subject.get.asInstanceOf[UserSubject].user
-    if ( userId ==  user.username ) {
+    val curUser = req.subject.get.asInstanceOf[UserSubject].user
+    if ( userId == curUser.username || curUser.isAdmin) {
       users.get(userId).map({
         case None => notFound(userId)
         case Some(user) => Ok(
           views.html.users.userEditor(userForm.fill(UserFormData.of(user)),
-            routes.UserCtrl.doSaveUser(user.username),
+             routes.UserCtrl.doSaveUser(user.username),
             isNew=false))
       })
     } else {
@@ -163,9 +173,10 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
   
   def doSaveUser(userId:String) = deadbolt.SubjectPresent()(){ implicit req =>
     val user = req.subject.get.asInstanceOf[UserSubject].user
-    if ( userId == user.username ) {
+    if ( userId == user.username || user.isAdmin ) {
       userForm.bindFromRequest().fold(
-        fwe => Future(BadRequest(views.html.users.userEditor(fwe, routes.UserCtrl.doSaveUser(userId), isNew = false))),
+        fwe => Future(BadRequest(views.html.users.userEditor(fwe,  routes.UserCtrl.doSaveUser(userId),
+          isNew = false, showPasswordFirst=false))),
         fData => {
           for {
             userOpt <- users.get(userId)
@@ -182,26 +193,33 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
   }
 
   def showNewUserPage = deadbolt.SubjectPresent()(){ implicit req =>
-    Future(Ok( views.html.users.userEditor(userForm, routes.UserCtrl.doSaveNewUser(), isNew=true) ))
+    Future(Ok( views.html.users.userEditor(userForm, routes.UserCtrl.doSaveNewUser(), isNew=true)))
   }
 
   def doSaveNewUser = deadbolt.SubjectPresent()(){ implicit req =>
     userForm.bindFromRequest().fold(
       fwe => Future(BadRequest(views.html.users.userEditor(fwe, routes.UserCtrl.doSaveNewUser(), isNew=true))),
-      fData => processUserForm( fData, routes.UserCtrl.showLogin(), routes.UserCtrl.doSignup(), true)(new AuthenticatedRequest(req, None))
+      fData => processUserForm( fData, routes.UserCtrl.showUserList(), routes.UserCtrl.showUserList(), isNew=true)(new AuthenticatedRequest(req, None))
     )
   }
 
-  def showNewUserInvitation(uuid:String) = Action { implicit req =>
-    Ok( views.html.users.userEditor( userForm.bind(Map("uuid"->uuid)).discardingErrors, routes.UserCtrl.doNewUserInvitation(),
-      isNew=true)(new AuthenticatedRequest(req, None), messagesProvider))
+  def showNewUserInvitation(uuid:String) = Action.async{ implicit req =>
+    for {
+      inviteOpt <- invitations.get(uuid)
+    } yield {
+      inviteOpt match {
+        case None => notFound("Invitation not found")
+        case Some(invite) => Ok(views.html.users.userEditor( userForm.bind(Map("uuid"->uuid, "email"->invite.email)).discardingErrors, routes.UserCtrl.doNewUserInvitation(),
+          isNew=true)(new AuthenticatedRequest(req, None), messagesProvider))
+      }
+    }
   }
 
-  def doNewUserInvitation() = Action.async { implicit req =>
+  def doNewUserInvitation() = Action.async{ implicit req =>
     userForm.bindFromRequest().fold(
       fwe => {
-        Future(BadRequest(views.html.users.userEditor(fwe, routes.UserCtrl.doNewUserInvitation(), isNew=true
-                  )(new AuthenticatedRequest(req, None), messagesProvider)))
+        Future(BadRequest(views.html.users.userEditor(fwe, routes.UserCtrl.doNewUserInvitation(),
+          isNew=true, showPasswordFirst=false)(new AuthenticatedRequest(req, None), messagesProvider)))
       },
       fData => {
         val res = for {
@@ -213,7 +231,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
         } yield {
           if (canCreateUser){
             val user = User(0, fData.username, fData.name, fData.email.getOrElse(""),
-              users.hashPassword(fData.pass1.get))
+              users.hashPassword(fData.pass1.get), Set())
             invitations.delete(fData.uuid.get)
             users.addUser(user).map(_ => Redirect(routes.UserCtrl.userHome()).withNewSession.withSession(("userId",user.id.toString)))
 
@@ -225,8 +243,8 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
             if ( emailExists ) form = form.withError("email", "error.email.exists")
             if ( !passwordOK ) form = form.withError("password1", "error.password")
               .withError("password2", "error.password")
-            Future(BadRequest(views.html.users.userEditor(form, routes.UserCtrl.doNewUserInvitation(), isNew = true
-                  )(new AuthenticatedRequest(req, None), messagesProvider)))
+            Future(BadRequest(views.html.users.userEditor(form, routes.UserCtrl.doNewUserInvitation(), isNew = true,
+              showPasswordFirst=false)(new AuthenticatedRequest(req, None), messagesProvider)))
           }
         }
         
@@ -241,8 +259,6 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     val user = req.subject.get.asInstanceOf[UserSubject].user
     users.allUsers.map( users => Ok(views.html.users.userList(users, user)) )
   }
-  
-  private def notFound(userId:String) = NotFound("User with username '%s' does not exist.".format(userId))
 
   def showForgotPassword = Action { implicit req =>
     Ok( views.html.users.forgotPassword(None,None) )
@@ -392,7 +408,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
     val user = req.subject.get.asInstanceOf[UserSubject].user
     changePassForm.bindFromRequest().fold(
       fwi => {
-        Future(BadRequest(views.html.users.userEditor(userForm, routes.UserCtrl.doSaveNewUser(), isNew = false)))
+        Future(BadRequest(views.html.users.userEditor(userForm, routes.UserCtrl.doSaveNewUser(), isNew = false, showPasswordFirst = false)))
       },
       fd => {
         if(users.verifyPassword(user, fd.previousPassword)){
@@ -404,11 +420,11 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
           } else {
             val form = userForm.fill(UserFormData of user).withError("password1", "error.password")
               .withError("password2", "Passwords must match, and cannot be empty")
-            Future(BadRequest(views.html.users.userEditor(form, routes.UserCtrl.doSaveNewUser(), isNew = false, activeFirst=false)))
+            Future(BadRequest(views.html.users.userEditor(form, routes.UserCtrl.doSaveNewUser(), isNew = false, showPasswordFirst=false)))
           }
         } else{
           val form = userForm.fill(UserFormData of user).withError("previousPassword", "error.password.incorrect")
-          Future(BadRequest( views.html.users.userEditor(form, routes.UserCtrl.doSaveNewUser(), isNew=false, activeFirst=false )))
+          Future(BadRequest( views.html.users.userEditor(form, routes.UserCtrl.doSaveNewUser(), isNew=false, showPasswordFirst=false)))
         }
       }
     )
@@ -425,7 +441,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
       if(!conf.getOptional[Boolean]("AllowSignup").getOrElse(true)) {
         BadRequest(views.html.users.login(loginForm))
     } else {
-        Ok( views.html.users.userEditor( userForm, routes.UserCtrl.doSignup(), isNew=true, activeFirst = true
+        Ok( views.html.users.userEditor( userForm, routes.UserCtrl.doSignup(), isNew=true
         )(new AuthenticatedRequest(req, None), messagesProvider))
     })
   }
@@ -441,7 +457,48 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
       fd => processUserForm( fd, routes.UserCtrl.showLogin(), routes.UserCtrl.doSignup(), isNew = true)(new AuthenticatedRequest(req, None))
     )
   }
-
+  
+  def showEditUserRoles(userId:String) = deadbolt.Restrict(List(Array(UserRole.Admin.toString)))(){ implicit req =>
+    for {
+      userOpt <- users.get(userId)
+    } yield {
+      userOpt match {
+        case None => notFound(userId)
+        case Some(user) => {
+          val curUser = req.subject.get.asInstanceOf[UserSubject].user
+          Ok( views.html.users.editRoles(user, curUser) )
+        }
+      }
+    }
+  }
+  
+  def apiAddRole(userId:String) = deadbolt.Restrict(List(Array(UserRole.Admin.toString)))(cc.parsers.tolerantJson) { req =>
+    alterRole(userId, req.body.asInstanceOf[JsString].value, isAdd=true)
+  }
+  
+  def apiDeleteRole(userId:String) = deadbolt.Restrict(List(Array(UserRole.Admin.toString)))(cc.parsers.tolerantJson) { req =>
+    alterRole(userId, req.body.asInstanceOf[JsString].value, isAdd=false)
+  }
+  
+  def alterRole(userId:String, roleName:String, isAdd:Boolean):Future[Result]={
+    val role = UserRole.withName(roleName)
+    try {
+      for {
+        userOpt <- users.get(userId)
+        updatedRoles = userOpt.map(_.roles).map( r => if(isAdd){r+role}else{r-role} ).getOrElse(Set())
+        updatedUserOpt = userOpt.map( user => user.copy(roles=updatedRoles) )
+        savedUserOpt <- invertOptionFuture( updatedUserOpt.map( u => users.updateUser(u) ) )
+      } yield {
+        savedUserOpt match {
+          case None => notFoundJson("Can't find user " + userId)
+          case Some(user) => okJson(s"Role $roleName added/removed for user $userId")
+        }
+      }
+    } catch {
+      case ex:NoSuchElementException => Future(badRequestJson(s"Unknown role '$roleName'"))
+    }
+  }
+  
   private def processUserForm(fData:UserFormData, onSuccess:Call, onFailure:Call, isNew:Boolean)(implicit req:AuthenticatedRequest[_]):Future[Result] = {
     for {
       usernameExists <- users.usernameExists(fData.username)
@@ -457,19 +514,21 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
         if (usernameExists) form = form.withError("username", "error.username.exists")
         if (!passwordOK) form = form.withError("password1", "error.password")
           .withError("password2", "error.password")
-        Future(BadRequest(views.html.users.userEditor(form, onFailure, isNew)))
+        Future(BadRequest(views.html.users.userEditor(form, onFailure, isNew, showPasswordFirst = false)))
       }
     } yield res
   }
 
   private def attemptUserCreation( form:UserFormData, onSuccess:Call, onFailure:Call )(implicit req:AuthenticatedRequest[_]): Future[Result] = {
-    val user = User(0, form.username, "", form.email.getOrElse(""), users.hashPassword(form.pass1.get.trim))
-
+    val user = User(0, form.username, "", form.email.getOrElse(""), users.hashPassword(form.pass1.get.trim), Set())
     users.tryAddUser(user).map( {
-      case Success(user) => Redirect(onSuccess).flashing(FlashKeys.MESSAGE->Informational(Informational.Level.Success, messagesProvider.messages("account.created")).encoded)
-      case Failure(exp) => BadRequest( views.html.users.userEditor(userForm.fill(form).withGlobalError(exp.getMessage), onFailure, isNew=true, false))
-    } )
+      case Success(user) => Redirect(onSuccess).flashing(
+        FlashKeys.MESSAGE->Informational(Informational.Level.Success, messagesProvider.messages("users.accountCreated")).encoded)
+      case Failure(exp) => BadRequest( views.html.users.userEditor(userForm.fill(form).withGlobalError(exp.getMessage), onFailure, isNew=true))
+    })
   }
+  
+  private def notFound(userId:String) = NotFound("User with username '%s' does not exist.".format(userId))
 }
 
 

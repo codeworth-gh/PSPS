@@ -25,6 +25,8 @@ GET     /bkofc/users/                controllers.UserCtrl.showUserList()
 GET     /bkofc/users/new             controllers.UserCtrl.showNewUserPage()
 POST    /bkofc/users/                controllers.UserCtrl.doSaveNewUser()
 GET     /bkofc/users/me/edit         controllers.UserCtrl.showEditMyProfile()
+
+GET     /bkofc/users/:id/roles       controllers.UserCtrl.showEditUserRoles(id)
 GET     /bkofc/users/:id/edit        controllers.UserCtrl.showEditUserPage(id)
 POST    /bkofc/users/:id/edit        controllers.UserCtrl.doSaveUser(id)
 GET     /bkofc/forgotPassword        controllers.UserCtrl.showForgotPassword()
@@ -36,6 +38,8 @@ POST    /bkofc/inviteUser/           controllers.UserCtrl.doInviteUser()
 GET     /bkofc/newUserInvitation/:id controllers.UserCtrl.showNewUserInvitation(id)
 POST    /bkofc/newUserInvitation/    controllers.UserCtrl.doNewUserInvitation()
 POST    /bkofc/changePassword        controllers.UserCtrl.doChangePassword()
+PUT     /bkofc/api/users/:id/roles   controllers.UserCtrl.apiAddRole(id)
+DELETE  /bkofc/api/users/:id/roles   controllers.UserCtrl.apiDeleteRole(id)
 
 # API
 ## Front end

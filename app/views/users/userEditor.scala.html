@@ -2,133 +2,132 @@
 @import be.objectify.deadbolt.scala.AuthenticatedRequest
 @import Helpers._
 
-@(form:Form[UserFormData], destination:Call, isNew:Boolean, activeFirst:Boolean=true
+@(form:Form[UserFormData], destination:Call, isNew:Boolean, showPasswordFirst:Boolean=false
 )(implicit request: AuthenticatedRequest[_], msgs:MessagesProvider)
 
   @content = {
-    <div class="container">
-      @if( isNew ){
-        @comps.pageTitleRow(Messages("userEditor.new.title")) { }
-      }else{
-        @comps.pageTitleRow(Messages("userEditor.title")){ }
-      }
+    @if( isNew ){
+      @comps.pageTitleRow(Messages("userEditor.new.title")) { }
+    }else{
+      @comps.pageTitleRow(Messages("userEditor.title")){ }
+    }
 
-      <div class="row">
-        <div class="col">
-          @if( ! isNew ) {
-            <ul class="nav nav-tabs justify-content-center">
+    <div class="row">
+      <div class="col">
+        @if( ! isNew ) {
+          <ul class="nav nav-tabs justify-content-center">
+            <li class="nav-item">
+              <a data-bs-toggle="tab" class="nav-link @if(!showPasswordFirst) {active}" href="#userEditor">@Messages("userEditor.tabs.edit")</a>
+            </li>
+            @if( !isNew ) {
               <li class="nav-item">
-                <a data-bs-toggle="tab" class="nav-link @if(activeFirst) {active}" href="#userEditor">@Messages("userEditor.tabs.edit")</a>
-              </li>
-              <li class="nav-item">
-                <a data-bs-toggle="tab" class="nav-link @if(isNew) {disabled} @if(!activeFirst) {active}" href="#changePassword">
+                <a data-bs-toggle="tab" class="nav-link {disabled} @if(showPasswordFirst) {active}" href="#changePassword">
                 @Messages("userEditor.tabs.changePassword")</a>
               </li>
-            </ul>
-          }
-          <div class="tab-content my-2">
-            <div class="tab-pane @if(activeFirst){active}" id="userEditor">
+            }
+          </ul>
+        }
+        <div class="tab-content my-2">
+          <div class="tab-pane @if(!showPasswordFirst){active}" id="userEditor">
 
-              <form class="form-horizontal" action="@destination.url" method="POST">
-                @formErrors(form)
-                @formErrors(form("uuid"))
+            <form class="form-horizontal" action="@destination.url" method="POST">
+              @formErrors(form)
+              @formErrors(form("uuid"))
 
-                <div class="form-group row my-2 @Helpers.fieldStatus(form("username"))">
-                  <label for="idInput" class="col-sm-2 control-label">@Messages("username")</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="usernameInput" name="username" value="@form("username").value.getOrElse("")"
-                    placeholder="username" @if(!isNew){readonly}>
-                    @formErrors(form("username"))
-                  </div>
+              <div class="form-group row my-2 @Helpers.fieldStatus(form("username"))">
+                <label for="usernameInput" class="col-sm-2 control-label">@Messages("username")</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="usernameInput" name="username" value="@form("username").value.getOrElse("")"
+                  placeholder="username" @if(!isNew){readonly}>
+                  @formErrors(form("username"))
                 </div>
-
-                @if(isNew){
-                  <div class="form-group row my-2 @Helpers.fieldStatus(form("password1"))">
-                    <label for="password1Input" class="col-sm-2 control-label">@Messages("password")</label>
-                    <div class="col-sm-10">
-                      <input type="password" class="form-control" id="password1Input" name="password1" value="@form("password1").value.getOrElse("")"
-                      placeholder="Password">
-                      @formErrors(form("password1"))
-                    </div>
-                  </div>
-                  <div class="form-group row my-2 @Helpers.fieldStatus(form("password2"))">
-                    <label for="password2Input" class="col-sm-2 control-label">@Messages("userEditor.password.again")</label>
-                    <div class="col-sm-10">
-                      <input type="password" class="form-control" id="password2Input" name="password2" value="@form("password2").value.getOrElse("")"
-                      placeholder="Password">
-                      @formErrors(form("password2"))
-                    </div>
-                  </div>
-                }
-
-                <div class="form-group row my-2 @Helpers.fieldStatus(form("name"))">
-                  <label for="nameInput" class="col-sm-2 control-label">@Messages("name")</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="nameInput" name="name" value="@form("name").value.getOrElse("")" placeholder="Human name">
-                    @formErrors(form("name"))
-                  </div>
-                </div>
-
-                <div class="form-group row my-2 @Helpers.fieldStatus(form("email"))">
-                  <label for="emailInput" class="col-sm-2 control-label">@Messages("email")</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="emailInput" name="email" value="@form("email").value.getOrElse("")"
-                    placeholder="Email address">
-                    @formErrors(form("email"))
-                    <span class="helper-block">
-                    @Messages("userEditor.email.help")
-                    </span>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <div class="col text-end">
-                    <a href="@routes.UserCtrl.userHome()" class="btn btn-secondary">@Messages("cancel")</a>
-                    <button type="submit" class="btn btn-primary">@Messages("change")</button>
-                  </div>
-                </div>
-                <input type="hidden" value="@form("uuid").value.getOrElse("")" name="uuid" id="uuid">
-                @helper.CSRF.formField
-              </form>
-            </div>
-
-            <div class="tab-pane @if(!activeFirst){active} mt-2" id="changePassword">
-              <div class="col-md-12 mt-1">
-                <form class="form-horizontal" action="@routes.UserCtrl.doChangePassword()" method="POST">
-                  <div class="form-group row my-2">
-                    <label for="password1Input" class="col-sm-2 control-label">@Messages("userEditor.previousPassword")</label>
-                    <div class="col-sm-10">
-                      <input type="password" class="form-control" id="previousPassword" name="previousPassword" value="" placeholder="Password">
-                      @formErrors(form("previousPassword"))
-                    </div>
-                  </div>
-                  <div class="form-group row my-2">
-                    <label for="password1Input" class="col-sm-2 control-label">@Messages("userEditor.newPassword")</label>
-                    <div class="col-sm-10">
-                      <input type="password" class="form-control" id="password1Input" name="password1" value=""
-                      placeholder="Password">
-                      @formErrors(form("password1"))
-                    </div>
-                  </div>
-                  <div class="form-group row my-2">
-                    <label for="password2Input" class="col-sm-2 control-label">@Messages("userEditor.newPasswordAgain")</label>
-                    <div class="col-sm-10">
-                      <input type="password" class="form-control" id="password2Input" name="password2" value="" placeholder="Password">
-                      @formErrors(form("password2"))
-                    </div>
-                  </div>
-                  @helper.CSRF.formField
-                  <div class="form-group row my-2">
-                    <div class="col-md-12">
-                      <div class="text-end">
-                        <a class="btn btn-secondary" href="@routes.UserCtrl.userHome()">@Messages("cancel")</a>
-
-                        <button type="submit" class="btn btn-primary">@Messages("change")</button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
               </div>
+
+              @if(isNew){
+                <div class="form-group row my-2 @Helpers.fieldStatus(form("password1"))">
+                  <label for="password1Input" class="col-sm-2 control-label">@Messages("password")</label>
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password1Input" name="password1" value="@form("password1").value.getOrElse("")"
+                    placeholder="Password">
+                    @formErrors(form("password1"))
+                  </div>
+                </div>
+                <div class="form-group row my-2 @Helpers.fieldStatus(form("password2"))">
+                  <label for="password2Input" class="col-sm-2 control-label">@Messages("userEditor.password.again")</label>
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password2Input" name="password2" value="@form("password2").value.getOrElse("")"
+                    placeholder="Password">
+                    @formErrors(form("password2"))
+                  </div>
+                </div>
+              }
+
+              <div class="form-group row my-2 @Helpers.fieldStatus(form("name"))">
+                <label for="nameInput" class="col-sm-2 control-label">@Messages("name")</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="nameInput" name="name" value="@form("name").value.getOrElse("")" placeholder="Human name">
+                  @formErrors(form("name"))
+                </div>
+              </div>
+
+              <div class="form-group row my-2 @Helpers.fieldStatus(form("email"))">
+                <label for="emailInput" class="col-sm-2 control-label">@Messages("email")</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="emailInput" name="email" value="@form("email").value.getOrElse("")"
+                  placeholder="Email address">
+                  @formErrors(form("email"))
+                  <span class="helper-block">
+                  @Messages("userEditor.email.help")
+                  </span>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="col text-end">
+                  <a href="@routes.UserCtrl.userHome()" class="btn btn-secondary">@Messages("cancel")</a>
+                  <button type="submit" class="btn btn-primary">@Messages("update")</button>
+                </div>
+              </div>
+              <input type="hidden" value="@form("uuid").value.getOrElse("")" name="uuid" id="uuid">
+              @helper.CSRF.formField
+            </form>
+          </div>
+
+          <div class="tab-pane @if(showPasswordFirst){active} mt-2" id="changePassword">
+            <div class="col-md-12 mt-1">
+              <form class="form-horizontal" action="@routes.UserCtrl.doChangePassword()" method="POST">
+                <div class="form-group row my-2">
+                  <label for="password1Input" class="col-sm-2 control-label">@Messages("userEditor.previousPassword")</label>
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" id="previousPassword" name="previousPassword" value="" placeholder="Password">
+                    @formErrors(form("previousPassword"))
+                  </div>
+                </div>
+                <div class="form-group row my-2">
+                  <label for="password1Input" class="col-sm-2 control-label">@Messages("userEditor.newPassword")</label>
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password1Input" name="password1" value=""
+                    placeholder="Password">
+                    @formErrors(form("password1"))
+                  </div>
+                </div>
+                <div class="form-group row my-2">
+                  <label for="password2Input" class="col-sm-2 control-label">@Messages("userEditor.newPasswordAgain")</label>
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password2Input" name="password2" value="" placeholder="Password">
+                    @formErrors(form("password2"))
+                  </div>
+                </div>
+                @helper.CSRF.formField
+                <div class="form-group row my-2">
+                  <div class="col-md-12">
+                    <div class="text-end">
+                      <a class="btn btn-secondary" href="@routes.UserCtrl.userHome()">@Messages("cancel")</a>
+                      <button type="submit" class="btn btn-primary">@Messages("change")</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>

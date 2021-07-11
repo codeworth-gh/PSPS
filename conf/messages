@@ -51,18 +51,33 @@ compSvg.title=BS Icons SVGs
 
 editableList.title=Editable List
 
+userRoles.admin=Admin
+userRoles.none=No roles
+userRoles.roles=Roles
+userRoles.title=Assign Roles to User {0}
+userRoles.cannotDeAdminYourself=You cannot make yourself non-admin; have another admin do that for you.
+userRoles.otherRoles=Other Roles
+userRoles.Admin=Admin
+userRoles.Admin.info=Can manage the site and its users
+userRoles.SampleRole1=Sample Role 1
+userRoles.SampleRole1.info=A sample role
+userRoles.SampleRole2=Sample Role 2
+userRoles.SampleRole2.info=Another sample role
+
 users=Users
 users.inviteUser=Invite User
 users.noPendingInvitations=No pending invitations
 users.pendingInvitations=Pending Invitations
 users.signup.title=Sign up
 users.me=Me!
+users.accountCreated=Account Created Successfully
 
 userEditor.title=Profile Editor
 userEditor.new.title=New user
 userEditor.tabs.edit=Details
+userEditor.tabs.roles=Roles
 userEditor.tabs.changePassword=Change password
-userEditor.password.again=New password (again)rtl.scss
+userEditor.password.again=New password (again)
 userEditor.previousPassword=Previous password
 userEditor.newPassword=New password
 userEditor.newPasswordAgain=New password (again)
@@ -71,6 +86,7 @@ userEditor.accountCreated=User account created.
 
 add=Add
 cancel=Cancel
+edit=Edit
 forgotPassword=forgot password
 resetPassword=Reset Password
 password=Password

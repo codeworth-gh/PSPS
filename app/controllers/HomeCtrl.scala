@@ -27,6 +27,8 @@ object HomeCtrl {
   val beRouteSeq = Seq(
     routes.javascript.UserCtrl.apiAddUser,
     routes.javascript.UserCtrl.apiReInviteUser,
+    routes.javascript.UserCtrl.apiAddRole,
+    routes.javascript.UserCtrl.apiDeleteRole,
     routes.javascript.UserCtrl.apiDeleteInvitation
   )
 

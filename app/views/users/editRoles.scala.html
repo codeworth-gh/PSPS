@@ -1,0 +1,84 @@
+@import be.objectify.deadbolt.scala.AuthenticatedRequest
+@import models.UserRole
+@(editedUser:User, curUser:User)(implicit request: AuthenticatedRequest[_], msgs:MessagesProvider)
+
+@scripts={
+  <script>
+    function updateRole(roleName, ctrl) {
+        if ( ctrl.checked ) {
+          const proc = Informationals.showBackgroundProcess("Adding role " + roleName);
+          new Playjax(beRoutes).using( c => c.UserCtrl.apiAddRole("@editedUser.username") )
+            .fetch( JSON.stringify(roleName) )
+            .then( res => {
+                if ( res.ok ) {
+                  proc.success();
+                } else {
+                    proc.dismiss();
+                    console.log(res);
+                    Informationals.makeDanger("Error assigning role: " + res.status ).show();
+                }
+            });
+
+        } else {
+          const proc = Informationals.showBackgroundProcess("Removing role " + roleName);
+          new Playjax(beRoutes).using( c => c.UserCtrl.apiDeleteRole("@editedUser.username") )
+                  .fetch( JSON.stringify(roleName) )
+                  .then( res => {
+                    if ( res.ok ) {
+                      proc.success();
+                    } else {
+                      proc.dismiss();
+                      console.log(res);
+                      Informationals.makeDanger("Error deleting role: " + res.status ).show();
+                    }
+                  });
+
+        }
+    }
+  </script>
+}
+
+
+@templates.backEndBase("User Roles", views.BackOfficeSections.Users, scripts) {
+  @comps.pageTitleRow(Messages("userRoles.title", editedUser.username))()
+
+  <div class="row my-2">
+    <div class="col">
+      <h2>@Messages(s"userRoles.${UserRole.Admin.toString}")</h2>
+      @if( curUser == editedUser ) {
+        <div class="alert alert-warning">
+          @comps.svg.exlamationTriangle() @Messages("userRoles.cannotDeAdminYourself")
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="chkRoleAdmin" checked disabled>
+          <label class="form-check-label" for="chkRoleAdmin">@Messages(s"userRoles.${UserRole.Admin.toString}")</label>
+        </div>
+      } else {
+        <div class="form-check form-switch">
+          <input class="form-check-input" onchange="updateRole('Admin',this)" type="checkbox" autocomplete="off" id="chkRoleAdmin" @if(editedUser.isAdmin){checked}>
+          <label class="form-check-label" for="chkRoleAdmin">@Messages(s"userRoles.${UserRole.Admin.toString}")</label>
+        </div>
+      }
+      <div class="text-muted ps-4">@Messages(s"userRoles.${UserRole.Admin.toString}.info")</div>
+    </div>
+  </div>
+
+  <div class="row my-2">
+    <div class="col">
+      <h2>@Messages(s"userRoles.otherRoles")</h2>
+      <ul class="list-unstyled">
+        @for( ur <- UserRole.values.filter(_!=UserRole.Admin).unsorted ) {
+          <li>
+            <div class="form-check form-switch">
+              <input class="form-check-input" onchange="updateRole('@ur.toString',this)" type="checkbox" autocomplete="off" id="chkRole@ur.id" @if(editedUser.roles(ur)){checked}>
+              <label class="form-check-label" for="chkRole@ur.id">@Messages(s"userRoles.${ur.toString}")</label>
+            </div>
+            <div class="text-muted ps-4">@Messages(s"userRoles.${ur.toString}.info")</div>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+
+
+}

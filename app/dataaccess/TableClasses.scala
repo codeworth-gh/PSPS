@@ -1,21 +1,26 @@
 package dataaccess
 
 import java.sql.Timestamp
-
-import models.{Invitation, User, PasswordResetRequest}
+import models.{Invitation, PasswordResetRequest, User, UserRole}
 import slick.lifted.Tag
 import slick.jdbc.PostgresProfile.api._
 
 
 class UsersTable(tag:Tag) extends Table[User](tag,"users") {
-
+  
+  implicit val roleMapper = MappedColumnType.base[Set[UserRole.Value], String](
+    s => s.mkString(","),
+    s => s.split(",").filter(_.nonEmpty).map(UserRole.withName).toSet
+  )
+  
   def id                = column[Long]("id",O.PrimaryKey, O.AutoInc)
   def username          = column[String]("username")
   def name              = column[String]("name")
   def email             = column[String]("email")
   def encryptedPassword = column[String]("encrypted_password")
-
-  def * = (id, username, name, email, encryptedPassword) <> (User.tupled, User.unapply)
+  def roles             = column[Set[UserRole.Value]]("roles")
+  
+  def * = (id, username, name, email, encryptedPassword, roles) <> (User.tupled, User.unapply)
 
 }
 

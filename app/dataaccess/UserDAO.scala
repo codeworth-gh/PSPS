@@ -1,7 +1,7 @@
 package dataaccess
 
 import javax.inject.Inject
-import models.User
+import models.{User, UserRole}
 import org.mindrot.jbcrypt.BCrypt
 import play.api.Configuration
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
@@ -25,7 +25,9 @@ class UsersDAO @Inject() (protected val dbConfigProvider:DatabaseConfigProvider,
     db.run( (Users.returning(Users.map(_.id) )
       .into((user,newId)=>user.copy(id=newId)) += u.copy(id=0)).asTry )
   }
-
+  
+  def countUsers():Future[Int] = db.run( Users.size.result )
+  
   def updateUser( u:User ):Future[User] = {
     if ( u.id==0 ) {
       addUser(u)
@@ -33,7 +35,7 @@ class UsersDAO @Inject() (protected val dbConfigProvider:DatabaseConfigProvider,
       db.run( Users.filter(_.id===u.id).update(u) ).map( _ => u )
     }
   }
-
+  
   def usernameExists( u:String):Future[Boolean] = {
     db.run{
       Users.map( _.username ).filter( _.toLowerCase === u.toLowerCase() ).exists.result

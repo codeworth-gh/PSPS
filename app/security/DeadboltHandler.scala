@@ -12,9 +12,11 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
 
+case class UserSubjectRole(name:String ) extends Role
+
 case class UserSubject(user:User) extends Subject {
   override def identifier: String = user.username
-  override def roles: List[Role] = List[Role]()
+  override def roles: List[Role] = user.roles.toList.map(r=>UserSubjectRole(r.toString))
   override def permissions: List[Permission] = Nil
 }
 

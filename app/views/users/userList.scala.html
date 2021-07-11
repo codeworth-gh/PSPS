@@ -2,8 +2,10 @@
 @(users:Seq[User], curUser:User)(implicit request:AuthenticatedRequest[_], msgs:MessagesProvider)
 @templates.backEndBase("Users", views.BackOfficeSections.Users) {
     @comps.pageTitleRow(Messages("users")){
+      @if(curUser.isAdmin) {
         <a href="@routes.UserCtrl.showNewUserPage()" class="btn btn-large btn-outline-primary"><i class="fa fa-plus-circle"></i> @Messages("add")</a>
         <a href="@routes.UserCtrl.showInviteUser()" class="btn btn-large btn-outline-secondary"><i class="fa fa-send"></i> @Messages("users.inviteUser")</a>
+      }
     }
     <div class="row">
         <div class="col-md-12">
@@ -16,26 +18,43 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>@Messages("name")</th>
                         <th>@Messages("username")</th>
+                        <th>@Messages("name")</th>
                         <th>@Messages("email")</th>
+                        <th>@Messages("userRoles.roles")</th>
                     </tr>
                 </thead>
                 <tbody>
                 @for( u <- users ) {
                     <tr>
-                        <td>
+                        <td class="d-flex flex-row">
+                          <div>
+                            <code>@u.username</code>
                             @if( u.username == curUser.username ) {<span class="badge bg-success">@Messages("users.me")</span>}
-                            @u.name
-                            @if( u.username == curUser.username ) {
-                                <a class="btn btn-sm btn-outline-secondary" href="@routes.UserCtrl.showEditUserPage(u.username)"><i class="fa fa-edit"></i>
-                                    Edit</a>
-                            }
+                            @if( u.isAdmin ) {<span class="badge bg-warning">@Messages("userRoles.admin")</span>}
+                          </div>
+                          @if( curUser.isAdmin || u.username == curUser.username ) {
+                              <a class="btn btn-sm btn-outline-secondary ms-auto" href="@routes.UserCtrl.showEditUserPage(u.username)">@comps.svg.edit()</a>
+                          }
                         </td>
-                        <td><code>@u.username</code></td>
+                        <td>
+                            @u.name
+                        </td>
                         <td>@if((u.email != null) & (u.email.trim.nonEmpty)){
                             <a href="mailto:@u.email">@u.email</a>
                         }</td>
+                        <td class="d-flex flex-row">
+                          @if( u.roles.isEmpty ) {
+                            <div class="noData">@Messages("userRoles.none")</div>
+                          } else {
+                            <div>
+                              @u.roles.toSeq.map(r=>Messages("userRoles."+r)).sorted.mkString(", ")
+                            </div>
+                          }
+                          @if( curUser.isAdmin ) {
+                            <a class="btn btn-sm btn-outline-secondary ms-auto" href="@routes.UserCtrl.showEditUserRoles(u.username)">@comps.svg.gearWideConnected()<a>
+                          }
+                        </td>
                     </tr>
                 }
                 </tbody>

@@ -45,4 +45,18 @@ object ControllerUtils {
     import java.lang.Character._
     in.filter(c=>isAlphabetic(c)||isDigit(c)||IDENTIFIER_CHARS(c))
   }
+  
+  /**
+    * Takes an `Option[Future[A]]`, makes it a `Future[Option[A]]`
+    * @param x
+    * @param ec
+    * @tparam A
+    * @return
+    * thanks https://newbedev.com/scala-option-future-t-to-future-option-t
+    */
+  def invertOptionFuture[A](x: Option[Future[A]])(implicit ec: ExecutionContext): Future[Option[A]] =
+    x match {
+      case Some(f) => f.map(Some(_))
+      case None    => Future.successful(None)
+    }
 }

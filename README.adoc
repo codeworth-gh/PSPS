@@ -38,12 +38,14 @@ image::https://api.netlify.com/api/v1/badges/fb260db4-9c0f-45d3-8759-02d76d9b015
 * :arrow_upper_right: :tada: Added a set of components to make building forms much easier. These live in `views.comps.bform._`.
 * :arrow_upper_right: Added `views.comps.bform.sortingTH`, a table header with a sorting triangle and a proper link behavior.
 * :arrow_upper_right: Added an editable JS list, useful for controlled vocabularies, such as a closed list of items.
+* :arrow_upper_right: :tada: :tada: User roles! Also, first generated user is an admin.
+* :arrow_upper_right: Invitation improvements: email auto-fill
 * :bug: cleaned warnings
 
 
 === 2021-02
 * :cyclone: Some minor fixes and refinements
-* :tada: Added ``JsonApiHelper``, a controller helper mix-in that adds useful JSON-related controller methods.
+* :tada: Added ``JsonApiHelper.scala``, a controller helper mix-in that adds useful JSON-related controller methods.
 
 === 2021-01
 

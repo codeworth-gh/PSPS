@@ -10,4 +10,4 @@ create table password_reset_requests(
 );
 
 # -- !Downs
-drop table password_reset_reqeusts;
+drop table password_reset_requests;
