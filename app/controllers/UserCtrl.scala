@@ -520,7 +520,7 @@ class UserCtrl @Inject()(deadbolt:DeadboltActions, conf:Configuration,
   }
 
   private def attemptUserCreation( form:UserFormData, onSuccess:Call, onFailure:Call )(implicit req:AuthenticatedRequest[_]): Future[Result] = {
-    val user = User(0, form.username, "", form.email.getOrElse(""), users.hashPassword(form.pass1.get.trim), Set())
+    val user = User(0, form.username, form.name, form.email.getOrElse(""), users.hashPassword(form.pass1.get.trim), Set())
     users.tryAddUser(user).map( {
       case Success(user) => Redirect(onSuccess).flashing(
         FlashKeys.MESSAGE->Informational(Informational.Level.Success, messagesProvider.messages("users.accountCreated")).encoded)
