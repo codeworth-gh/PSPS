@@ -23,7 +23,11 @@ PSPS is based on our experience with Play for creating web applications. Some of
 Before going to production, reduce leaked system information by preventing `httpd` from sending detailed system info in the headers. See https://www.tecmint.com/hide-apache-web-server-version-information/[here].
 
 [TIP]
-Close tcp port 9000 to allow access only via apache: `sudo iptables -A INPUT -p tcp --destination-port 9000 -j DROP`
+Close tcp port 9000 for the outside world, and allow access only via the local Apache:
+```
+$ sudo iptables -A INPUT -p tcp -s localhost --dport 9000 -j ACCEPT
+$ sudo iptables -A INPUT -p tcp --dport 9000 -j DROP
+```
 
 **https://psps-play-app.netlify.com/[Documentation]**
 
